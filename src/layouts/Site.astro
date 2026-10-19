@@ -1,6 +1,8 @@
 ---
 import '@fontsource-variable/inter/opsz.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2?url';
+import '@fontsource/prata/400.css';
+import headingLatin from '@fontsource/prata/files/prata-latin-400-normal.woff2?url';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/print.css';
@@ -41,6 +43,7 @@ const address = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={address.href} />}
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={headingLatin} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -75,8 +78,8 @@ const address = new URL(Astro.url.pathname, Astro.site);
           </div>
           <nav class="site-footer__links" aria-label="Footer">
             <ul>
-              <li><a href="/sources">Sources &amp; approach</a></li>
-              <li><a href="mailto:cases@thedoormanfallacy.com">Suggest a case</a></li>
+              <li><a href="/approach">Sources &amp; approach</a></li>
+              <li><a href="/suggest">Suggest a case</a></li>
               <li><a href="/privacy">Privacy</a></li>
             </ul>
           </nav>

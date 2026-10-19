@@ -1,0 +1,137 @@
+---
+import type { LedgerRow } from '../data/example-rows.ts';
+
+interface Props {
+  rows: readonly LedgerRow[];
+  caption: string;
+  label: string;
+}
+
+const { rows, caption, label } = Astro.props;
+---
+
+<div class="ledger-wrap" role="region" aria-label={label} tabindex="0">
+  <table class="ledger" role="table">
+    <caption class="t-small ink-3">{caption}</caption>
+    <thead>
+      <tr class="t-small ink-2" role="row">
+        <th scope="col" role="columnheader">Company</th>
+        <th scope="col" role="columnheader">Change</th>
+        <th scope="col" role="columnheader">Reported outcome</th>
+        <th scope="col" role="columnheader">Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr role="row">
+            <th scope="row" role="rowheader">
+              <span class="ledger__company t-title">{row.company}</span>
+              <span class="ledger__meta t-small ink-2">{row.meta}</span>
+            </th>
+            <td role="cell" data-label="Change">{row.change}</td>
+            <td role="cell" data-label="Reported outcome">{row.outcome}</td>
+            <td role="cell" class="ledger__case">
+              <a href={row.href}>
+                Read case<span class="visually-hidden"> on {row.company}</span>
+              </a>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .ledger-wrap {
+    /* Positioned so visually hidden text in a cell is clipped with the table, not the page. */
+    position: relative;
+    overflow-x: auto;
+  }
+
+  .ledger {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .ledger caption {
+    caption-side: bottom;
+    padding-block-start: var(--space-4);
+    text-align: start;
+  }
+
+  .ledger th,
+  .ledger td {
+    padding: var(--space-6) var(--space-4);
+    border-block-end: var(--hairline) solid var(--rule);
+    font-weight: inherit;
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  .ledger thead th {
+    padding-block: var(--space-4);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .ledger__company {
+    display: block;
+    font-size: var(--lead-size);
+  }
+
+  .ledger__meta {
+    display: block;
+    margin-block-start: var(--space-1);
+  }
+
+  /* Narrow screens: each row becomes a block, each cell names its column */
+  @media (width < 40rem) {
+    .ledger thead {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .ledger,
+    .ledger tbody,
+    .ledger tr,
+    .ledger th,
+    .ledger td {
+      display: block;
+    }
+
+    .ledger tbody tr {
+      padding-block: var(--space-6);
+      border-block-end: var(--hairline) solid var(--rule);
+    }
+
+    .ledger tbody tr:first-child {
+      margin-block-start: var(--space-4);
+      border-block-start: var(--hairline) solid var(--rule);
+    }
+
+    .ledger tbody th,
+    .ledger tbody td {
+      padding: 0;
+      border: 0;
+    }
+
+    .ledger tbody td {
+      margin-block-start: var(--space-3);
+    }
+
+    .ledger td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      color: var(--ink-2);
+      font-size: var(--small-size);
+    }
+
+    .ledger caption {
+      display: block;
+    }
+  }
+</style>

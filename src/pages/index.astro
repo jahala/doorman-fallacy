@@ -1,6 +1,41 @@
 ---
+import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
+import { exampleRows } from '../data/example-rows.ts';
 import Site from '../layouts/Site.astro';
+
+const remains = [
+  { title: 'The task being automated', question: 'What can the system now handle?' },
+  { title: 'The work that remains', question: 'What did the person notice, remember or resolve?' },
+  { title: 'Who takes it on', question: 'Another team, the customer, or nobody?' },
+];
+
+const checks = [
+  {
+    id: 'reviewed',
+    title: 'If your role is being reviewed',
+    lead: 'Write down the work that a job description leaves out.',
+    questions: [
+      'What do people come to you for?',
+      'What do you prevent or resolve without being asked?',
+      'What would colleagues or customers have to take on?',
+    ],
+    href: '/checks/your-hidden-job',
+    link: 'Open Your hidden job',
+  },
+  {
+    id: 'automating',
+    title: 'If you are automating a role',
+    lead: 'Account for the responsibilities that will remain.',
+    questions: [
+      'Which tasks can the system handle reliably?',
+      'Who takes responsibility for the exceptions?',
+      'What will you measure after the change?',
+    ],
+    href: '/checks/before-you-cut',
+    link: 'Open Before you cut',
+  },
+];
 ---
 
 <Site title="The Doorman Fallacy">
@@ -21,6 +56,98 @@ import Site from '../layouts/Site.astro';
       <div class="hero__photo">
         <Photo id="hero" sizes="(min-width: 56rem) 50vw, 100vw" priority />
       </div>
+    </section>
+
+    <section class="section" aria-labelledby="remains-title">
+      <div class="grid split">
+        <h2 id="remains-title" class="t-display split__head">What else was the person doing?</h2>
+        <p class="split__side">
+          When a company automates customer support, answering questions is the obvious task. Recognising a
+          recurring problem, calming an angry customer and knowing when to make an exception are harder to
+          measure.
+        </p>
+      </div>
+      <ul class="grid columns columns--3">
+        {
+          remains.map((item) => (
+            <li class="ruled">
+              <h3 class="t-title">{item.title}</h3>
+              <p class="t-lead ink-2">{item.question}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="section__link"><a href="/ledger">See what happened in practice</a></p>
+    </section>
+
+    <section class="section" aria-labelledby="ledger-title">
+      <div class="section-head">
+        <div>
+          <h2 id="ledger-title" class="t-display">The ledger</h2>
+          <p class="t-lead ink-2 section__sub">What happened after companies cut roles for AI.</p>
+        </div>
+        <p><a href="/ledger">View all cases</a></p>
+      </div>
+      <LedgerTable
+        rows={exampleRows}
+        caption="Example rows. The ledger opens with its first ten cases."
+        label="Ledger preview"
+      />
+      <div class="grid columns columns--2">
+        <div>
+          <h3 class="t-title">Follow-up is part of each case.</h3>
+          <p class="t-lead ink-2">Entries include linked sources, an update history and a date for the next review.</p>
+        </div>
+        <div>
+          <h3 class="t-title">Cuts that hold up belong here too.</h3>
+          <p class="t-lead ink-2">The ledger follows reversals, strained transitions and outcomes that are still unclear.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="checks-title">
+      <h2 id="checks-title" class="t-display">Before the decision.</h2>
+      <p class="t-lead ink-2 section__sub">Two printable guides for making the work visible.</p>
+      <div class="grid columns columns--2">
+        {
+          checks.map((check) => (
+            <div class="ruled check">
+              <h3 id={`check-${check.id}`} class="t-title">{check.title}</h3>
+              <p class="t-lead ink-2">{check.lead}</p>
+              <ul class="check__questions">
+                {check.questions.map((question) => <li>{question}</li>)}
+              </ul>
+              <p class="check__link"><a href={check.href}>{check.link}</a></p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="t-small ink-3 section__note">Both guides are designed to print.</p>
+    </section>
+
+    <section id="subscribe" class="section grid split" aria-labelledby="subscribe-title">
+      <div class="split__head">
+        <h2 id="subscribe-title" class="t-display">Get updates from the ledger.</h2>
+        <p class="t-lead section__sub">A short email once a month, when the ledger has changed.</p>
+        <p class="ink-2">Unsubscribe at any time.</p>
+      </div>
+      <form class="split__side subscribe" method="post" action="/api/subscribe">
+        <label class="field-label" for="subscribe-email">Email address</label>
+        <div class="subscribe__row">
+          <input
+            class="field"
+            id="subscribe-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+            aria-describedby="subscribe-help"
+          />
+          <button class="button" type="submit">Subscribe</button>
+        </div>
+        <p class="field-help t-small" id="subscribe-help">Only updates from The Doorman Fallacy.</p>
+      </form>
     </section>
   </div>
 </Site>

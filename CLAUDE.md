@@ -5,9 +5,10 @@ TheDoormanFallacy.com explains Rory Sutherland's doorman fallacy and keeps a sou
 ## What the site is for
 
 - The idea: one clear, citable explanation of the fallacy, with full credit to Sutherland (*Alchemy*, 2019).
-- The ledger: one case per company. What was cut, the visible task that was automated, what it missed, what was reported afterwards, and a date to look again. Most coverage stops on the day of the cut; the follow-up is what this site adds.
+- The ledger: one case per company, kept by AI agents under fixed rules ([D-009](docs/decisions.md)). What was cut, the visible task that was automated, what it missed, what was reported afterwards, and a date to look again. Most coverage stops on the day of the cut; the follow-up is what this site adds.
 - Two printable checklists: one for a person whose role is being reviewed, one for a manager about to automate a role.
-- A short email when the ledger changes.
+- A form where readers suggest cases or report errors.
+- A sign-up for a letter, sent once there are subscribers.
 
 ## Stance and tone
 
@@ -17,12 +18,13 @@ The tone is calm and kind to everyone involved, including the managers who made 
 
 ## Hard rules
 
-- Every fact in the ledger has a linked source and an archived copy of it.
+- Every factual sentence in a case rests on a verbatim quote from an archived source.
 - Write what was reported. Never state or guess a company's motives.
 - Rory Sutherland is credited wherever the idea is explained.
 - Photographers are credited wherever their photos appear.
 - No em dashes in site copy.
-- No client-side JavaScript ships.
+- No client-side JavaScript ships. Forms are plain HTML posting to the Worker.
+- Personal data and unconfirmed leads live only in D1, never in this repository, and are deleted on the schedule in [docs/data-model.md](docs/data-model.md#d1).
 
 Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-guards).
 
@@ -34,6 +36,7 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 | How code is written and tested; every rule's guard | [docs/engineering.md](docs/engineering.md) |
 | Ledger case format, vocabularies, retention | [docs/data-model.md](docs/data-model.md) |
 | Domains, release, the weekly job, email | [docs/operations.md](docs/operations.md) |
+| How the desk finds and assesses cases | [docs/desk.md](docs/desk.md) |
 | Visual reference and tokens | [docs/design.md](docs/design.md) |
 | Decisions, dated and numbered | [docs/decisions.md](docs/decisions.md) |
 | Mockups | [docs/design-reference/](docs/design-reference/) |
@@ -42,9 +45,6 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 
 Written by /test-setup once the scaffold runs, with measured times. Nothing is measured yet.
 
-## Adding a case
+## How cases are added
 
-1. Create `src/content/cases/<company>-<year>.md` in the format in [docs/data-model.md](docs/data-model.md).
-2. Archive every source on the Wayback Machine and record the archive link.
-3. Run the checks. The build refuses a case that breaks the format.
-4. Set the next review date.
+The desk adds them: a weekly run of agents that finds leads, drafts cases, checks them and publishes what passes ([docs/operations.md](docs/operations.md#the-desks-weekly-run)). The case format and what counts as a case: [docs/data-model.md](docs/data-model.md). The checks a case must pass: [docs/engineering.md](docs/engineering.md#publishing-checks).

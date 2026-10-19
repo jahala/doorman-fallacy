@@ -10,11 +10,13 @@ export const briefMaxLines = 150;
  * entry whose path now exists, so the list can only shrink.
  */
 export const notYetBuilt: readonly string[] = [
-  // The weekly review job (docs/operations.md). It lands with the ledger, not with the scaffold.
-  'scripts/review-due',
+  // The case format, the Worker and the desk (D-008 to D-012). Each leaves the list when it lands.
+  'scripts/check-cases',
+  'src/worker/',
+  'migrations/',
 ];
 
-const repoPathPattern = /^(src|docs|scripts|tests|public)\//;
+const repoPathPattern = /^(src|docs|scripts|tests|public|desk|migrations)\//;
 
 export interface DocFinding {
   readonly file: string;

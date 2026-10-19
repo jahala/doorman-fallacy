@@ -14,6 +14,8 @@ npm run build      # static site into dist/
 npm run test:site  # browser checks against dist/
 ```
 
+The desk, which finds and assesses cases, runs on its own: see [docs/desk.md](docs/desk.md).
+
 ## How it is built
 
 Start with [CLAUDE.md](CLAUDE.md). Architecture, the case format, design and decisions are in [docs/](docs/).
@@ -23,3 +25,7 @@ Start with [CLAUDE.md](CLAUDE.md). Architecture, the case format, design and dec
 The doorman fallacy is Rory Sutherland's idea, from *Alchemy* (2019). Photographs by atelierbyvineeth and Maryam Tello, from Unsplash.
 
 Curated by Jan Hallvard Larsen.
+
+## Support
+
+If the ledger is useful to you, you can [buy me a coffee](https://buymeacoffee.com/jahala).

@@ -7,11 +7,12 @@ export const notYetBuiltRoutes: readonly string[] = [
   '/idea', // The idea page
   '/ledger', // The ledger
   '/about', // About the curator
-  '/sources', // Sources and approach
+  '/approach', // Sources and approach
+  '/suggest', // Suggest a case
   '/privacy', // Privacy
+  '/checks/your-hidden-job', // Printable checklist
+  '/checks/before-you-cut', // Printable checklist
 ];
 
 /** In-page anchors the site links to whose target section is not built yet. */
-export const notYetBuiltAnchors: readonly string[] = [
-  '/#subscribe', // The sign-up section on the home page
-];
+export const notYetBuiltAnchors: readonly string[] = [];

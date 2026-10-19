@@ -20,16 +20,17 @@
   --field: light-dark(#8c8b86, #77756f);
   --accent: light-dark(#a92819, #f0654f);
 
-  /* Type: one family, Inter, with its optical-size axis */
-  --font: "Inter Variable", system-ui, sans-serif;
+  /* Type: Prata (one weight, 400) for headings and the wordmark, Inter (with its optical-size axis) for everything else */
+  --font-heading: "Prata", georgia, serif;
+  --font-body: "Inter Variable", system-ui, sans-serif;
 
   --display-size: clamp(3rem, 7vw, 5.5rem);
-  --display-weight: 600;
+  --display-weight: 400;
   --display-leading: 0.95;
-  --display-tracking: -0.035em;
+  --display-tracking: -0.01em;
 
   --title-size: clamp(1.75rem, 3vw, 2.5rem);
-  --title-weight: 600;
+  --title-weight: 400;
   --title-leading: 1.1;
   --title-tracking: -0.02em;
 
