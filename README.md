@@ -55,6 +55,7 @@ The desk needs Claude Code, a TypeSafe key and archive.org keys in the macOS Key
 node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
 node desk/assess.ts --top 4 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --publish
+node desk/weekly.ts --budget 3   # every stage, as the Monday schedule runs it
 ```
 
 ## Where things are

@@ -48,21 +48,20 @@ The suggest and subscribe routes hold their rate limit in D1, as a hash of the v
 
 ## The desk's weekly run
 
-Runs on Jan's Mac every Monday morning through launchd, using Claude Code on Jan's subscription ([D-012](decisions.md)). If the Mac is asleep, it runs at the next wake. How the desk narrows the news, and what each stage costs: [desk.md](desk.md). Each run:
+`desk/weekly.ts` runs every Monday at 07:00 on Jan's Mac, using Claude Code on Jan's subscription ([D-012](decisions.md)). How the desk narrows the news, and what each stage costs: [desk.md](desk.md). Each run:
 
-1. **Sweep.** Fetch the news searches and new suggestions from D1. Drop duplicates and anything in `seen`. No model calls.
-2. **Triage.** Jev judges each lead's headline, and code ranks the organisations by doorman priority.
-3. **Assess.** A Claude agent researches the strongest organisations and rates each one's doorman fit: draft, watch or reject.
-4. **Draft.** For each case recommended for drafting, and each update, an agent writes the case. Every source is archived on the Wayback Machine, and every quote is selected from the page's own sentences.
-5. **Check.** The publishing checks ([engineering.md](engineering.md#publishing-checks)). A failure goes back to the drafting agent once; a second failure rejects the draft.
-6. **Publish.** Passing cases are committed to the public repository and released.
-7. **Review.** Cases due for review run their watch searches. News becomes a drafted update and goes through steps 5 and 6. If there is no news, only `lastChecked` changes.
-8. **Report.** One email to Jan through cfmail: published, updated, watched, rejected with reasons, and any failure in the run.
+1. **Sweep** the last eight days of news.
+2. **Set aside** organisations already in the ledger, and those assessed in the last 30 days (`.desk-runs/assessed.json`, entries kept 180 days).
+3. **Assess** the strongest new leads.
+4. **Draft and publish** each case the assessor recommends, through the [publishing checks](engineering.md#publishing-checks).
+5. **List** news about cases already in the ledger, and cases due for review. Drafting updates from that news is not built yet.
+6. **Commit and push** the new cases (the pre-push hook runs the checks), write the report to the run's folder, and post a Mac notification. A run with any failure says so in the notification and exits non-zero.
 
-The run records itself in D1's `runs` table. A run that stops part-way says where in the report, and the next run starts from the leads that are still open.
+Each stage runs as its own process with a fixed share of the week's budget (default $3), so the total cannot pass it. The report will also go to Jan by email once thedoormanfallacy.com is set up in cfmail.
 
-Jan does not need to act on the report. To take a case down: `npm run unpublish -- <slug>`, which removes it in one commit with the reason, and releases.
+Install the schedule with `scripts/install-desk-schedule.sh`. It runs the desk from its own worktree on master (`df-desk` beside the repository), so the weekly commit never lands in a checkout someone is editing, and it prints how to undo itself before it acts. If the Mac is asleep at 07:00, launchd runs the job when it wakes, and the report marks the run as late when more than seven days have passed. Each run overwrites `.desk-runs/last-run.log` in that worktree.
 
+To take a case down: delete its file in one commit that says why, and release.
 ## Site health
 
 A scheduled GitHub Action, free once the repository is public, fetches the home page and both redirects each day. If either fails, GitHub emails Jan. It runs separately from the desk, so a sleeping Mac cannot hide a broken site.
