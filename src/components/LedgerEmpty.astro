@@ -1,0 +1,35 @@
+---
+/** Shown where the ledger table would be when there are no cases yet. */
+interface Props {
+  /** The level of its heading: one below the heading of the section it sits in. */
+  heading: 'h2' | 'h3';
+}
+
+const { heading: Heading } = Astro.props;
+---
+
+<div class="ledger-empty">
+  <Heading class="t-title">The ledger opens with its first cases.</Heading>
+  <p class="t-lead ink-2">
+    Each one follows a company that cut roles for AI: what it said, what was reported afterwards, and a
+    date to look again.
+  </p>
+  <p><a href="/idea">Read the idea behind the ledger</a></p>
+</div>
+
+<style>
+  .ledger-empty {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-block: var(--hairline) solid var(--rule);
+  }
+
+  .ledger-empty > * {
+    max-inline-size: var(--measure);
+  }
+
+  .ledger-empty p:last-child {
+    margin-block-start: var(--space-4);
+  }
+</style>

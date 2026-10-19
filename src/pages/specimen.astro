@@ -3,7 +3,7 @@ import tokensCss from '../styles/tokens.css?raw';
 import ExternalLink from '../components/ExternalLink.astro';
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
-import { exampleRows } from '../data/example-rows.ts';
+import type { LedgerRow } from '../data/ledger-row.ts';
 import Site from '../layouts/Site.astro';
 import { contrastRatio } from '../lib/contrast.ts';
 import {
@@ -15,6 +15,26 @@ import {
 } from '../lib/tokens.ts';
 
 const sentence = 'What does a doorman actually do?';
+
+/** Two rows from mockup 3. They are specimens of the table's look, not cases, and the table is captioned so. */
+const specimenRows: readonly LedgerRow[] = [
+  {
+    company: 'Commonwealth Bank',
+    meta: 'Australia · Customer service',
+    change: '45 roles cut for a voice bot.',
+    status: 'Reversed',
+    outcome: 'Decision reversed.',
+    href: '/ledger',
+  },
+  {
+    company: 'Klarna',
+    meta: 'Sweden · Customer service',
+    change: 'AI-first customer support.',
+    status: 'Partly reversed',
+    outcome: 'Human support hired back.',
+    href: '/ledger',
+  },
+];
 
 const colours = colourTokens(tokensCss);
 const paper = colours.find((token) => token.name === 'paper');
@@ -177,7 +197,7 @@ const weights = [{ letter: 'A', weight: 400, note: 'Regular, the only weight Pra
 
     <section class="specimen__section" aria-labelledby="s-ledger">
       <h2 id="s-ledger" class="t-title">Ledger table</h2>
-      <LedgerTable rows={exampleRows} caption="Specimen rows. Illustrative, not cases." label="Ledger table sample" />
+      <LedgerTable rows={specimenRows} caption="Specimen rows. Illustrative, not cases." label="Ledger table sample" />
     </section>
 
     <section class="specimen__section" aria-labelledby="s-photos">

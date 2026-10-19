@@ -5,7 +5,6 @@
  */
 export const notYetBuiltRoutes: readonly string[] = [
   '/idea', // The idea page
-  '/ledger', // The ledger
   '/about', // About the curator
   '/approach', // Sources and approach
   '/suggest', // Suggest a case

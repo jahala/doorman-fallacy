@@ -28,7 +28,7 @@ Versions are pinned in `package.json` and `.nvmrc` at scaffold time.
 | Build | Schema validation of every case; type checks | Every change |
 | Lint | ESLint, Stylelint, the copy and docs checks | Every change |
 | Site | Playwright against `dist/`: accessibility, print, links, no JavaScript | Every change; the site is small |
-| Size | A build with 500 generated cases | When the ledger page, the schema or `lib/` changes |
+| Size | `npm run test:size`: a build with 500 generated cases, about 4 s | When the ledger page, the schema or `lib/` changes. Not part of `npm run check` |
 
 Commands and measured times go in the brief once /test-setup has run.
 
@@ -79,7 +79,8 @@ Every rule this project states is listed here once, with what fails when it brea
 | Internal links resolve | Site test crawls `dist/` |
 | No em dashes in site copy | `scripts/check-copy` scans `src/content/`, `src/pages/`, `src/layouts/`, `src/components/` and `src/data/`. A fixture must be flagged |
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
-| The ledger page builds and stays light at 500 cases | Size test; the page-weight budget is set from the first measurement. Not built yet: arrives with the ledger page |
+| The ledger page builds and stays light at 500 cases | `scripts/size-test.ts` builds 500 generated cases (`scripts/size-cases.ts`) and fails if `/ledger/index.html` passes 659,874 bytes, which is 1.5 times the 439,916 bytes first measured on 2026-10-19. The build takes about 3 s from a cold cache; the page measured 439,981 bytes (10 KB gzipped) after the last style change. Unit test: a killed run leaves no folder or process behind |
+| The ledger and the home preview have a designed state with no cases | `tests/unit/empty-ledger.test.ts` builds the site with an empty cases folder and reads both pages and the feed |
 | No promises left unawaited, scripts included | ESLint `no-floating-promises` |
 | Every metered call (Jev and Claude) reserves against one budget per run, settles at its real cost, and is never resent when it may have been charged | `desk/budget.ts`, used by `desk/jev.ts` and `desk/claude.ts`. Unit test: two spenders reaching for the last of the budget, exactly one gets it |
 | A desk run leaves no child process behind, even when killed | `desk/processes.ts`. Unit test kills a runner holding a real `sleep` child and waits for the child to end |

@@ -1,8 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
+import LedgerEmpty from '../components/LedgerEmpty.astro';
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
-import { exampleRows } from '../data/example-rows.ts';
 import Site from '../layouts/Site.astro';
+import { countLabel, ledgerRow, newestFirst } from '../lib/ledger.ts';
+
+const previewLength = 5;
+const cases = newestFirst(await getCollection('cases'));
+const previewRows = cases.slice(0, previewLength).map(ledgerRow);
 
 const remains = [
   { title: 'The task being automated', question: 'What can the system now handle?' },
@@ -88,11 +94,17 @@ const checks = [
         </div>
         <p><a href="/ledger">View all cases</a></p>
       </div>
-      <LedgerTable
-        rows={exampleRows}
-        caption="Example rows. The ledger opens with its first ten cases."
-        label="Ledger preview"
-      />
+      {
+        previewRows.length === 0 ? (
+          <LedgerEmpty heading="h3" />
+        ) : (
+          <LedgerTable
+            rows={previewRows}
+            caption={`${countLabel(cases.length)} in the ledger, newest first.`}
+            label="Ledger preview"
+          />
+        )
+      }
       <div class="grid columns columns--2">
         <div>
           <h3 class="t-title">Follow-up is part of each case.</h3>

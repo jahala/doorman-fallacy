@@ -90,6 +90,8 @@ export interface GroupRun {
   stop(signal: NodeJS.Signals): void;
   /** The child's exit code, resolved only once no process of the group is left. */
   readonly exited: Promise<number>;
+  /** What the child wrote to its output and error streams so far. Empty unless the run was told to capture. */
+  output(): string;
 }
 
 export interface GroupOptions {
@@ -97,6 +99,8 @@ export interface GroupOptions {
   readonly env: NodeJS.ProcessEnv;
   /** How long stragglers get to exit after the child has, before they are asked to stop, then killed. */
   readonly graceMs?: number;
+  /** Keep the child's output for `output()` instead of printing it. */
+  readonly capture?: boolean;
 }
 
 function groupAlive(pid: number): boolean {
@@ -120,7 +124,15 @@ function pause(ms: number): Promise<void> {
  * nothing can write into the run's temporary folder after the harness removes it.
  */
 export function startInOwnGroup(file: string, args: readonly string[], options: GroupOptions): GroupRun {
-  const child = spawn(file, args, { cwd: options.cwd, env: options.env, stdio: 'inherit', detached: true });
+  const child = spawn(file, args, {
+    cwd: options.cwd,
+    env: options.env,
+    stdio: options.capture === true ? ['ignore', 'pipe', 'pipe'] : 'inherit',
+    detached: true,
+  });
+  const captured: Buffer[] = [];
+  child.stdout?.on('data', (chunk: Buffer) => captured.push(chunk));
+  child.stderr?.on('data', (chunk: Buffer) => captured.push(chunk));
   const { pid } = child;
   const graceMs = options.graceMs ?? 2000;
 
@@ -159,5 +171,5 @@ export function startInOwnGroup(file: string, args: readonly string[], options: 
     return code;
   });
 
-  return { pid, stop, exited };
+  return { pid, stop, exited, output: () => Buffer.concat(captured).toString('utf8') };
 }

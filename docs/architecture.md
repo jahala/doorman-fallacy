@@ -13,22 +13,22 @@ Personal data (suggestions, subscriber addresses) lives only in D1. Leads, which
 ```
 src/
   content/cases/        Published cases, one Markdown file each
-  content.config.ts     Loads cases through the schema; the build fails on a case that breaks it
+  content.config.ts     Loads cases through the schema; the build fails on a case that breaks it. `DOORMAN_CASES_DIR` points it at another folder, for the size and empty-ledger tests; the site build never sets it
   data/                 Vocabularies and the case schema
   lib/                  Pure functions shared by the site, the Worker and the desk
   components/           Astro components
-  layouts/              Page shells: Site now; Case and Print arrive with their pages
+  layouts/              Page shells: Site now; Print arrives with its page
   pages/                Routes (below)
   styles/               tokens.css, base.css, print.css
   worker/               The Worker: form routes, D1 access, mail through cfmail
 src/assets/photos/      Photographs; fonts come from the @fontsource package
 migrations/             D1 schema steps, numbered, never edited once applied
 desk/                   The weekly run: sweep, triage, assess, draft, check, publish, review, report ([desk.md](desk.md))
-scripts/                Command-line tools: check-docs, check-copy, check-cases, release
+scripts/                Command-line tools: check-docs, check-copy, check-cases, size-test, release
 tests/
   unit/                 lib/, the scripts, the Worker's handlers
   e2e/                  Playwright against the built site
-  fixtures/             Cases that must fail, files that lint must flag, the size fixture
+  fixtures/             Cases that must fail, files that lint must flag
 wrangler.jsonc          Static assets plus the Worker script and its D1 binding
 ```
 
@@ -51,15 +51,15 @@ scripts → lib, data
 |---|---|---|
 | `/` | Home: hero, what else was the person doing, ledger preview, checklists, sign-up | all five |
 | `/idea` | The full explanation, with the hidden functions | 1, 2 |
-| `/ledger` | Every case, newest first | 3 |
-| `/ledger/<slug>` | One case: reported facts, the doorman reading, timeline, sources, changelog | none yet |
+| `/ledger` | Every case, newest announcement first; a designed empty state when there are none | 3 |
+| `/ledger/<slug>` | One case, slug = file name without `.md`: facts, reported body, the doorman reading, what they said, timeline, changelog, sources, report-an-error form | none yet |
 | `/checks/your-hidden-job` | Printable checklist for a person whose role is reviewed | 4 |
 | `/checks/before-you-cut` | Printable checklist for a manager automating a role | 4 |
 | `/suggest` | Suggest a case or report an error | none yet |
 | `/about` | The curator | none yet |
 | `/approach` | How the ledger is kept: the AI agents, the inclusion rule, the checks, corrections | none yet |
 | `/privacy` | What is collected, why, and when it is deleted | none yet |
-| `/rss.xml` | New cases and updates | |
+| `/rss.xml` | One item per case, dated at its latest update | |
 
 Form routes, answered by the Worker:
 

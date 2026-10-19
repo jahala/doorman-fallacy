@@ -1,0 +1,389 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ExternalLink from '../../components/ExternalLink.astro';
+import Reported from '../../components/Reported.astro';
+import ReportError from '../../components/ReportError.astro';
+import SourceLinks from '../../components/SourceLinks.astro';
+import Site from '../../layouts/Site.astro';
+import {
+  caseChangelog,
+  caseFacts,
+  caseKicker,
+  claimEntries,
+  doormanReading,
+  sourceEntries,
+  timelineEntries,
+} from '../../lib/ledger.ts';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('cases');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'cases'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const facts = caseFacts(data);
+const reading = doormanReading(data);
+const claims = claimEntries(data);
+const timeline = timelineEntries(data);
+const changelog = caseChangelog(data);
+const sources = sourceEntries(data);
+const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/content/cases/${entry.id}.md`;
+---
+
+<Site title={`${data.short}: ${data.change}`} description={`${data.company}: ${data.change}`} current="ledger">
+  <article class="page case">
+    <header class="case__head">
+      <p class="t-small ink-2">{caseKicker(data)}</p>
+      <h1 class="t-display">{data.short}</h1>
+      <p class="t-lead ink-2 case__lead">{data.change}</p>
+    </header>
+
+    <dl class="facts">
+      {
+        facts.map((fact) => (
+          <div class="facts__item">
+            <dt class="t-small ink-2">{fact.term}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <section class="case__section" aria-labelledby="reported">
+      <div class="case__label">
+        <h2 id="reported" class="t-title">Reported</h2>
+        <p class="t-small ink-3">What the sources say. Each statement ends with a note that carries its quote.</p>
+      </div>
+      <div class="case__body">
+        <Reported>
+          <Content />
+        </Reported>
+      </div>
+    </section>
+
+    <section class="case__section" aria-labelledby="reading">
+      <div class="case__label">
+        <h2 id="reading" class="t-title">The doorman reading</h2>
+        <p class="t-small ink-3">
+          Analysis. This is the site&rsquo;s reading of what the sources describe, not something they say.
+        </p>
+      </div>
+      <ul class="case__body reading">
+        {
+          reading.map((point) => (
+            <li class="reading__item">
+              <h3>{point.label}</h3>
+              <p class="t-small ink-2">{point.meaning}</p>
+              <p class="reading__evidence">
+                {point.evidence}
+                <SourceLinks sources={point.sources} />
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {
+      claims.length > 0 && (
+        <section class="case__section" aria-labelledby="said">
+          <div class="case__label">
+            <h2 id="said" class="t-title">What they said</h2>
+            <p class="t-small ink-3">What the organisation said the change would do, in its own words.</p>
+          </div>
+          <div class="case__body said">
+            {claims.map((claim) => (
+              <figure>
+                <blockquote class="t-lead">
+                  <p>&ldquo;{claim.quote}&rdquo;</p>
+                </blockquote>
+                <figcaption class="t-small ink-2">
+                  {claim.who}, {claim.date}
+                  <SourceLinks sources={[claim.source]} />
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="case__section" aria-labelledby="timeline">
+      <div class="case__label">
+        <h2 id="timeline" class="t-title">Timeline</h2>
+        <p class="t-small ink-3">Every update, oldest first.</p>
+      </div>
+      <ol class="case__body timeline">
+        {
+          timeline.map((update) => (
+            <li class="timeline__item">
+              <div class="timeline__when">
+                <p class="t-small ink-2">{update.date}</p>
+                <p class="timeline__status">{update.status}</p>
+              </div>
+              <div class="timeline__what">
+                <p>
+                  {update.summary}
+                  <SourceLinks sources={update.sources} />
+                </p>
+                <p class="t-small ink-2">&ldquo;{update.quote}&rdquo;</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="case__section" aria-labelledby="changelog">
+      <div class="case__label">
+        <h2 id="changelog" class="t-title">Changelog</h2>
+        <p class="t-small ink-3">Corrections, and when the case was last looked at.</p>
+      </div>
+      <div class="case__body changelog">
+        {
+          changelog.corrections.length === 0 ? (
+            <p class="ink-2">No corrections so far.</p>
+          ) : (
+            <ul class="changelog__list">
+              {changelog.corrections.map((correction) => (
+                <li class="changelog__item">
+                  <p class="t-small ink-2">{correction.date}</p>
+                  <p>{correction.what}</p>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        <p>
+          Last checked {changelog.lastChecked}.
+          {changelog.noNewReportsSince !== null && <> No new reports since {changelog.noNewReportsSince}.</>}
+        </p>
+      </div>
+    </section>
+
+    <section class="case__section" aria-labelledby="sources">
+      <div class="case__label">
+        <h2 id="sources" class="t-title">Sources</h2>
+        <p class="t-small ink-3">Each source has an archived copy, so a statement can be checked after a page changes.</p>
+      </div>
+      <ol class="case__body sources">
+        {
+          sources.map((source) => (
+            <li id={`source-${source.id}`} class="sources__item">
+              <span class="sources__number t-small ink-2" aria-hidden="true">S{source.number}</span>
+              <div>
+                <p>
+                  <span class="sources__publisher">{source.publisher}</span>
+                </p>
+                <p>
+                  <ExternalLink href={source.url}>{source.title}</ExternalLink>
+                </p>
+                <p class="t-small ink-2">
+                  {source.published} · {source.kind} · <ExternalLink href={source.archive}>Archived copy</ExternalLink>
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="case__section no-print" aria-labelledby="report">
+      <div class="case__label">
+        <h2 id="report" class="t-title">Report an error</h2>
+      </div>
+      <div class="case__body">
+        <ReportError slug={entry.id} />
+        <p class="case__history t-small">
+          <ExternalLink href={history}>History of this case</ExternalLink>
+        </p>
+      </div>
+    </section>
+  </article>
+</Site>
+
+<style>
+  /* Head: kicker, name, the change */
+  .case__head {
+    padding-block: var(--space-16) var(--space-12);
+  }
+
+  .case__head > h1 {
+    margin-block-start: var(--space-4);
+  }
+
+  .case__lead {
+    max-inline-size: 24em;
+    margin-block-start: var(--space-8);
+  }
+
+  /* Facts row */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--grid-gap);
+    padding-block: var(--space-6);
+    border-block: var(--hairline) solid var(--rule);
+  }
+
+  .facts__item:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+  .facts dd {
+    margin-block-start: var(--space-1);
+    font-weight: 500;
+  }
+
+  @media (width >= 64rem) {
+    .facts {
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    }
+
+    .facts__item {
+      grid-column: span 2;
+    }
+
+    .facts__item:nth-child(3) {
+      grid-column: span 4;
+    }
+  }
+
+  /* Sections: a label on the left, the reading column on the right */
+  .case__section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8) var(--grid-gap);
+    padding-block: var(--space-16);
+    border-block-end: var(--hairline) solid var(--rule);
+  }
+
+  .case__label > .t-small {
+    max-inline-size: 28ch;
+    margin-block-start: var(--space-3);
+  }
+
+  @media (width >= 64rem) {
+    .case__section {
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    }
+
+    .case__label {
+      grid-column: 1 / span 4;
+    }
+
+    .case__body {
+      grid-column: 5 / span 7;
+    }
+  }
+
+  /* Headings inside the sections: Prata at the lead size */
+  .case__body h3 {
+    font-family: var(--font-heading);
+    font-size: var(--lead-size);
+    font-weight: var(--lead-weight);
+    line-height: var(--lead-leading);
+    letter-spacing: var(--lead-tracking);
+  }
+
+  /* The doorman reading */
+  .reading__item {
+    padding-block: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .reading__item:first-child {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .reading__evidence {
+    max-inline-size: var(--measure);
+    margin-block-start: var(--space-3);
+  }
+
+  /* What they said: pull quotes */
+  .said {
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  .said blockquote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--title-size);
+    line-height: var(--title-leading);
+    letter-spacing: var(--title-tracking);
+    text-wrap: balance;
+  }
+
+  .said figcaption {
+    margin-block-start: var(--space-4);
+  }
+
+  /* Timeline, changelog and sources share one ruled-row pattern */
+  .timeline__item,
+  .changelog__item,
+  .sources__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2) var(--grid-gap);
+    padding-block: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .timeline__item:first-child,
+  .changelog__item:first-child,
+  .sources__item:first-child {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .timeline__status {
+    font-weight: 500;
+  }
+
+  .timeline__what > p {
+    max-inline-size: var(--measure);
+  }
+
+  .timeline__what > p + p {
+    margin-block-start: var(--space-3);
+  }
+
+  .changelog__list {
+    margin-block-end: var(--space-6);
+    border-block-end: var(--hairline) solid var(--rule);
+  }
+
+  .sources__publisher {
+    font-weight: 500;
+  }
+
+  .sources__item > div > p + p {
+    margin-block-start: var(--space-1);
+  }
+
+  @media (width >= 40rem) {
+    .timeline__item,
+    .changelog__item {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+
+    .sources__item {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+  }
+
+  /* Report an error */
+  .case__history {
+    margin-block-start: var(--space-12);
+  }
+</style>
