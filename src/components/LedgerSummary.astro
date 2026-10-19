@@ -1,0 +1,51 @@
+---
+import type { CaseEntry } from '../lib/ledger.ts';
+import { ledgerSummary } from '../lib/summary.ts';
+
+/** The ledger at a glance: how many cases and in what state, then the hidden work they record as missing. */
+interface Props {
+  cases: readonly CaseEntry[];
+}
+
+const { cases } = Astro.props;
+const { sentence, missing } = ledgerSummary(cases);
+---
+
+<div class="ledger-summary">
+  <p class="ledger-summary__sentence t-lead">{sentence}</p>
+  {
+    missing.length > 0 && (
+      <div class="ledger-summary__missing t-small">
+        <p class="ink-2">Hidden work recorded as missing:</p>
+        <ul>
+          {missing.map(({ href, label, count }) => (
+            <li>
+              <a href={href}>{label}</a> <span class="ink-2">{count}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .ledger-summary {
+    display: grid;
+    gap: var(--space-3);
+    margin-block-end: var(--space-8);
+  }
+
+  .ledger-summary__missing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .ledger-summary__missing ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-6);
+  }
+</style>

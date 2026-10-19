@@ -1,9 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import LedgerEmpty from '../components/LedgerEmpty.astro';
+import LedgerSummary from '../components/LedgerSummary.astro';
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
+import { definition } from '../data/definition.ts';
 import Site from '../layouts/Site.astro';
 import { countLabel, ledgerRow, newestFirst } from '../lib/ledger.ts';
 
@@ -15,6 +17,27 @@ const remains = [
   { title: 'The task being automated', question: 'What can the system now handle?' },
   { title: 'The work that remains', question: 'What did the person notice, remember or resolve?' },
   { title: 'Who takes it on', question: 'Another team, the customer, or nobody?' },
+];
+
+const starts = [
+  {
+    who: 'If you manage a team',
+    text: 'Before automating a role, answer seven questions with the people who do it.',
+    href: '/checks/before-you-cut',
+    link: 'Before you cut',
+  },
+  {
+    who: 'If your role is changing',
+    text: 'Write down the work your job description leaves out, before the conversation.',
+    href: '/checks/your-hidden-job',
+    link: 'Your hidden job',
+  },
+  {
+    who: 'If you report or research',
+    text: 'Every case is sourced, archived and free to reuse, with the data to download.',
+    href: '/ledger',
+    link: 'The ledger and its data',
+  },
 ];
 
 const checks = [
@@ -65,6 +88,27 @@ const checks = [
       </div>
     </section>
 
+    <section class="band grid" aria-labelledby="definition-label">
+      <h2 id="definition-label" class="band__label t-caption ink-2">The doorman fallacy</h2>
+      <p class="band__statement t-title">{definition}</p>
+      <p class="band__cite t-small"><a href="/idea#cite">How to cite</a></p>
+    </section>
+
+    <section class="section" aria-labelledby="start-title">
+      <h2 id="start-title" class="t-title">Start here</h2>
+      <ul class="grid columns columns--3">
+        {
+          starts.map((start) => (
+            <li class="ruled">
+              <h3 class="start__who t-lead">{start.who}</h3>
+              <p class="ink-2">{start.text}</p>
+              <p class="start__link"><a href={start.href}>{start.link}</a></p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
     <section class="section" aria-labelledby="remains-title">
       <div class="grid split">
         <h2 id="remains-title" class="t-display split__head">What else was the person doing?</h2>
@@ -84,7 +128,10 @@ const checks = [
           ))
         }
       </ul>
-      <p class="section__link"><a href="/ledger">See what happened in practice</a></p>
+      <ul class="section__link section__links">
+        <li><a href="/ledger">See what happened in practice</a></li>
+        <li><a href="/idea#signs">Six signs of the mistake</a></li>
+      </ul>
     </section>
 
     <section class="section" aria-labelledby="ledger-title">
@@ -99,11 +146,14 @@ const checks = [
         previewRows.length === 0 ? (
           <LedgerEmpty heading="h3" />
         ) : (
-          <LedgerTable
-            rows={previewRows}
-            caption={`${countLabel(cases.length)} in the ledger, newest first.`}
-            label="Ledger preview"
-          />
+          <>
+            <LedgerSummary cases={cases} />
+            <LedgerTable
+              rows={previewRows}
+              caption={`${countLabel(cases.length)} in the ledger, newest first.`}
+              label="Ledger preview"
+            />
+          </>
         )
       }
       <div class="grid columns columns--2">
@@ -150,3 +200,48 @@ const checks = [
     </section>
   </div>
 </Site>
+
+<style>
+  .band {
+    row-gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-block-end: var(--hairline) solid var(--rule);
+  }
+
+  .band > * {
+    grid-column: 1 / -1;
+  }
+
+  .band__statement {
+    max-inline-size: 32em;
+  }
+
+  .band__cite {
+    margin-block-start: var(--space-2);
+  }
+
+  .start__who {
+    font-weight: 500;
+  }
+
+  .start__who + p {
+    margin-block-start: var(--space-3);
+  }
+
+  .start__link {
+    margin-block-start: var(--space-6);
+  }
+
+  @media (width >= 56rem) {
+    .band > .band__label {
+      grid-column: 1 / span 4;
+      grid-row: 1;
+      padding-block-start: var(--space-2);
+    }
+
+    .band > .band__statement,
+    .band > .band__cite {
+      grid-column: 5 / span 8;
+    }
+  }
+</style>

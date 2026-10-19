@@ -2,10 +2,37 @@
 import ExternalLink from '../components/ExternalLink.astro';
 import PageHead from '../components/PageHead.astro';
 import TextSection from '../components/TextSection.astro';
+import { citation } from '../data/definition.ts';
 import { statuses } from '../data/statuses.ts';
 import Site from '../layouts/Site.astro';
 
 const statusRows = Object.values(statuses);
+
+const questions = [
+  {
+    ask: 'Is this site against AI?',
+    answer:
+      'Its view is that AI should do the work it does well, and that the people deciding should count everything a role did before replacing it. Cuts that held up are recorded alongside those that were reversed.',
+  },
+  {
+    ask: 'Is a case a judgement of the organisation?',
+    answer:
+      'A case records what sources reported, with quotes. The doorman reading is marked as the site\u2019s own analysis and names the evidence it rests on. Motives are never guessed.',
+  },
+  {
+    ask: 'Why are there so few cases?',
+    answer: 'The ledger is new. The desk adds cases every week, and only those that pass every check.',
+  },
+  {
+    ask: 'Can I use the cases?',
+    answer:
+      'Yes. They are published under CC BY 4.0: reuse them with credit to The Doorman Fallacy. The whole ledger can be downloaded from the ledger page.',
+  },
+  {
+    ask: 'Who pays for this?',
+    answer: 'Nobody. The site has no advertising and no sponsors. It is run by Jan Hallvard Larsen, and its code is open.',
+  },
+];
 ---
 
 <Site
@@ -121,10 +148,57 @@ const statusRows = Object.values(statuses);
         reuse them with credit.
       </p>
     </TextSection>
+
+    <TextSection id="reuse-title" anchor="reuse" title="Reuse and citation">
+      <p>
+        The cases and the text of this site are published under{' '}
+        <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>. Reuse them
+        with credit to The Doorman Fallacy.
+      </p>
+      <p>Cite the idea as:</p>
+      <p class="reuse__citation">{citation}</p>
+      <p>Download the ledger as <a href="/ledger.csv">CSV</a> or <a href="/ledger.json">JSON</a>.</p>
+      <p>
+        For press and research questions, write to{' '}
+        <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.
+      </p>
+    </TextSection>
+
+    <TextSection id="questions-title" title="Common questions">
+      <dl class="questions">
+        {
+          questions.map(({ ask, answer }) => (
+            <div>
+              <dt>{ask}</dt>
+              <dd>{answer}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </TextSection>
   </div>
 </Site>
 
 <style>
+  .reuse__citation {
+    padding-inline-start: var(--space-6);
+    border-inline-start: var(--hairline) solid var(--rule);
+  }
+
+  .questions {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .questions dt {
+    font-weight: 500;
+  }
+
+  .questions dd {
+    margin-block-start: var(--space-2);
+    color: var(--ink-2);
+  }
+
   .statuses {
     inline-size: 100%;
     border-collapse: collapse;

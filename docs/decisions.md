@@ -121,3 +121,11 @@ Context: the suggest and subscribe forms each allow 5 attempts per visitor per h
 Chosen: a D1 table, `rate_hits`. One SQL statement counts the visitor's attempts in the last hour and inserts a new row only if there are fewer than 5, so two requests arriving together cannot both take the last place. The key is the SHA-256 of the form kind and the visitor's address. The daily job deletes rows older than an hour.
 
 Why: a limit per hour cannot be written with the binding. A D1 count is exact across every location, and the load is a few writes a day. The cost is that visitors behind one shared address, such as an office or a mobile network, share five places an hour, which is more than a reader needs. A hash of an IPv4 address can be guessed back, so the table is treated as personal data and kept for under a day ([data-model.md](data-model.md#d1)). If real abuse arrives, Turnstile or a Cloudflare WAF rule goes in front of these routes; the D1 limit then stays as the second line.
+
+## D-017 · 2026-10-19 · Share cards and the dataset are built with the site
+
+Context: the site-content research ([2026-10-19-jev-site-content.md](research/2026-10-19-jev-site-content.md)) found that readers want a quotable definition, a page per kind of hidden work, a summary of the cases, and the data. Links shared to the site also showed no image.
+
+Chosen: the share cards are drawn at build time with satori (layout to SVG) and @resvg/resvg-js (SVG to PNG), and the dataset is written by two build-time endpoints, `/ledger.csv` and `/ledger.json`. satori reads WOFF, TTF and OTF but not WOFF2, so the cards use the `.woff` files of `@fontsource/prata` and of the static `@fontsource/inter`; the pages keep using the WOFF2 files of the variable Inter. Both libraries and the extra font package are pinned to exact versions.
+
+Why: no browser, no server and no second build step, and the cards and the data come from the same case files as the pages, so they cannot disagree with them. The cost is two dependencies, one of them native, and a build that grows with the cases: 500 cases build in about 8 s instead of 3 s, because each case gets a card. The cards carry no photograph, to keep that cost low.

@@ -8,6 +8,7 @@
 - Content collections with a schema for the ledger.
 - Cloudflare Workers with static assets, deployed with Wrangler.
 - Vitest for `lib/` and the scripts, and, through `@cloudflare/vitest-plugin`, for the Worker inside workerd with a real local D1. Playwright for checks against the built site.
+- satori and @resvg/resvg-js draw the share cards at build time ([D-017](decisions.md)).
 - ESLint and Stylelint. Type checks cover `scripts/` and the config files too.
 
 Versions are pinned in `package.json` and `.nvmrc` at scaffold time.
@@ -18,7 +19,7 @@ Versions are pinned in `package.json` and `.nvmrc` at scaffold time.
 - Pages and components arrange data. They do not decide anything a test would need to check.
 - Text the reader sees lives in the page or the case file. Vocabularies live in `src/data/`.
 - No client-side JavaScript. Forms are plain HTML forms. If an interaction ever needs script, that is a new decision in [decisions.md](decisions.md).
-- Images go through Astro's image pipeline, so every image ships in modern formats with its width and height set.
+- Images go through Astro's image pipeline, so every image ships in modern formats with its width and height set. The share cards are the exception: they are drawn at build time with satori and resvg, with no browser ([D-017](decisions.md)).
 
 ## Tests
 
@@ -28,7 +29,7 @@ Versions are pinned in `package.json` and `.nvmrc` at scaffold time.
 | Worker | The routes, the rate limit, the token flows and the daily job, inside workerd with a real local D1 and the real migrations. The mail service is a function the test passes in, and the assets are a few real pages in `tests/fixtures/assets/` | Every change |
 | Build | Schema validation of every case; type checks | Every change |
 | Lint | ESLint, Stylelint, the copy and docs checks | Every change |
-| Site | Playwright against `dist/`: accessibility, print, links, no JavaScript | Every change; the site is small |
+| Site | Playwright against `dist/`: accessibility, print, links, no JavaScript, share tags and cards, the dataset | Every change; the site is small |
 | Size | `npm run test:size`: a build with 500 generated cases, about 4 s | When the ledger page, the schema or `lib/` changes. Not part of `npm run check` |
 
 Commands and measured times are in the brief.
@@ -78,9 +79,14 @@ Every rule this project states is listed here once, with what fails when it brea
 | Pages pass an accessibility scan | Site test runs axe on every route |
 | Each checklist prints on one page, A4 and US Letter, with no text under 10pt and at least two ruled writing lines per question | `tests/e2e/print.spec.ts` prints each guide to PDF in both sizes and counts the PDF's page objects (`tests/e2e/pdf.ts`), after first checking the counter on a page that prints on several. It also reads every printed font size and each question's writing lines. A guide with three questions added fails it |
 | Internal links resolve | Site test crawls `dist/` |
+| Every page names a share card and the favicon, and every card exists at 1200 by 630 | `tests/e2e/share.spec.ts` reads each built page's Open Graph and Twitter tags, finds the named image in `dist/` and reads its size from the PNG header (`tests/e2e/png.ts`, checked on the 180 by 180 touch icon). It also holds that each hidden function and case page names its own card and that no card is left without a page |
+| A share card uses only token colours and the two typefaces, and fits its box | Unit test of `cardElement` in `tests/unit/share.test.ts`: every colour is in the light palette read from `tokens.css`, none is the accent, every box with several children is a flex box, and the padding is inside the 1200 by 630 |
+| The dataset has the fixed columns, RFC 4180 quoting and the same cases as the pages | Unit tests of `lib/dataset.ts`, including a value with a comma, a quote and a line break; `tests/e2e/dataset.spec.ts` reads `/ledger.csv` and `/ledger.json` as served and compares them with the case pages |
+| The ledger summary and each hidden function's count and case list come from one rule | `casesMissing` in `lib/hidden-work.ts` serves both, and a unit test holds that every count equals the list's length. Site tests compare the pages with the published dataset |
+| Links sit apart from the word before them, and external links, and only those, carry the arrow | Site tests on every page, new ones included |
 | No em dashes in site copy | `scripts/check-copy` scans `src/content/`, `src/pages/`, `src/layouts/`, `src/components/` and `src/data/`. A fixture must be flagged |
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
-| The ledger page builds and stays light at 500 cases | `scripts/size-test.ts` builds 500 generated cases (`scripts/size-cases.ts`) and fails if `/ledger/index.html` passes 659,874 bytes, which is 1.5 times the 439,916 bytes first measured on 2026-10-19. The build takes about 3 s from a cold cache; the page measured 439,981 bytes (10 KB gzipped) after the last style change. Unit test: a killed run leaves no folder or process behind |
+| The ledger page builds and stays light at 500 cases | `scripts/size-test.ts` builds 500 generated cases (`scripts/size-cases.ts`) and fails if `/ledger/index.html` passes 659,874 bytes, which is 1.5 times the 439,916 bytes first measured on 2026-10-19. The build takes about 8 s from a cold cache, 500 share cards included; the page measured 450,057 bytes (11 KB gzipped) after the summary and the larger company names were added. Unit test: a killed run leaves no folder or process behind |
 | The ledger and the home preview have a designed state with no cases | `tests/unit/empty-ledger.test.ts` builds the site with an empty cases folder and reads both pages and the feed |
 | No promises left unawaited, scripts included | ESLint `no-floating-promises` |
 | Every metered call (Jev and Claude) reserves against one budget per run, settles at its real cost, and is never resent when it may have been charged | `desk/budget.ts`, used by `desk/jev.ts` and `desk/claude.ts`. Unit test: two spenders reaching for the last of the budget, exactly one gets it |

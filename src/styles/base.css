@@ -393,6 +393,12 @@ a {
   margin-block-start: var(--space-12);
 }
 
+.section__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+}
+
 .section__note {
   margin-block-start: var(--space-8);
 }

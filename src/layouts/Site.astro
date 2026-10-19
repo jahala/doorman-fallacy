@@ -6,6 +6,9 @@ import headingLatin from '@fontsource/prata/files/prata-latin-400-normal.woff2?u
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/print.css';
+import tokensCss from '../styles/tokens.css?raw';
+import { ogPath, shareImage, siteCard, type ShareImage } from '../lib/share.ts';
+import { schemePalette } from '../lib/tokens.ts';
 
 const siteName = 'The Doorman Fallacy';
 const nav = [
@@ -20,6 +23,10 @@ interface Props {
   description?: string;
   current?: (typeof nav)[number]['key'];
   noindex?: boolean;
+  /** The share card for this page. Pages that have none show the site's. */
+  image?: ShareImage;
+  /** Open Graph type: articles are the case pages and the pages for one kind of hidden work. */
+  type?: 'website' | 'article';
 }
 
 const {
@@ -27,10 +34,16 @@ const {
   description = 'The idea behind the doorman fallacy, and a sourced ledger of what happened after companies cut roles for AI.',
   current,
   noindex = false,
+  image = shareImage(siteCard(), ogPath.site),
+  type = 'website',
 } = Astro.props;
 
 const pageTitle = title === siteName ? title : `${title} | ${siteName}`;
 const address = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image.path, Astro.site).href;
+const light = schemePalette(tokensCss, 'light');
+const dark = schemePalette(tokensCss, 'dark');
+if (light === undefined || dark === undefined) throw new Error('src/styles/tokens.css is missing a colour token');
 ---
 
 <!doctype html>
@@ -42,6 +55,24 @@ const address = new URL(Astro.url.pathname, Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={address.href} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content={light.paper} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={dark.paper} media="(prefers-color-scheme: dark)" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={address.href} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content={String(image.width)} />
+    <meta property="og:image:height" content={String(image.height)} />
+    <meta property="og:image:alt" content={image.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={image.alt} />
     <link rel="alternate" type="application/rss+xml" title={`${siteName}: new cases and updates`} href="/rss.xml" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={headingLatin} as="font" type="font/woff2" crossorigin />

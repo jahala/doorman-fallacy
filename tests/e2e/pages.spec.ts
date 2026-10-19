@@ -1,15 +1,22 @@
-import { hiddenFunctions } from '../../src/data/hidden-functions.ts';
+import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
 import { statuses } from '../../src/data/statuses.ts';
 import { builtRoutes, expect, test } from './site.ts';
 
+const hiddenWorkPages = hiddenFunctionIds.map((id) => ({
+  route: `/idea/${id}/`,
+  h1: hiddenFunctions[id].label,
+  current: 'The idea',
+}));
+
 const contentPages = [
   { route: '/idea/', h1: 'The doorman fallacy', current: 'The idea' },
+  ...hiddenWorkPages,
   { route: '/approach/', h1: 'How the ledger is kept', current: undefined },
   { route: '/privacy/', h1: 'Privacy', current: undefined },
   { route: '/about/', h1: 'About', current: 'About' },
   { route: '/checks/your-hidden-job/', h1: 'Your hidden job', current: undefined },
   { route: '/checks/before-you-cut/', h1: 'Before you cut', current: undefined },
-] as const;
+] satisfies readonly { route: string; h1: string; current: string | undefined }[];
 
 test('every content page is built', () => {
   const built = builtRoutes();

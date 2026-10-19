@@ -6,6 +6,7 @@ import {
   colourTokens,
   contrastFailures,
   contrastMinimum,
+  schemePalette,
   spaceTokens,
   typeTokenNames,
   typeTokens,
@@ -74,5 +75,20 @@ describe('type and space tokens', () => {
 
   it('steps space by the 4px base: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128', () => {
     expect(spaceTokens(tokensCss).map((token) => token.px)).toEqual([4, 8, 12, 16, 24, 32, 48, 64, 96, 128]);
+  });
+});
+
+describe('schemePalette', () => {
+  it('reads the colours of one scheme as plain hex values', () => {
+    expect(schemePalette(tokensCss, 'light')).toMatchObject({ paper: '#faf9f7', ink: '#0b0b0a' });
+    expect(schemePalette(tokensCss, 'dark')).toMatchObject({ paper: '#121211', ink: '#f3f2ee' });
+  });
+
+  it('holds every colour token, so a card or a meta tag never reads a name that is not there', () => {
+    expect(Object.keys(schemePalette(tokensCss, 'light') ?? {}).sort()).toEqual(Object.keys(contrastMinimum).sort());
+  });
+
+  it('is undefined when a colour token is missing', () => {
+    expect(schemePalette(tokensCss.replace('--rule:', '--line:'), 'light')).toBeUndefined();
   });
 });

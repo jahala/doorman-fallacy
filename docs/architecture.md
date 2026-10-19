@@ -15,7 +15,8 @@ src/
   content/cases/        Published cases, one Markdown file each
   content.config.ts     Loads cases through the schema; the build fails on a case that breaks it. `DOORMAN_CASES_DIR` points it at another folder, for the size and empty-ledger tests; the site build never sets it
   data/                 Vocabularies and the case schema
-  lib/                  Pure functions shared by the site, the Worker and the desk
+  lib/                  Pure functions shared by the site, the Worker and the desk, including the dataset rows and the share card layout
+  og/                   The edge for share cards: reads the font files, runs satori and resvg
   components/           Astro components
   layouts/              Page shells: Site; Notice for the pages that answer a form. Case pages and the printable guides are Site pages built from components (Reported, ChecklistPage)
   pages/                Routes (below)
@@ -38,6 +39,7 @@ wrangler.jsonc          The Worker script, the built site as static assets, the 
 
 ```
 pages → layouts → components → lib → data
+pages → og → lib
 worker → lib → data
 desk → lib → data
 scripts → lib, data
@@ -52,9 +54,12 @@ scripts → lib, data
 
 | Path | Page | Mockup |
 |---|---|---|
-| `/` | Home: hero, what else was the person doing, ledger preview, checklists, sign-up | all five |
-| `/idea` | The full explanation, with the hidden functions | 1, 2 |
-| `/ledger` | Every case, newest announcement first; a designed empty state when there are none | 3 |
+| `/` | Home: hero, definition band, start here, what else was the person doing, ledger preview with its summary, checklists, sign-up | all five |
+| `/idea` | The full explanation: definition and how to cite it, the story, the six signs, the hidden functions, what is known so far, when automation is right, further reading | 1, 2 |
+| `/idea/<id>` | One page per hidden function, ids from `hiddenFunctionIds`: at the hotel, today, when it goes missing, the question to ask, the cases in the ledger | none yet |
+| `/ledger` | Every case, newest announcement first, with a summary above and the download links below; a designed empty state when there are none | 3 |
+| `/ledger.csv`, `/ledger.json` | The whole ledger as data, built from the cases ([data-model.md](data-model.md#the-dataset)) | |
+| `/og/default.png`, `/og/idea/<id>.png`, `/og/ledger/<slug>.png` | Share cards, 1200 by 630, drawn at build time. Every page names one in its head: its own where it has one, the site's otherwise | |
 | `/ledger/<slug>` | One case, slug = file name without `.md`: facts, reported body, the doorman reading, what they said, timeline, changelog, sources, report-an-error form | none yet |
 | `/checks/your-hidden-job` | Printable checklist for a person whose role is reviewed | 4 |
 | `/checks/before-you-cut` | Printable checklist for a manager automating a role | 4 |
@@ -63,7 +68,7 @@ scripts → lib, data
 | `/subscribe/check-email`, `/subscribe/confirmed`, `/subscribe/problem`, `/subscribe/failed`, `/subscribe/unsubscribed` | What the sign-up, confirm and unsubscribe routes answer | none yet |
 | `/subscribe/unsubscribe` | The one-button page. The Worker serves it at `/unsubscribe`; it has no address of its own | none yet |
 | `/about` | The curator | none yet |
-| `/approach` | How the ledger is kept: the AI agents, the inclusion rule, the checks, corrections | none yet |
+| `/approach` | How the ledger is kept: the AI agents, the inclusion rule, the checks, corrections, reuse and citation, common questions | none yet |
 | `/privacy` | What is collected, why, and when it is deleted | none yet |
 | `/rss.xml` | One item per case, dated at its latest update | |
 
@@ -80,6 +85,8 @@ Form routes, answered by the Worker. A route that takes a form answers with a 30
 A form with the hidden field `website` filled in is a bot: it gets the normal thank-you page, and nothing is stored or counted. The suggest and subscribe routes each allow 5 attempts per visitor per hour ([D-016](decisions.md)).
 
 The unsubscribe step needs no script. Static pages cannot read their own query string without JavaScript, so the Worker serves the built page `/subscribe/unsubscribe/` at `/unsubscribe?token=...`. The page's form has no `action`, so the browser posts it back to the address it came from, token included.
+
+The share cards have no browser behind them. `src/og/render.ts` reads the `.woff` files of Prata and Inter (satori reads WOFF, TTF and OTF, not WOFF2), hands the layout from `lib/share.ts` to satori, which draws it as SVG, and resvg turns that into a PNG ([D-017](decisions.md)).
 
 ## Outside the site
 

@@ -113,3 +113,19 @@ export function contrastFailures(css: string): ContrastFailure[] {
   }
   return failures;
 }
+
+export type Palette = Readonly<Record<'paper' | 'ink' | 'ink-2' | 'ink-3' | 'rule' | 'field' | 'accent', string>>;
+
+const paletteNames = ['paper', 'ink', 'ink-2', 'ink-3', 'rule', 'field', 'accent'] as const;
+
+/**
+ * The colours of one scheme as plain hex values, for places that cannot use CSS variables: the
+ * theme-color tags and the share cards. Undefined when a colour token is missing, so a rename
+ * cannot pass quietly.
+ */
+export function schemePalette(css: string, mode: 'light' | 'dark'): Palette | undefined {
+  const tokens = colourTokens(css);
+  const entries = paletteNames.map((name) => [name, tokens.find((token) => token.name === name)?.[mode]] as const);
+  if (entries.some(([, value]) => value === undefined)) return undefined;
+  return Object.fromEntries(entries) as Palette;
+}

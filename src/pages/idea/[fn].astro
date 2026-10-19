@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import TextSection from '../../components/TextSection.astro';
+import { hiddenFunctionIds, hiddenFunctions, type HiddenFunctionId } from '../../data/hidden-functions.ts';
+import Site from '../../layouts/Site.astro';
+import { casesMissing, neighbours } from '../../lib/hidden-work.ts';
+import { ideaCard, ogPath, shareImage } from '../../lib/share.ts';
+
+export function getStaticPaths() {
+  return hiddenFunctionIds.map((fn) => ({ params: { fn } }));
+}
+
+const id = Astro.params.fn as HiddenFunctionId;
+const { label, meaning, atTheHotel, today, whenMissing, ask } = hiddenFunctions[id];
+const found = casesMissing(await getCollection('cases'), id);
+const { previous, next } = neighbours(id);
+---
+
+<Site
+  title={`${label}: the hidden work`}
+  current="idea"
+  type="article"
+  description={`${meaning}. An example from the hotel door, one from today, and the cases in the ledger.`}
+  image={shareImage(ideaCard(id), ogPath.idea(id))}
+>
+  <div class="page">
+    <header class="fn-head section">
+      <p class="t-small ink-2"><a href="/idea">The hidden work</a></p>
+      <h1 class="t-display">{label}</h1>
+      <p class="t-lead ink-2">{meaning}</p>
+    </header>
+
+    <TextSection id="hotel-title" title="At the hotel">
+      <p>{atTheHotel}</p>
+    </TextSection>
+
+    <TextSection id="today-title" title="Today">
+      <p>{today}</p>
+      <p class="t-caption ink-3">An illustration, not a reported case.</p>
+    </TextSection>
+
+    <TextSection id="missing-title" title="When it goes missing">
+      <p>{whenMissing}</p>
+    </TextSection>
+
+    <TextSection id="ask-title" title="The question to ask">
+      <p class="fn-ask t-title">{ask}</p>
+      <p><a href="/checks/before-you-cut">Before you cut, the full set of questions</a></p>
+    </TextSection>
+
+    <TextSection id="ledger-title" title="In the ledger">
+      {
+        found.length === 0 ? (
+          <p class="ink-2">No case in the ledger records this kind of work going missing yet.</p>
+        ) : (
+          <>
+            <ul class="fn-cases">
+              {found.map((item) => (
+                <li>
+                  <p class="fn-cases__name t-lead">
+                    <a href={item.href}>{item.short}</a>
+                  </p>
+                  <p class="ink-2">{item.change}</p>
+                  {item.evidence.map((sentence) => <p>{sentence}</p>)}
+                </li>
+              ))}
+            </ul>
+            <p class="t-small ink-3">
+              Each is from the case&rsquo;s doorman reading, which is the site&rsquo;s own analysis and names the evidence it rests on.
+            </p>
+          </>
+        )
+      }
+    </TextSection>
+
+    <nav class="fn-pager grid" aria-label="The six kinds of hidden work">
+      {
+        previous !== null && (
+          <p class="fn-pager__previous">
+            <span class="t-caption ink-2">Previous</span>{' '}
+            <a class="t-title" href={`/idea/${previous}`}>{hiddenFunctions[previous].label}</a>
+          </p>
+        )
+      }
+      {
+        next !== null && (
+          <p class="fn-pager__next">
+            <span class="t-caption ink-2">Next</span>{' '}
+            <a class="t-title" href={`/idea/${next}`}>{hiddenFunctions[next].label}</a>
+          </p>
+        )
+      }
+    </nav>
+  </div>
+</Site>
+
+<style>
+  .fn-pager {
+    row-gap: var(--space-8);
+    padding-block: var(--space-12) var(--space-24);
+  }
+
+  .fn-pager p {
+    display: grid;
+    gap: var(--space-1);
+    grid-column: 1 / -1;
+    justify-items: start;
+  }
+
+  .fn-head {
+    display: grid;
+    row-gap: var(--space-8);
+  }
+
+  .fn-head > p:first-child {
+    margin-block-end: calc(var(--space-4) * -1);
+  }
+
+  .fn-head > .t-lead {
+    max-inline-size: 28em;
+  }
+
+  .fn-ask {
+    max-inline-size: 20em;
+  }
+
+  .fn-cases {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .fn-cases li > * + * {
+    margin-block-start: var(--space-2);
+  }
+
+  @media (width >= 56rem) {
+    .fn-pager .fn-pager__previous {
+      grid-column: 1 / span 6;
+    }
+
+    .fn-pager .fn-pager__next {
+      grid-column: 7 / span 6;
+      justify-items: end;
+    }
+  }
+</style>

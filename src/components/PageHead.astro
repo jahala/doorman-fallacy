@@ -1,5 +1,8 @@
 ---
-/** The top of a text page: the title, then one grey line that says what the page is for. */
+/**
+ * The top of a text page: the title, then one grey line that says what the page is for. A kicker
+ * slot sits above the title and a default slot below the line, for a block that belongs to the head.
+ */
 interface Props {
   title: string;
   lead: string;
@@ -9,8 +12,10 @@ const { title, lead } = Astro.props;
 ---
 
 <header class="page-head section">
+  {Astro.slots.has('kicker') && <p class="page-head__kicker t-small ink-2"><slot name="kicker" /></p>}
   <h1 class="t-display">{title}</h1>
   <p class="t-lead ink-2">{lead}</p>
+  {Astro.slots.has('default') && <slot />}
 </header>
 
 <style>
@@ -19,7 +24,12 @@ const { title, lead } = Astro.props;
     row-gap: var(--space-8);
   }
 
-  .page-head p {
+  .page-head > p {
     max-inline-size: 28em;
+  }
+
+  .page-head > .page-head__kicker {
+    max-inline-size: none;
+    margin-block-end: calc(var(--space-4) * -1);
   }
 </style>
