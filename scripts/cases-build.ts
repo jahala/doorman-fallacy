@@ -1,3 +1,4 @@
+import { mkdir, mkdtemp } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { startInOwnGroup, type GroupRun } from './site-harness.ts';
@@ -26,3 +27,17 @@ export function startCasesBuild(build: CasesBuild): GroupRun {
     capture: true,
   });
 }
+
+/**
+ * A fresh folder for one cases build, inside the project's .test-builds/ (ignored by git).
+ * Astro keeps a build's intermediate files in .astro/.prerender of the working directory whenever
+ * outDir lies outside it, and deletes that folder when done, so two builds writing to the OS temp
+ * folder delete each other's files. Inside the project, each build's intermediate files sit in its
+ * own outDir and still find the project's packages. The caller removes the folder when done.
+ */
+export async function makeBuildFolder(root: string, prefix: string): Promise<string> {
+  const parent = path.join(root, '.test-builds');
+  await mkdir(parent, { recursive: true });
+  return mkdtemp(path.join(parent, `${prefix}-`));
+}
+

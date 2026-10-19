@@ -1,0 +1,148 @@
+---
+/**
+ * The whole job: the visible task as a small box in the middle, the six kinds of hidden work
+ * around it, inside a frame. Real text in a grid, so it reflows on phones and reads aloud.
+ */
+import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
+import HiddenIcon from './HiddenIcon.astro';
+
+const left = hiddenFunctionIds.slice(0, 3);
+const right = hiddenFunctionIds.slice(3);
+---
+
+<figure class="whole-job" aria-labelledby="whole-job-caption">
+  <div class="whole-job__frame">
+    <p class="whole-job__label t-caption ink-2">The whole job</p>
+    <ul class="whole-job__side whole-job__side--left">
+      {
+        left.map((id) => (
+          <li class="whole-job__item">
+            <HiddenIcon id={id} class="ink-2" />
+            <span>
+              <a class="whole-job__name" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
+              <span class="whole-job__meaning t-small ink-2">{hiddenFunctions[id].meaning}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="whole-job__task">
+      <p class="t-caption ink-2">The visible task</p>
+      <p class="whole-job__task-name">Opening the door</p>
+      <p class="t-small ink-2">What the job description says, and what a machine can take.</p>
+    </div>
+    <ul class="whole-job__side whole-job__side--right">
+      {
+        right.map((id) => (
+          <li class="whole-job__item">
+            <HiddenIcon id={id} class="ink-2" />
+            <span>
+              <a class="whole-job__name" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
+              <span class="whole-job__meaning t-small ink-2">{hiddenFunctions[id].meaning}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <figcaption id="whole-job-caption" class="t-caption ink-3">
+    A job description draws the box in the middle. The work fills the whole frame.
+  </figcaption>
+</figure>
+
+<style>
+  .whole-job {
+    margin: 0;
+  }
+
+  .whole-job__frame {
+    display: grid;
+    gap: var(--space-8);
+    padding: var(--space-8);
+    border: var(--hairline) solid var(--rule);
+  }
+
+  .whole-job__label {
+    order: -2;
+    margin: 0;
+  }
+
+  .whole-job__side {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .whole-job__item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .whole-job__name {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--lead-size);
+    line-height: var(--title-leading);
+    text-decoration-color: var(--rule);
+  }
+
+  .whole-job__meaning {
+    display: block;
+    margin-block-start: var(--space-1);
+  }
+
+  /* On phones the visible task comes first, then the work around it. */
+  .whole-job__task {
+    order: -1;
+    display: grid;
+    gap: var(--space-2);
+    align-content: center;
+    padding: var(--space-8) var(--space-6);
+    border: 2px solid var(--ink);
+    text-align: center;
+  }
+
+  .whole-job__task p {
+    margin: 0;
+  }
+
+  .whole-job__task-name {
+    font-family: var(--font-heading);
+    font-size: var(--title-size);
+    line-height: var(--title-leading);
+  }
+
+  .whole-job figcaption {
+    margin-block-start: var(--space-3);
+  }
+
+  @media (width >= 56rem) {
+    .whole-job__frame {
+      grid-template-columns: 1fr minmax(16rem, 0.9fr) 1fr;
+      grid-template-rows: auto 1fr;
+      column-gap: var(--space-12);
+      padding: var(--space-8) var(--space-12) var(--space-12);
+    }
+
+    .whole-job__label {
+      grid-column: 1 / -1;
+    }
+
+    .whole-job__task {
+      order: 0;
+      grid-column: 2;
+      grid-row: 2;
+      align-self: center;
+    }
+
+    .whole-job__side--left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .whole-job__side--right {
+      grid-column: 3;
+      grid-row: 2;
+    }
+  }
+</style>

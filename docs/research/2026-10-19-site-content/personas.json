@@ -1,0 +1,47 @@
+[
+  {
+    "id": "journalist",
+    "text": "You are a reporter covering technology and work for a national business newspaper. You write several stories a week, often on deadline the same day. When a company announces job cuts linked to AI, you look for the facts, the company's own words, comparable cases elsewhere and people to quote. Your editor requires a source for every claim. Your readers are managers and employees.",
+    "source": "personas.md"
+  },
+  {
+    "id": "ops_leader",
+    "text": "You run customer operations at a mid-sized bank, with about 300 people in customer service and back-office processing. Leadership has asked for a 15 percent cost reduction next year, and vendors are offering AI agents that answer customer enquiries and check documents. You must present a plan to the executive team with expected savings and risks. Each month you report cost per contact, handling time and customer satisfaction.",
+    "source": "personas.md"
+  },
+  {
+    "id": "hr_partner",
+    "text": "You are an HR business partner at a retail group with about 2,000 employees. When a department is restructured, you run the consultation with employee representatives, check that the legal process is followed, and support the managers who deliver the news. Where you work, redundancies above a certain number require consultation with unions before a final decision.",
+    "source": "personas.md"
+  },
+  {
+    "id": "frontline",
+    "text": "You work in a customer service team at a telecom company, answering calls and chats. Your manager has told the team that an AI assistant will take routine questions from next quarter and that roles will be reviewed. Your job description says you answer customer enquiries. You have worked there for six years and new colleagues often ask you how to handle unusual cases.",
+    "source": "personas.md"
+  },
+  {
+    "id": "union_rep",
+    "text": "You are an elected representative for a finance-sector union. When a bank announces cuts, you meet management, read the reasons it gives, and represent members in the consultation. You prepare written arguments and bring examples from other employers. You also advise members one to one before their individual meetings.",
+    "source": "personas.md"
+  },
+  {
+    "id": "researcher",
+    "text": "You are a researcher at a public policy institute studying how AI affects employment. You build datasets of employer announcements and what followed, and you publish reports that government departments cite. Your reports state their method, their inclusion rules and their sources, and you reuse data only under a licence that allows it.",
+    "source": "personas.md"
+  },
+  {
+    "id": "ai_consultant",
+    "text": "You lead a small consultancy that helps companies deploy AI agents in customer service and back-office work. Clients ask how many roles AI can take over and how quickly. You write business cases, run discovery workshops with client teams, and stay involved after go-live. A deployment that fails in public costs your firm the client and its reputation.",
+    "source": "personas.md"
+  },
+  {
+    "id": "strategist",
+    "text": "You are a brand strategist at an advertising agency. You read behavioural science and use ideas from Rory Sutherland's Alchemy in client work. You build presentations that explain one idea in a few slides with a memorable example, and you collect examples you can show clients.",
+    "source": "personas.md"
+  },
+  {
+    "id": "passerby",
+    "text": "You work in an office job. A colleague shared a link to this site on LinkedIn, and you opened it on your phone on the train home. You have read news about companies replacing staff with AI. You have a few minutes.",
+    "source": "personas.md"
+  }
+]

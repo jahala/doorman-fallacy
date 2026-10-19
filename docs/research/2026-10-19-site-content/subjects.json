@@ -1,0 +1,240 @@
+[
+  {
+    "id": "content",
+    "state": {
+      "place": "This website, read on a visit made for the reader's own work."
+    },
+    "items": [
+      {
+        "id": "hero",
+        "text": "A large opening question with a photograph: what does a doorman actually do?",
+        "source": "src/pages/index.astro hero"
+      },
+      {
+        "id": "story",
+        "text": "The story behind the idea, retold from Rory Sutherland's book Alchemy, with credit to him.",
+        "source": "src/pages/idea.astro The story"
+      },
+      {
+        "id": "six_functions",
+        "text": "Six kinds of work a person does that a job description leaves out, each named with a one-line meaning.",
+        "source": "src/pages/idea.astro The hidden work"
+      },
+      {
+        "id": "three_questions",
+        "text": "Three questions to ask about any automation: what task is automated, what work remains, and who takes it on.",
+        "source": "src/pages/index.astro remains"
+      },
+      {
+        "id": "case_table",
+        "text": "A table of real organisations that reduced roles because AI was to do the work, with what changed and what was reported afterwards.",
+        "source": "src/pages/ledger/index.astro"
+      },
+      {
+        "id": "case_page",
+        "text": "A page per case: what sources reported, with quotes and links to archived copies, the site's own reading of what work may have been missed, a timeline, and the date it will be checked again.",
+        "source": "src/pages/ledger/[slug].astro"
+      },
+      {
+        "id": "method",
+        "text": "An explanation of how cases are chosen, written and checked, including that AI agents do the work under fixed rules and what those rules are.",
+        "source": "src/pages/approach.astro"
+      },
+      {
+        "id": "guide_worker",
+        "text": "A printable one-page sheet of questions that helps a person write down the work they do beyond their job description.",
+        "source": "src/pages/checks/your-hidden-job.astro"
+      },
+      {
+        "id": "guide_manager",
+        "text": "A printable one-page sheet of questions for a manager to answer before automating a role, with a table of the kinds of work that may be lost.",
+        "source": "src/pages/checks/before-you-cut.astro"
+      },
+      {
+        "id": "suggest",
+        "text": "A form to send in a report of a case, or to report an error in one.",
+        "source": "src/pages/suggest.astro; ReportError"
+      },
+      {
+        "id": "letter",
+        "text": "A monthly email when cases are added or change.",
+        "source": "SubscribeForm"
+      },
+      {
+        "id": "about",
+        "text": "A page about the person who runs the site.",
+        "source": "src/pages/about.astro"
+      },
+      {
+        "id": "privacy",
+        "text": "A page on what personal data the site keeps and for how long.",
+        "source": "src/pages/privacy.astro"
+      },
+      {
+        "id": "rss",
+        "text": "A feed of new and changed cases for a feed reader.",
+        "source": "src/pages/rss.xml.ts"
+      },
+      {
+        "id": "definition",
+        "text": "A one-sentence definition of the doorman fallacy, with a line showing how to cite it.",
+        "source": "candidate"
+      },
+      {
+        "id": "examples",
+        "text": "For each kind of work a job description leaves out, an example from the hotel and an example from a present-day job affected by AI.",
+        "source": "candidate"
+      },
+      {
+        "id": "signs",
+        "text": "Signs that a decision is making this mistake, such as savings counted only on the visible task.",
+        "source": "candidate"
+      },
+      {
+        "id": "when_right",
+        "text": "When replacing a task with AI or automation is the right call, with examples where the change worked.",
+        "source": "candidate"
+      },
+      {
+        "id": "dataset",
+        "text": "All cases as a downloadable spreadsheet and data file, under a licence that allows reuse with credit.",
+        "source": "candidate"
+      },
+      {
+        "id": "summary",
+        "text": "A summary of all cases: how many are holding, under strain or reversed, by sector and by kind of missing work.",
+        "source": "candidate"
+      },
+      {
+        "id": "filters",
+        "text": "Ways to narrow the list of cases by outcome, sector, country and kind of missing work.",
+        "source": "candidate"
+      },
+      {
+        "id": "evidence",
+        "text": "An overview of what is known so far about AI-linked job cuts and rehiring, with sources and cautions about survey figures.",
+        "source": "candidate"
+      },
+      {
+        "id": "reading",
+        "text": "A reading list: the book, related ideas such as Goodhart's law and tacit knowledge, and research.",
+        "source": "candidate"
+      },
+      {
+        "id": "essays",
+        "text": "Short articles that draw out patterns across several cases.",
+        "source": "candidate"
+      },
+      {
+        "id": "after_cut",
+        "text": "Practical next steps for someone whose role was cut: their rights, who to talk to, and how to describe their work to a new employer.",
+        "source": "candidate"
+      },
+      {
+        "id": "playbook",
+        "text": "A step-by-step plan for automating a role while keeping its hidden work covered.",
+        "source": "candidate"
+      },
+      {
+        "id": "workshop",
+        "text": "A slide deck and session plan, free to reuse, for running a workshop on the idea.",
+        "source": "candidate"
+      },
+      {
+        "id": "press",
+        "text": "A page for journalists: contact, the definition, images and the terms for reuse.",
+        "source": "candidate"
+      },
+      {
+        "id": "faq",
+        "text": "Short answers to common questions, such as whether the site is against AI.",
+        "source": "candidate"
+      },
+      {
+        "id": "by_function",
+        "text": "A page for each kind of missing work, listing the cases where it went missing.",
+        "source": "candidate"
+      },
+      {
+        "id": "archive",
+        "text": "Past monthly emails, readable on the site.",
+        "source": "candidate"
+      },
+      {
+        "id": "start_here",
+        "text": "Short starting points for managers, for employees and for journalists.",
+        "source": "candidate"
+      },
+      {
+        "id": "fill_online",
+        "text": "A way to fill in the two question sheets on screen and save the answers.",
+        "source": "candidate"
+      },
+      {
+        "id": "x_recipe",
+        "text": "A recipe for sourdough bread.",
+        "source": "calibration"
+      },
+      {
+        "id": "x_login",
+        "text": "A login page for the site's staff.",
+        "source": "calibration"
+      }
+    ]
+  },
+  {
+    "id": "pages",
+    "state": {
+      "place": "This website's pages, each described by what a visitor does there."
+    },
+    "items": [
+      {
+        "id": "p_home",
+        "text": "A page for getting a first idea of what the site is and where to go next.",
+        "source": "/"
+      },
+      {
+        "id": "p_idea",
+        "text": "A page for understanding the idea well enough to explain it to someone else.",
+        "source": "/idea"
+      },
+      {
+        "id": "p_ledger",
+        "text": "A page for looking over real cases where organisations reduced roles because of AI.",
+        "source": "/ledger"
+      },
+      {
+        "id": "p_case",
+        "text": "A page for reading one organisation's case in detail, with its sources.",
+        "source": "/ledger/<slug>"
+      },
+      {
+        "id": "p_method",
+        "text": "A page for judging whether the cases can be trusted.",
+        "source": "/approach"
+      },
+      {
+        "id": "p_guides",
+        "text": "A page for preparing for a conversation about a role that may be automated.",
+        "source": "/checks/*"
+      },
+      {
+        "id": "p_suggest",
+        "text": "A page for telling the site about a case it does not have.",
+        "source": "/suggest"
+      },
+      {
+        "id": "p_about",
+        "text": "A page for finding out who runs the site.",
+        "source": "/about"
+      }
+    ]
+  },
+  {
+    "id": "home",
+    "state": {
+      "place": "The home page, seen on a first visit."
+    },
+    "items": []
+  }
+]

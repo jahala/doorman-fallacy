@@ -113,6 +113,24 @@ Excluded: rumours, single anonymous posts, forecasts, and cuts with no named org
 | Partly reversed | 6 months |
 | Reversed | 12 months, then closed unless news arrives |
 
+## The dataset
+
+`/ledger.csv` and `/ledger.json` carry every case, newest announcement first. They are built with the site from the case files by `lib/dataset.ts`, so they are derived and never stored or edited. Each row is one case:
+
+| Column | Holds |
+|---|---|
+| `slug` | The case's file name without `.md`, and the last part of its address |
+| `url` | The case page, in full |
+| `company`, `short`, `country`, `area`, `change`, `announced`, `headcount`, `door` | The case's own fields. `country` is the ISO 3166 code; `headcount` is empty (CSV) or null (JSON) when not stated |
+| `status` | The current status id: the status of the latest update |
+| `latest_update_date`, `latest_update_summary` | The latest update's date and summary |
+| `missed` | The hidden function ids of the doorman reading. Joined by `;` in the CSV, an array in the JSON |
+| `last_checked` | The latest review |
+| `next_review` | Derived as above; empty (CSV) or null (JSON) when the case is closed |
+| `sources` | How many sources the case lists |
+
+The CSV follows RFC 4180: a header row, CRLF line ends, UTF-8 with no byte order mark, and quotes around any value with a comma, a quote or a line break. The JSON is `{ "licence": "CC BY 4.0", "credit": "The Doorman Fallacy, thedoormanfallacy.com", "cases": [...] }`. The column names are fixed: others build on them, so a rename is a decision.
+
 ## Vocabularies
 
 Each vocabulary is one file in `src/data/`. The schema, the pages and the docs read from it.
@@ -127,7 +145,7 @@ Statuses:
 | `partly-reversed` | Partly reversed | Some roles or human options restored |
 | `reversed` | Reversed | The company undid the cut |
 
-Hidden functions (the work an automated task leaves behind):
+Hidden functions (the work an automated task leaves behind). Each entry in `src/data/hidden-functions.ts` also holds the text of its page, `/idea/<id>`: `atTheHotel`, `today` (an illustration, not a reported case), `whenMissing` and `ask`. The definition and its citation are in `src/data/definition.ts`; the six signs of the mistake are in `src/data/signs.ts`.
 
 | id | Label | Meaning |
 |---|---|---|

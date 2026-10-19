@@ -61,13 +61,32 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 - Site header: wordmark left; The idea, The ledger, About and Subscribe right. The current page has a 2-pixel accent underline.
 - Text link: 1-pixel underline in `ink`, offset below the baseline. ↗ only for external links.
 - Section: hairline, headline, lead, then content in the grid.
-- Ledger table: company with country and area beneath; change; reported outcome; case link. The outcome cell opens with the current status as a word in medium weight, then the latest update's summary. Rows split by hairlines. Status is never a coloured pill. On screens narrower than 40rem each row stacks into a block and each cell shows its column name. The home page shows the five newest cases and counts the rest in its caption; `/ledger` shows all, with a count and a link to the approach under the table.
+- Ledger table: company with country and area beneath; change; reported outcome; case link. Company names are set in Prata at the `title` size. The outcome cell opens with the current status as a word at the `small` size in `ink-2`, normal weight, then the latest update's summary. Rows split by hairlines. Status is never a coloured pill. On screens narrower than 40rem each row stacks into a block and each cell shows its column name. The home page shows the five newest cases and counts the rest in its caption; `/ledger` shows all, with a count and a link to the approach under the table.
+- Ledger summary: one sentence at the `lead` size, "5 cases: 2 holding, 1 strained." (only statuses that have cases), then a `small` row, "Hidden work recorded as missing:", with each hidden function as a link to its page and its count in `ink-2`. It sits above the table on the home page and on `/ledger`, and is left out when there are no cases. The download line sits under the `/ledger` table at the `small` size.
+- Definition band: on the home page, directly after the hero. A full-width section between two hairlines with a smaller 48-pixel space. The label "The doorman fallacy" in `caption` and `ink-2` sits in the left four columns; the definition sits in the right eight, in the `title` style and not italic, with a small "How to cite" link under it. On phones they stack.
+- Signs of the mistake (`/idea#signs`): six numbered items in two columns on wide screens and one on phones, each under a hairline. The number is Prata in `ink-2`; the sign is medium-weight body text and its detail is `ink-2`.
+- Hidden work on `/idea`: the cards sit in two columns on the right, and the portrait sits under the section heading on the left. Each card links to `/idea/<id>` with "At the hotel, today, and in the ledger". Visually hidden text after the link names the function, so the six links differ.
+- Hidden function page: a kicker linking to `/idea`, the label in display type, the meaning as the lead. Its sections sit on the same grid as the text pages. The question to ask is set at the `title` size as a pull question. The cases in the ledger are listed as the short name (a link), the change in `ink-2` and the evidence sentence. Previous and next links close the page and do not loop.
 - Empty ledger: a headline, one lead sentence and a link to the idea, between two hairlines, in place of the table.
 - Case page: a kicker (country, area, announcement date), the company's short name in display type, the change as the lead, then a hairline-ruled facts row (status, roles, the door, last checked, next review). Each section below sits on the grid with its label on the left and a reading column of about 65 characters on the right: Reported (the Markdown body, then its footnotes as small ink-2 quotes), The doorman reading (labelled as analysis), What they said (pull quotes), Timeline, Changelog, Sources and Report an error. A statement outside the body cites its source with a small superscript link, S1, S2 and so on, to the numbered Sources list. The report form uses the same field style as the other forms, with a note field a few lines tall, and is hidden in print.
-- Checklist page: questions with ruled writing space, designed for print first.
 - Suggestion form: the same field style as sign-up. Link fields sized for a URL (the first shown, four more behind "Add more links", which needs no script), the note field a few lines tall, name and email marked optional, the credit box below them. A report of an error in one case is a short form on the case page itself, with a required note and an optional email.
 - Sign-up form: a visible label above the field, which is sized for an email address (about 28 characters), and the black Subscribe button. The help line sits below.
 - Footer: wordmark, curator line, About the curator, then Sources & approach, Suggest a case and Privacy. The Sutherland credit closes the page.
+
+## Illustrations
+
+Three diagrams and six icons explain the idea without photographs. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
+
+- **The whole job** (home page, "What else was the person doing?"): the visible task in a box drawn in `ink` at 2 pixels, inside a hairline frame, with the six kinds of hidden work around it, three on each side. On phones the task comes first and the six follow.
+- **Where the work goes** (`/idea#model`): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. The caption says it is one possible outcome.
+- **Saved now, lost later** (`/idea#after`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.
+- **Six icons**, one per kind of hidden work, on a 24-pixel grid with 1.5-pixel strokes, in `ink-2`: a figure with presence radiating (signal), an eye (deterrence), a path that forks at a decision (judgment), a notebook with a ribbon (memory), a wave dying down (absorption), and a container with headroom (slack). They sit beside the labels and never carry meaning alone.
+
+Numbers in numbered lists are set in Inter, because Prata's 1 reads as a lowercase l.
+
+## Share cards
+
+Every page names a 1200 by 630 card for Open Graph and Twitter: the site's own, one per hidden function and one per case. A card has the paper colour, the wordmark in Prata at the top with a hairline under it, a small `ink-2` kicker, the title in Prata, one line in Inter and `ink-2`, and the site address at the foot. A case card shows the current status as a word at the foot, never as a pill. There is no photograph and no accent. Colours come from the tokens through `lib/tokens.ts`; the title steps down from 96 to 64 pixels as it gets longer. Only the Prata and Inter files that satori can read are used ([D-017](decisions.md)). The pages also set the favicon (`/favicon.svg`), the touch icon and a `theme-color` for each scheme, read from the `paper` token.
 
 ## States
 
@@ -80,9 +99,7 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 ## Print
 
-The two checklists print on one page each, on A4 and US Letter, with no text under 10pt and at least two ruled writing lines under every question. Print hides the header, the nav and the sign-up. The foot holds the companion link, "thedoormanfallacy.com · CC BY 4.0" and the page address. Writing lines are borders in `field`, never images.
-
-Your hidden job sets its nine questions in one column. Before you cut has a six-row table, so on paper its short questions sit two to a row with three lines each; that is the only way its content fits Letter at 10pt. On screen both guides are one column. A hidden-function tag is a small label in `ink-2` after its question, never colour-coded.
+Print hides the header, the nav and the sign-up, uses light colours, and shows the page address at the foot. No page is designed for print first.
 
 ## Motion
 

@@ -51,6 +51,8 @@ export default defineConfig([
   {
     files: ['**/*.mjs'],
     extends: [tseslint.configs.disableTypeChecked],
+    // Plain .mjs files are Node scripts (config, research analysis); they may use Node's console.
+    languageOptions: { globals: { console: 'readonly' } },
   },
   libPurity(['src/lib/**/*.ts']),
 ]);

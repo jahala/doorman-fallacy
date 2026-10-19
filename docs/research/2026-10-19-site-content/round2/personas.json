@@ -1,0 +1,52 @@
+[
+  {
+    "id": "laid_off",
+    "text": "Your employer, an insurance company, ended your role in its claims team three weeks ago. The company said AI tools would now handle most claims. You worked there for nine years and trained new colleagues. You are applying for jobs and preparing for interviews.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "at_risk",
+    "text": "Your employer, a logistics company, has told your team that customer support will move to an AI system and that 40 of 60 roles will go. A 30-day consultation period has started, and you have a meeting with HR next week about your own position. You are a union member.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "survivor",
+    "text": "You kept your job in a support team after half of it was cut when an AI assistant was introduced six months ago. You now handle the cases the assistant passes on, which are the most complicated and the angriest. Your manager reports that cost per contact has fallen.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "customer",
+    "text": "You have spent forty minutes trying to correct a wrong charge on your phone bill. The company's chat assistant keeps answering a different question, and you cannot find a way to reach a person. You are searching online for how to reach a human there, and whether others have the same problem.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "executive",
+    "text": "You are the chief executive of a regional insurance company with 1,200 staff. The board has asked how AI will lower costs over the next three years, and a consultancy has proposed replacing most of the claims-handling team. You approve the plan and answer to the board and the regulator for service quality.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "sme_owner",
+    "text": "You own a dental practice with two receptionists. A software company offers an AI phone agent that books appointments around the clock, for a monthly fee lower than one salary. Your receptionists also calm anxious patients, chase unpaid bills and know the regular patients.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "teacher",
+    "text": "You teach a course on operations and management at a business school. Each week you use real company cases for class discussion, and you prepare case notes, discussion questions and slides. You may only use material you are allowed to share with students.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "policy_adviser",
+    "text": "You are an adviser at a national labour ministry. You brief the minister on how AI affects employment, and you look for documented examples and data you can cite in policy papers and answers to parliament.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "analyst",
+    "text": "You are an equity analyst covering European banks and insurers. When a company announces AI-driven cost cuts, you assess whether the savings are credible and whether service problems, complaints or regulatory risk could offset them. You publish notes to fund managers.",
+    "source": "round2/personas.md"
+  },
+  {
+    "id": "agent_designer",
+    "text": "You design the customer-service AI agent at a software company that sells it to banks and retailers. You decide when the agent hands a conversation to a person, and what that person sees when it does.",
+    "source": "round2/personas.md"
+  }
+]

@@ -1,8 +1,7 @@
-import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
-import os from 'node:os';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { startCasesBuild } from './cases-build.ts';
+import { makeBuildFolder, startCasesBuild } from './cases-build.ts';
 import type { GroupRun } from './site-harness.ts';
 import { syntheticCase } from './size-cases.ts';
 
@@ -34,7 +33,7 @@ function parseCount(argv: readonly string[]): number {
 }
 
 async function main(count: number): Promise<number> {
-  const work = await mkdtemp(path.join(os.tmpdir(), 'doorman-size-'));
+  const work = await makeBuildFolder(root, 'size');
   let run: GroupRun | undefined;
   let stopped: NodeJS.Signals | undefined;
   // Read through a function: a signal can arrive at any await, which type narrowing cannot see.

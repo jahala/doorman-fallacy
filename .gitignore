@@ -11,3 +11,5 @@ playwright-report
 .desk-runs
 # Local secrets for wrangler dev; never committed
 .dev.vars*
+# Folders for test builds of the site; each test removes its own
+.test-builds

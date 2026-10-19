@@ -1,11 +1,39 @@
 ---
+import ExternalLink from '../components/ExternalLink.astro';
+import HiddenIcon from '../components/HiddenIcon.astro';
 import PageHead from '../components/PageHead.astro';
 import Photo from '../components/Photo.astro';
+import SavedLost from '../components/SavedLost.astro';
 import TextSection from '../components/TextSection.astro';
-import { hiddenFunctions } from '../data/hidden-functions.ts';
+import WhereWorkGoes from '../components/WhereWorkGoes.astro';
+import { citation, definition } from '../data/definition.ts';
+import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
+import { modelSteps } from '../data/model.ts';
+import { afterSigns, signs } from '../data/signs.ts';
 import Site from '../layouts/Site.astro';
 
-const functions = Object.values(hiddenFunctions);
+const known = [
+  {
+    text: 'Commonwealth Bank of Australia cut 45 customer-service roles in July 2025 as a voice bot took inbound calls. On 21 August 2025, after the Finance Sector Union challenged the cut, the bank said its initial assessment “did not adequately consider all relevant business considerations and this error meant the roles were not redundant”, and reversed it.',
+    source: 'ACS Information Age, 21 August 2025',
+    href: 'https://ia.acs.org.au/article/2025/cba-reverses-ai-driven-job-cuts--admits--error-.html',
+  },
+  {
+    text: 'In 2024 Klarna reported that its AI assistant did work equivalent to about 700 customer-service staff. In May 2025 it began hiring people for customer service again. Its chief executive said: “I just think it’s so critical that you are clear to your customer that there will always be a human if you want.”',
+    source: 'Tech.co, 20 May 2025',
+    href: 'https://tech.co/news/klarna-reverses-ai-overhaul',
+  },
+  {
+    text: 'Forrester’s Predictions 2026: The Future of Work, published in October 2025, forecast that about half of AI-attributed layoffs would be reversed through quiet rehiring, at lower pay or offshore.',
+    source: 'Resultsense, 30 October 2025',
+    href: 'https://www.resultsense.com/news/2025-10-30-forrester-predicts-ai-layoff-reversals-lower-pay/',
+  },
+  {
+    text: 'A 2025 survey by Orgvue, which sells organisational design and planning software, asked more than 1,000 business leaders. About 4 in 10 said they had laid off employees as a result of deploying AI. Of those, 55 percent said they had made the wrong decisions about it.',
+    source: 'HR Dive, 29 April 2025',
+    href: 'https://www.hrdive.com/news/leaders-who-laid-off-workers-due-to-ai-regretted-it/746643/',
+  },
+] as const;
 ---
 
 <Site
@@ -14,10 +42,15 @@ const functions = Object.values(hiddenFunctions);
   description="Rory Sutherland's doorman fallacy: judging a job by its most visible task, and replacing the task, can remove the work nobody wrote down."
 >
   <div class="page">
-    <PageHead
-      title="The doorman fallacy"
-      lead="Judging a job by its most visible task, and replacing the task, can remove the work nobody wrote down."
-    />
+    <PageHead title="The doorman fallacy" lead={definition}>
+      <div id="cite" class="cite">
+        <p class="t-caption ink-2">How to cite</p>
+        <p class="t-small">{citation}</p>
+        <p class="t-small ink-2">
+          The cases and this text are free to reuse under <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>.
+        </p>
+      </div>
+    </PageHead>
 
     <TextSection id="story-title" title="The story">
       <p>
@@ -50,56 +83,330 @@ const functions = Object.values(hiddenFunctions);
       </p>
     </TextSection>
 
-    <TextSection id="hidden-title" title="The hidden work">
-      <p>Six kinds of work that disappear without being missed at first.</p>
-      <ul slot="wide" class="grid columns columns--3">
+    <TextSection id="model-title" anchor="model" title="How to see the whole job">
+      <p>Five steps to take before replacing a role. Each rests on research from safety, economics and sociology.</p>
+      <div slot="wide" class="model-wide">
+        <ol class="model-steps">
+          {
+            modelSteps.map(({ title, detail, sources }, index) => (
+              <li class="model-steps__item">
+                <span class="signs__number">{index + 1}</span>
+                <div class="model-steps__body">
+                  <p class="signs__title">{title}</p>
+                  <p>{detail}</p>
+                  <ul class="model-steps__sources t-small ink-2">
+                    {sources.map(({ cite, href }) =>
+                      href === undefined ? <li>{cite}</li> : <li><ExternalLink href={href}>{cite}</ExternalLink></li>,
+                    )}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <WhereWorkGoes />
+      </div>
+    </TextSection>
+
+    <TextSection id="signs-title" anchor="signs" title="Six signs of the mistake">
+      <p>A decision that shows several of these is probably counting the task and missing the job.</p>
+      <ol slot="wide" class="signs">
         {
-          functions.map(({ label, meaning }) => (
-            <li class="ruled">
-              <h3 class="t-title">{label}</h3>
-              <p class="t-lead ink-2">{meaning}</p>
+          signs.map(({ title, detail }, index) => (
+            <li class="signs__item">
+              <span class="signs__number">{index + 1}</span>
+              <p class="signs__title">{title}</p>
+              <p class="ink-2">{detail}</p>
             </li>
           ))
         }
+      </ol>
+    </TextSection>
+
+    <TextSection id="after-title" anchor="after" title="After the announcement: what to watch">
+      <p>
+        When an organisation announces cuts linked to AI, these are the signs, months later, that the hidden work
+        went missing. They are what the ledger looks for each time it checks a case again. A case that holds up
+        shows the opposite.
+      </p>
+      <div slot="wide" class="after-wide">
+        <ol class="signs">
+          {
+            afterSigns.map(({ title, detail }, index) => (
+              <li class="signs__item">
+                <span class="signs__number">{index + 1}</span>
+                <p class="signs__title">{title}</p>
+                <p class="ink-2">{detail}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <SavedLost />
+      </div>
+    </TextSection>
+
+    <section class="section grid hidden-work" aria-labelledby="hidden-title">
+      <h2 id="hidden-title" class="hidden-work__head t-title">The hidden work</h2>
+      <div class="hidden-work__body">
+        <p class="hidden-work__intro">Six kinds of work that disappear without being missed at first.</p>
+        <ul class="hidden-work__cards">
+          {
+            hiddenFunctionIds.map((id) => (
+              <li class="ruled">
+                <h3 class="t-title hidden-work__label"><HiddenIcon id={id} class="ink-2" />{hiddenFunctions[id].label}</h3>
+                <p class="t-lead ink-2">{hiddenFunctions[id].meaning}</p>
+                <p class="hidden-work__link">
+                  <a href={`/idea/${id}`}>
+                    At the hotel, today, and in the ledger<span class="visually-hidden">: {hiddenFunctions[id].label}</span>
+                  </a>
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="hidden-work__photo">
+        <Photo id="portrait" sizes="(min-width: 56rem) 33vw, 100vw" />
+      </div>
+    </section>
+
+    <TextSection id="known-title" anchor="known" title="What is known so far">
+      <p>
+        The ledger records named cases with sources. Around it, a few facts and forecasts are widely quoted.
+        Here is what they say, and where they come from.
+      </p>
+      {
+        known.map(({ text, source, href }) => (
+          <div class="known__item">
+            <p>{text}</p>
+            <p class="t-small ink-2">
+              Source: <ExternalLink href={href}>{source}</ExternalLink>
+            </p>
+          </div>
+        ))
+      }
+      <p class="ink-2">
+        Surveys and forecasts are not cases. A survey reports what people say, a forecast is a judgement
+        about the future, and some come from companies that sell tools for the decision they describe. The
+        ledger counts only what named organisations did, from sources anyone can check.
+      </p>
+    </TextSection>
+
+    <TextSection id="right-call-title" title="When automation is the right call">
+      <p>Sometimes the machine should take the task. Automating it is the right call when:</p>
+      <ul class="bullets">
+        <li>The visible task really is the whole job: resetting a password, changing an address, tracking a parcel.</li>
+        <li>The hidden work has been named, and someone has been given it on purpose.</li>
+        <li>The hidden work is measured after the change, as well as the saving.</li>
+        <li>The people who did the job helped design the change, and can say when it is not working.</li>
+      </ul>
+      <p>The ledger records <a href="/ledger">cuts that held up</a> as faithfully as those that were reversed.</p>
+    </TextSection>
+
+    <TextSection id="reading-title" title="Further reading">
+      <ul class="reading">
+        <li>
+          <p>Rory Sutherland, <i>Alchemy: The Surprising Power of Ideas That Don&rsquo;t Make Sense</i> (2019).</p>
+          <p class="ink-2">Where the doorman comes from.</p>
+        </li>
+        <li>
+          <p>Lisanne Bainbridge, &ldquo;Ironies of Automation&rdquo; (1983).</p>
+          <p class="ink-2">Why automating the routine work leaves people with the hardest part.</p>
+        </li>
+        <li>
+          <p>Michael Polanyi, <i>The Tacit Dimension</i> (1966).</p>
+          <p class="ink-2">&ldquo;We can know more than we can tell.&rdquo;</p>
+        </li>
+        <li>
+          <p>David Autor, &ldquo;Why Are There Still So Many Jobs?&rdquo; (2015).</p>
+          <p class="ink-2">Jobs as bundles of tasks, and the tasks machines find hardest.</p>
+        </li>
+        <li>
+          <p>Jerry Z. Muller, <i>The Tyranny of Metrics</i> (2018).</p>
+          <p class="ink-2">What happens when the measure becomes the goal.</p>
+        </li>
+        <li>
+          <p>James C. Scott, <i>Seeing Like a State</i> (1998).</p>
+          <p class="ink-2">How simplified views of work lose what makes it work.</p>
+        </li>
+        <li>
+          <p>Marilyn Strathern (1997), after Charles Goodhart (1975):</p>
+          <p class="ink-2">&ldquo;When a measure becomes a target, it ceases to be a good measure.&rdquo;</p>
+        </li>
       </ul>
     </TextSection>
 
     <div class="idea-close grid">
-      <div class="idea-close__photo">
-        <Photo id="portrait" sizes="(min-width: 56rem) 33vw, 100vw" />
-      </div>
       <ul class="idea-close__links t-lead">
         <li><a href="/ledger">See what happened in practice</a></li>
-        <li><a href="/checks/your-hidden-job">Before the decision: two printable guides</a></li>
       </ul>
     </div>
   </div>
 </Site>
 
 <style>
-  .idea-close {
-    row-gap: var(--space-12);
-    align-items: end;
-    padding-block: var(--space-16) var(--space-24);
+  .cite {
+    display: grid;
+    gap: var(--space-2);
+    max-inline-size: 40em;
+    padding-block-start: var(--space-4);
+    border-block-start: var(--hairline) solid var(--rule);
   }
 
-  .idea-close__photo,
-  .idea-close__links {
+  /* The signs: two columns of ruled, numbered items on wide screens, one on phones. */
+  .signs {
+    display: grid;
+    column-gap: var(--grid-gap);
+  }
+
+  .signs__item {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    padding-block: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .signs__number {
+    grid-row: 1 / span 2;
+
+    /* Inter, not Prata: Prata's 1 reads as a lowercase l. */
+    font-family: var(--font-body);
+    font-size: var(--lead-size);
+    font-variant-numeric: lining-nums tabular-nums;
+    line-height: 1;
+    color: var(--ink-2);
+  }
+
+  .signs__item > p {
+    grid-column: 2;
+  }
+
+  .signs__title {
+    font-weight: 500;
+  }
+
+  .signs__title + p {
+    margin-block-start: var(--space-2);
+  }
+
+  @media (width >= 56rem) {
+    .signs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-12);
+    }
+  }
+
+  /* The hidden work: the cards on the right, the portrait under the heading on the left. */
+  .hidden-work {
+    row-gap: var(--space-8);
+  }
+
+  .hidden-work > * {
     grid-column: 1 / -1;
+  }
+
+  .hidden-work__intro {
+    max-inline-size: var(--measure);
+  }
+
+  .hidden-work__cards {
+    display: grid;
+    gap: var(--space-12) var(--grid-gap);
+    margin-block-start: var(--space-12);
+  }
+
+  .hidden-work__cards h3 + p {
+    margin-block-start: var(--space-4);
+  }
+
+  .hidden-work__link {
+    margin-block-start: var(--space-6);
+  }
+
+  @media (width >= 40rem) {
+    .hidden-work__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 56rem) {
+    .hidden-work > .hidden-work__head {
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+
+    .hidden-work > .hidden-work__photo {
+      grid-column: 1 / span 4;
+      grid-row: 2;
+      align-self: start;
+    }
+
+    .hidden-work > .hidden-work__body {
+      grid-column: 5 / span 8;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .known__item > p + p {
+    margin-block-start: var(--space-2);
+  }
+
+  .reading {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .idea-close {
+    padding-block: var(--space-16) var(--space-24);
   }
 
   .idea-close__links {
     display: grid;
+    grid-column: 1 / -1;
     gap: var(--space-8);
   }
 
   @media (width >= 56rem) {
-    .idea-close__photo {
-      grid-column: 1 / span 4;
-    }
-
     .idea-close__links {
-      grid-column: 6 / span 7;
+      grid-column: 5 / span 8;
     }
+  }
+
+  /* How to see the whole job: numbered steps, each with its sources, then the illustration. */
+  .model-wide,
+  .after-wide {
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .model-steps {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .model-steps__item {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .model-steps__body {
+    display: grid;
+    gap: var(--space-3);
+    max-inline-size: var(--measure);
+  }
+
+
+  .model-steps__sources {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .hidden-work__label {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
   }
 </style>

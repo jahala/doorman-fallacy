@@ -1,0 +1,135 @@
+---
+/**
+ * Saved now, lost later: the saving on the visible task is counted at once in the business case;
+ * the costs arrive months later and are booked elsewhere. An illustration of the pattern the
+ * ledger's follow-ups look for, not data. Real text in a grid.
+ */
+const columns: readonly { when: string; counted: readonly string[]; uncounted: readonly string[] }[] = [
+  { when: 'At once', counted: ['The saving on the visible task'], uncounted: [] },
+  { when: 'After 3 months', counted: [], uncounted: ['Repeat contacts', 'Hard cases pile up'] },
+  { when: 'After 6 months', counted: [], uncounted: ['Complaints, elsewhere', 'Pressure on those who stayed'] },
+  { when: 'After 12 months', counted: [], uncounted: ['Rehiring', 'Questions from a regulator'] },
+];
+---
+
+<figure class="saved-lost" aria-labelledby="saved-lost-caption">
+  <div class="saved-lost__table" role="table" aria-label="What is counted, and when costs arrive">
+    <div class="saved-lost__row saved-lost__row--head" role="row">
+      <span role="columnheader"><span class="visually-hidden">What</span></span>
+      {columns.map(({ when }) => <span role="columnheader" class="t-caption ink-2">{when}</span>)}
+    </div>
+    <div class="saved-lost__row" role="row">
+      <span role="rowheader" class="saved-lost__rowhead">Counted in the business case</span>
+      {
+        columns.map(({ when, counted }) => (
+          <span role="cell" class="saved-lost__cell" data-when={when}>
+            {counted.map((item) => <span class="saved-lost__chip saved-lost__chip--counted">{item}</span>)}
+          </span>
+        ))
+      }
+    </div>
+    <div class="saved-lost__row" role="row">
+      <span role="rowheader" class="saved-lost__rowhead">Not counted, booked elsewhere</span>
+      {
+        columns.map(({ when, uncounted }) => (
+          <span role="cell" class="saved-lost__cell" data-when={when}>
+            {uncounted.map((item) => <span class="saved-lost__chip saved-lost__chip--uncounted">{item}</span>)}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <figcaption id="saved-lost-caption" class="t-caption ink-3">
+    An illustration of the pattern, not data. The saving is counted at once. The costs arrive later and are booked
+    somewhere else, so they are rarely set against it.
+  </figcaption>
+</figure>
+
+<style>
+  .saved-lost {
+    margin: 0;
+  }
+
+  .saved-lost__table {
+    display: grid;
+    border-block: var(--hairline) solid var(--rule);
+  }
+
+  .saved-lost__row {
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+  }
+
+  .saved-lost__row + .saved-lost__row {
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .saved-lost__row--head {
+    display: none;
+  }
+
+  .saved-lost__rowhead {
+    font-family: var(--font-heading);
+    font-size: var(--lead-size);
+    line-height: var(--title-leading);
+  }
+
+  .saved-lost__cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+
+  .saved-lost__cell:empty {
+    display: none;
+  }
+
+  .saved-lost__cell:not(:empty)::before {
+    content: attr(data-when);
+    flex-basis: 100%;
+    color: var(--ink-2);
+    font-size: var(--caption-size);
+  }
+
+  .saved-lost__chip {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--small-size);
+    line-height: var(--small-leading);
+  }
+
+  .saved-lost__chip--counted {
+    border: 2px solid var(--ink);
+  }
+
+  .saved-lost__chip--uncounted {
+    border: var(--hairline) dashed var(--ink-3);
+    color: var(--ink-2);
+  }
+
+  .saved-lost figcaption {
+    margin-block-start: var(--space-3);
+    max-inline-size: var(--measure);
+  }
+
+  @media (width >= 56rem) {
+    .saved-lost__row {
+      grid-template-columns: 14rem repeat(4, minmax(0, 1fr));
+      align-items: start;
+      gap: var(--space-6);
+    }
+
+    .saved-lost__row--head {
+      display: grid;
+    }
+
+    .saved-lost__cell:empty {
+      display: flex;
+    }
+
+    .saved-lost__cell:not(:empty)::before {
+      content: none;
+    }
+  }
+</style>

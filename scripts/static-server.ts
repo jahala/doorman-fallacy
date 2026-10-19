@@ -16,6 +16,7 @@ const contentTypes: Readonly<Record<string, string>> = {
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml',
   '.json': 'application/json',
+  '.csv': 'text/csv; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.avif': 'image/avif',
   '.webp': 'image/webp',

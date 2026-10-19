@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LedgerEmpty from '../../components/LedgerEmpty.astro';
+import LedgerSummary from '../../components/LedgerSummary.astro';
 import LedgerTable from '../../components/LedgerTable.astro';
 import Site from '../../layouts/Site.astro';
 import { countLabel, ledgerRow, newestFirst } from '../../lib/ledger.ts';
@@ -27,9 +28,14 @@ const rows = cases.map(ledgerRow);
           <LedgerEmpty heading="h2" />
         ) : (
           <>
+            <LedgerSummary cases={cases} />
             <LedgerTable rows={rows} label="Cases, newest announcement first" />
             <p class="ledger-count t-small ink-3">
               {countLabel(rows.length)} in the ledger. <a href="/approach">How the ledger is kept</a>
+            </p>
+            <p class="ledger-download t-small">
+              Download the ledger: <a href="/ledger.csv">CSV</a> &middot; <a href="/ledger.json">JSON</a>. Free to
+              reuse under CC BY 4.0, with credit to The Doorman Fallacy.
             </p>
           </>
         )
@@ -41,5 +47,9 @@ const rows = cases.map(ledgerRow);
 <style>
   .ledger-count {
     margin-block-start: var(--space-4);
+  }
+
+  .ledger-download {
+    margin-block-start: var(--space-2);
   }
 </style>

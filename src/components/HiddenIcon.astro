@@ -1,0 +1,102 @@
+---
+/**
+ * One line icon per kind of hidden work, on a 24-pixel grid, drawn in currentColor so it takes the
+ * text colour in either scheme. Decorative: the label beside it carries the meaning.
+ */
+import type { HiddenFunctionId } from '../data/hidden-functions.ts';
+
+interface Props {
+  id: HiddenFunctionId;
+  /** inline sits beside text at 1.5em; large heads a page at 3rem. */
+  size?: 'inline' | 'large';
+  class?: string;
+}
+
+const { id, size = 'inline', class: className } = Astro.props;
+---
+
+<svg
+  class:list={['hidden-icon', `hidden-icon--${size}`, className]}
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    id === 'signal' && (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+        <path d="M16.5 6.5a4 4 0 0 1 0 6" />
+        <path d="M19 4a7.5 7.5 0 0 1 0 11" />
+      </>
+    )
+  }
+  {
+    id === 'deterrence' && (
+      <>
+        <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" />
+        <circle cx="12" cy="12" r="2.75" />
+      </>
+    )
+  }
+  {
+    id === 'judgment' && (
+      <>
+        <path d="M3 12h6.5" />
+        <path d="M9.5 12 15 6.5h6" />
+        <path d="M9.5 12 15 17.5h6" />
+        <path d="m18.5 4 2.5 2.5-2.5 2.5" />
+        <circle cx="9.5" cy="12" r="1.25" fill="currentColor" />
+      </>
+    )
+  }
+  {
+    id === 'memory' && (
+      <>
+        <rect x="5" y="3" width="14" height="18" rx="2" />
+        <path d="M13 3v7l2.5-2 2.5 2V3" />
+        <path d="M8 14h8M8 17h5" />
+      </>
+    )
+  }
+  {
+    id === 'absorption' && (
+      <>
+        <path d="M2 12c1.8-7 3.6-7 5.4 0s3-4.6 4.5 0 2.4-2.6 3.6 0 1.8-1.2 2.6 0H22" />
+      </>
+    )
+  }
+  {
+    id === 'slack' && (
+      <>
+        <rect x="6" y="3" width="12" height="18" rx="2" />
+        <path d="M6 13h12" />
+        <path d="M9 16.5h6M9 19h6" />
+        <path d="M9 7.5h6" stroke-dasharray="1.5 2" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .hidden-icon {
+    flex: none;
+  }
+
+  .hidden-icon--inline {
+    inline-size: 1.5em;
+    block-size: 1.5em;
+  }
+
+  .hidden-icon--large {
+    inline-size: 3rem;
+    block-size: 3rem;
+  }
+</style>
