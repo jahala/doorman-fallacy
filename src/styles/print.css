@@ -1,0 +1,31 @@
+/* Print: light colours, no navigation, the page address at the foot. */
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  .site-header,
+  .site-footer__links,
+  .skip-link,
+  .no-print {
+    display: none;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  body {
+    min-height: 0;
+    font-size: 11pt;
+  }
+
+  .section {
+    padding-block: var(--space-8);
+  }
+}

@@ -1,0 +1,16 @@
+/* Fixture: colour values outside tokens.css. Stylelint must flag every one. */
+.hex {
+  color: #a92819;
+}
+
+.rgb {
+  background: rgb(10 10 10);
+}
+
+.hsl {
+  border-color: hsl(0 0% 50%);
+}
+
+.named {
+  outline-color: red;
+}

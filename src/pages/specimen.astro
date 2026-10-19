@@ -1,0 +1,444 @@
+---
+import tokensCss from '../styles/tokens.css?raw';
+import ExternalLink from '../components/ExternalLink.astro';
+import Photo from '../components/Photo.astro';
+import Site from '../layouts/Site.astro';
+import { contrastRatio } from '../lib/contrast.ts';
+import {
+  colourTokens,
+  contrastMinimum,
+  customProperties,
+  spaceTokens,
+  typeTokens,
+} from '../lib/tokens.ts';
+
+const sentence = 'What does a doorman actually do?';
+
+const colours = colourTokens(tokensCss);
+const paper = colours.find((token) => token.name === 'paper');
+if (paper === undefined) throw new Error('tokens.css has no --paper token');
+
+const modes = (['light', 'dark'] as const).map((mode) => ({
+  mode,
+  label: mode === 'light' ? 'Light' : 'Dark',
+  rows: colours.map((token) => {
+    const hex = token[mode];
+    const ratio = contrastRatio(hex, paper[mode]);
+    if (ratio === undefined) throw new Error(`--${token.name} is not a hex colour in ${mode}`);
+    const minimum = contrastMinimum[token.name];
+    const verdict =
+      token.name === 'paper'
+        ? 'Background.'
+        : minimum === null || minimum === undefined
+          ? 'Decorative, no minimum.'
+          : ratio >= minimum
+            ? `Meets the ${String(minimum)} : 1 minimum.`
+            : `Fails the ${String(minimum)} : 1 minimum.`;
+    return { name: token.name, hex: hex.toUpperCase(), ratio: ratio.toFixed(1), verdict };
+  }),
+}));
+
+const typeScale = typeTokens(tokensCss);
+const spaceScale = spaceTokens(tokensCss);
+const gridValues = customProperties(tokensCss).filter((property) => property.name.startsWith('grid-'));
+const weights = [
+  { letter: 'A', weight: 500, note: 'Medium, as in the hero mockup' },
+  { letter: 'B', weight: 600, note: 'Semibold, the proposal' },
+  { letter: 'C', weight: 700, note: 'Bold, as in the other mockups' },
+];
+---
+
+<Site title="Type and colour specimen" noindex>
+  <div class="page specimen">
+    <header class="specimen__intro stack">
+      <h1 class="t-display">Specimen</h1>
+      <p class="t-lead ink-2 prose">
+        For the site owner. Approve the type and the colours here. This page is not linked from the
+        site and is hidden from search engines.
+      </p>
+    </header>
+
+    <section class="specimen__section" aria-labelledby="s-colour">
+      <h2 id="s-colour" class="t-title">Colour</h2>
+      <p class="t-small ink-2 prose">
+        Every token with its value and its measured contrast against paper. Both schemes are shown at
+        once. On the live site the visitor&rsquo;s own setting chooses.
+      </p>
+      <div class="specimen__panels">
+        {
+          modes.map((panel) => (
+            <div class={`specimen__panel theme-${panel.mode}`}>
+              <h3 class="t-lead">{panel.label}</h3>
+              <ul class="specimen__swatches">
+                {panel.rows.map((row) => (
+                  <li class="specimen__swatch-row">
+                    <span class="specimen__swatch" style={`background: var(--${row.name})`} />
+                    <span>
+                      <code>--{row.name}</code> <span class="t-small">{row.hex}</span>
+                      <br />
+                      <span class="t-small ink-2">
+                        {row.name === 'paper' ? '' : `${row.ratio} : 1 against paper. `}{row.verdict}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-scale">
+      <h2 id="s-scale" class="t-title">Type scale</h2>
+      <p class="t-small ink-2 prose">
+        Inter, variable, with its optical-size axis, self-hosted. Each token is set in a sentence from the site.
+      </p>
+      <div class="specimen__scale">
+        {
+          typeScale.map((token) => (
+            <div class="specimen__scale-row">
+              <p class="t-small specimen__spec">
+                <code>{token.name}</code>
+                <span class="ink-2">
+                  {token.size}<br />
+                  weight {token.weight}, line height {token.leading}, tracking {token.tracking}
+                </span>
+              </p>
+              <p class={`t-${token.name}`}>{sentence}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-weight">
+      <h2 id="s-weight" class="t-title">Display weight</h2>
+      <p class="t-small ink-2 prose">
+        One weight for every headline. Choose A, B or C.
+      </p>
+      <div class="specimen__scale">
+        {
+          weights.map((option) => (
+            <div class="specimen__scale-row">
+              <p class="t-small specimen__spec">
+                <code>{option.letter}</code>
+                <span class="ink-2">{option.weight}. {option.note}</span>
+              </p>
+              <p class="t-display" style={`--display-weight: ${String(option.weight)}`}>{sentence}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-links">
+      <h2 id="s-links" class="t-title">Links</h2>
+      <ul class="specimen__links">
+        <li><a href="/idea">Read the explanation</a> <span class="t-small ink-2">Internal, no arrow</span></li>
+        <li>
+          <ExternalLink href="https://unsplash.com/photos/AJ6Wr1cbkQM">The Silent Sentinel on Unsplash</ExternalLink>
+          <span class="t-small ink-2">External, with an arrow</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-form">
+      <h2 id="s-form" class="t-title">Sign-up form</h2>
+      <p class="t-small ink-2 prose">
+        The button and fields are samples and send nothing. The second field shows the focus state.
+      </p>
+      <div class="specimen__form">
+        <div>
+          <label class="field-label" for="specimen-email">Email address</label>
+          <div class="specimen__form-row">
+            <input
+              class="field"
+              id="specimen-email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              aria-describedby="specimen-email-help"
+            />
+            <button class="button" type="button">Subscribe</button>
+          </div>
+          <p class="field-help t-small" id="specimen-email-help">Only updates from The Doorman Fallacy.</p>
+        </div>
+        <div>
+          <label class="field-label" for="specimen-email-focus">Email address, focus forced</label>
+          <input
+            class="field force-focus"
+            id="specimen-email-focus"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-ledger">
+      <h2 id="s-ledger" class="t-title">Ledger table</h2>
+      <div class="specimen__table-wrap" role="region" aria-label="Ledger table sample" tabindex="0">
+      <table class="specimen__ledger">
+        <caption class="t-small ink-2">Specimen rows. Illustrative, not cases.</caption>
+        <thead>
+          <tr class="t-small ink-2">
+            <th scope="col">Company</th>
+            <th scope="col">Change</th>
+            <th scope="col">Reported outcome</th>
+            <th scope="col">Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">
+              <span class="t-lead specimen__company">Commonwealth Bank</span>
+              <span class="t-small ink-2 specimen__meta">Australia · Customer service</span>
+            </th>
+            <td>45 roles cut for a voice bot.</td>
+            <td>Decision reversed.</td>
+            <td><a href="/ledger">Read case<span class="visually-hidden"> on Commonwealth Bank</span></a></td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <span class="t-lead specimen__company">Klarna</span>
+              <span class="t-small ink-2 specimen__meta">Sweden · Customer service</span>
+            </th>
+            <td>AI-first customer support.</td>
+            <td>Human support hired back.</td>
+            <td><a href="/ledger">Read case<span class="visually-hidden"> on Klarna</span></a></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-photos">
+      <h2 id="s-photos" class="t-title">Photographs</h2>
+      <p class="t-small ink-2 prose">The hero crop on the left, the idea-page portrait on the right.</p>
+      <div class="grid specimen__photos">
+        <div class="specimen__photo specimen__photo--hero">
+          <Photo id="hero" sizes="(min-width: 56rem) 50vw, 100vw" />
+        </div>
+        <div class="specimen__photo specimen__photo--portrait">
+          <Photo id="portrait" sizes="(min-width: 56rem) 35vw, 100vw" />
+        </div>
+      </div>
+    </section>
+
+    <section class="specimen__section" aria-labelledby="s-space">
+      <h2 id="s-space" class="t-title">Rule, space and grid</h2>
+      <p class="t-small ink-2">The hairline between sections:</p>
+      <hr class="specimen__rule" />
+      <ul class="specimen__space">
+        {
+          spaceScale.map((step) => (
+            <li class="t-small">
+              <code>--{step.name}</code>
+              <span class="ink-2">{step.value}, {String(step.px)} px</span>
+              <span class="specimen__bar" style={`inline-size: var(--${step.name})`} />
+            </li>
+          ))
+        }
+      </ul>
+      <p class="t-small ink-2">
+        The grid: {gridValues.map((property) => `${property.name} ${property.value}`).join('. ')}.
+      </p>
+      <div class="grid specimen__columns" aria-hidden="true">
+        {Array.from({ length: 12 }, () => <span />)}
+      </div>
+    </section>
+  </div>
+</Site>
+
+<style>
+  .specimen {
+    padding-block: var(--space-16) var(--space-32);
+  }
+
+  .specimen__intro {
+    padding-block-end: var(--space-16);
+  }
+
+  .specimen__section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    padding-block: var(--space-16);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .specimen__panels {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .specimen__panel {
+    padding: var(--space-8);
+    border: var(--hairline) solid var(--rule);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .specimen__swatches {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+
+  .specimen__swatch-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .specimen__swatch {
+    flex: none;
+    inline-size: var(--space-12);
+    block-size: var(--space-12);
+    border: var(--hairline) solid var(--rule);
+  }
+
+  .specimen__scale {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .specimen__scale-row {
+    display: grid;
+    gap: var(--space-3);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .specimen__spec {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+  }
+
+  .specimen__links {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .specimen__links li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .specimen__form {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .specimen__form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .specimen__ledger {
+    inline-size: 100%;
+    border-collapse: collapse;
+    text-align: start;
+  }
+
+  .specimen__ledger caption {
+    margin-block-end: var(--space-3);
+    text-align: start;
+  }
+
+  .specimen__ledger th,
+  .specimen__ledger td {
+    padding: var(--space-4);
+    border-block-end: var(--hairline) solid var(--rule);
+    font-weight: inherit;
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .specimen__ledger thead th {
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .specimen__company {
+    display: block;
+    font-weight: 600;
+  }
+
+  .specimen__meta {
+    display: block;
+  }
+
+  .specimen__photos {
+    row-gap: var(--space-8);
+    align-items: start;
+  }
+
+  .specimen__photo {
+    grid-column: 1 / -1;
+  }
+
+  .specimen__rule {
+    inline-size: 100%;
+    margin: 0;
+    border: 0;
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .specimen__space {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .specimen__space li {
+    display: grid;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .specimen__bar {
+    block-size: var(--space-3);
+    background: var(--ink);
+  }
+
+  .specimen__columns span {
+    block-size: var(--space-12);
+    background: var(--rule);
+  }
+
+  @media (width >= 40rem) {
+    .specimen__space li {
+      grid-template-columns: 8rem 10rem 1fr;
+      align-items: center;
+    }
+  }
+
+  .specimen__table-wrap {
+    /* Positioned so visually hidden text in a cell is clipped with the table, not the page. */
+    position: relative;
+    overflow-x: auto;
+  }
+
+  @media (width >= 56rem) {
+    .specimen__panels {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .specimen__scale-row {
+      grid-template-columns: 16rem 1fr;
+      gap: var(--space-8);
+    }
+
+    .specimen__photo--hero {
+      grid-column: 1 / span 7;
+    }
+
+    .specimen__photo--portrait {
+      grid-column: 8 / span 5;
+    }
+  }
+</style>

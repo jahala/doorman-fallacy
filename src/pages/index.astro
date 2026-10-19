@@ -1,0 +1,26 @@
+---
+import Photo from '../components/Photo.astro';
+import Site from '../layouts/Site.astro';
+---
+
+<Site title="The Doorman Fallacy">
+  <div class="page">
+    <section class="section grid hero" aria-labelledby="hero-title">
+      <div class="hero__text">
+        <h1 id="hero-title" class="t-display">What does a doorman actually do?</h1>
+        <p class="t-lead">
+          Opening the door is only part of the job. There&rsquo;s also recognising guests, finding a taxi
+          and noticing when something is wrong.
+        </p>
+        <p class="t-lead ink-2">
+          Rory Sutherland called replacing the person with an automatic door the doorman fallacy.
+        </p>
+        <p class="hero__link"><a href="/idea">Read the explanation</a></p>
+        <p class="hero__credit t-caption ink-3">Rory Sutherland, <i>Alchemy</i>, 2019.</p>
+      </div>
+      <div class="hero__photo">
+        <Photo id="hero" sizes="(min-width: 56rem) 50vw, 100vw" priority />
+      </div>
+    </section>
+  </div>
+</Site>

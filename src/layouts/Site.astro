@@ -1,0 +1,91 @@
+---
+import '@fontsource-variable/inter/opsz.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2?url';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/print.css';
+
+const siteName = 'The Doorman Fallacy';
+const nav = [
+  { key: 'idea', label: 'The idea', href: '/idea' },
+  { key: 'ledger', label: 'The ledger', href: '/ledger' },
+  { key: 'about', label: 'About', href: '/about' },
+  { key: 'subscribe', label: 'Subscribe', href: '/#subscribe' },
+] as const;
+
+interface Props {
+  title: string;
+  description?: string;
+  current?: (typeof nav)[number]['key'];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'The idea behind the doorman fallacy, and a sourced ledger of what happened after companies cut roles for AI.',
+  current,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title === siteName ? title : `${title} | ${siteName}`;
+const address = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={address.href} />}
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="page">
+        <a class="wordmark" href="/">{siteName}</a>
+        <nav class="site-nav" aria-label="Main">
+          <ul>
+            {
+              nav.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={item.key === current ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="page">
+        <div class="grid site-footer__top">
+          <div class="site-footer__id stack">
+            <p class="t-title">{siteName}</p>
+            <p class="t-lead ink-2">Curated by Jan Hallvard Larsen.</p>
+            <p><a href="/about">About the curator</a></p>
+          </div>
+          <nav class="site-footer__links" aria-label="Footer">
+            <ul>
+              <li><a href="/sources">Sources &amp; approach</a></li>
+              <li><a href="mailto:cases@thedoormanfallacy.com">Suggest a case</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+            </ul>
+          </nav>
+        </div>
+        <p class="print-only t-caption">{address.href}</p>
+        <p class="site-footer__credit t-caption">
+          The doorman fallacy is an idea from Rory Sutherland's <i>Alchemy</i> (2019).
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

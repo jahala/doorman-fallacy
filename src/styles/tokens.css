@@ -1,0 +1,83 @@
+/*
+ * Design tokens. This is the only file in the project that may hold colour values.
+ * Everything else reads them with var(--name). Stylelint enforces this.
+ *
+ * Each colour is written once as light-dark(light, dark). The value follows the
+ * element's color-scheme, which is the visitor's setting (prefers-color-scheme) at
+ * :root. The classes at the bottom force one scheme on a container, which the type
+ * specimen uses to show both side by side without repeating any hex value.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Colour */
+  --paper: light-dark(#faf9f7, #121211);
+  --ink: light-dark(#0b0b0a, #f3f2ee);
+  --ink-2: light-dark(#55544f, #b4b2ac);
+  --ink-3: light-dark(#6a6964, #9c9a94);
+  --rule: light-dark(#d6d5d1, #34332f);
+  --field: light-dark(#8c8b86, #77756f);
+  --accent: light-dark(#a92819, #f0654f);
+
+  /* Type: one family, Inter, with its optical-size axis */
+  --font: "Inter Variable", system-ui, sans-serif;
+
+  --display-size: clamp(3rem, 7vw, 5.5rem);
+  --display-weight: 600;
+  --display-leading: 0.95;
+  --display-tracking: -0.035em;
+
+  --title-size: clamp(1.75rem, 3vw, 2.5rem);
+  --title-weight: 600;
+  --title-leading: 1.1;
+  --title-tracking: -0.02em;
+
+  --lead-size: clamp(1.25rem, 2vw, 1.75rem);
+  --lead-weight: 400;
+  --lead-leading: 1.35;
+  --lead-tracking: -0.01em;
+
+  --body-size: 1.125rem;
+  --body-weight: 400;
+  --body-leading: 1.55;
+  --body-tracking: 0;
+
+  --small-size: 0.9375rem;
+  --small-weight: 400;
+  --small-leading: 1.45;
+  --small-tracking: 0;
+
+  --caption-size: 0.875rem;
+  --caption-weight: 400;
+  --caption-leading: 1.4;
+  --caption-tracking: 0;
+
+  /* Space: a 4px base. --space-N is N x 4px */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Layout: 12 columns, content up to 1400px */
+  --grid-columns: 12;
+  --grid-max: 1400px;
+  --grid-margin: clamp(1.25rem, 4.5vw, 4.5rem);
+  --grid-gap: var(--space-6);
+  --measure: 65ch;
+  --hairline: 1px;
+}
+
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-dark {
+  color-scheme: dark;
+}

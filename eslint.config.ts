@@ -1,0 +1,54 @@
+import eslint from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import astro from 'eslint-plugin-astro';
+import tseslint from 'typescript-eslint';
+import { libPurity } from './eslint/lib-purity.ts';
+
+const project = ['./tsconfig.json', './tsconfig.node.json'];
+
+export default defineConfig([
+  globalIgnores([
+    'dist/',
+    '.astro/',
+    '.wrangler/',
+    'node_modules/',
+    'test-results/',
+    'playwright-report/',
+    // Fixtures are files that a guard must flag, so the guards skip them in the normal run.
+    'tests/fixtures/',
+  ]),
+  eslint.configs.recommended,
+  tseslint.configs.strictTypeChecked,
+  astro.configs['flat/recommended'],
+  {
+    languageOptions: {
+      parserOptions: { project, tsconfigRootDir: import.meta.dirname },
+    },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+    },
+  },
+  {
+    files: ['**/*.astro'],
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser,
+        extraFileExtensions: ['.astro'],
+        project,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    // Typed linting cannot see the element types in an Astro template, so every JSX-like
+    // expression reads as an error type. The script part of each page is still type-checked.
+    files: ['**/*.astro'],
+    rules: { '@typescript-eslint/no-unsafe-return': 'off' },
+  },
+  {
+    files: ['**/*.mjs'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  libPurity(['src/lib/**/*.ts']),
+]);

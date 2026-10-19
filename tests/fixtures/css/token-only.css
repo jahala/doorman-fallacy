@@ -1,0 +1,6 @@
+/* Control: colours taken from tokens are allowed anywhere. */
+.ok {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}

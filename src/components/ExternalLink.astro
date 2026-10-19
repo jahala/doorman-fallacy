@@ -1,0 +1,9 @@
+---
+/** A link that leaves the site. The arrow marks it; internal links never carry one. */
+interface Props {
+  href: string;
+}
+const { href } = Astro.props;
+---
+
+<a href={href} rel="noopener"><slot />&nbsp;<span aria-hidden="true">↗</span></a>

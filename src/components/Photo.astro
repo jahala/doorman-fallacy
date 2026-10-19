@@ -1,0 +1,40 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoId } from '../data/photos.ts';
+import ExternalLink from './ExternalLink.astro';
+
+interface Props {
+  id: PhotoId;
+  /** The sizes attribute: how wide the photo is at each viewport width. */
+  sizes: string;
+  /** True for the photo that is the first thing a visitor sees. */
+  priority?: boolean;
+}
+
+const { id, sizes, priority = false } = Astro.props;
+const photo = photos[id];
+const wanted = [480, 800, 1200, 1600];
+const widths = [...wanted.filter((width) => width < photo.file.width), photo.file.width];
+---
+
+<figure class="photo">
+  <Picture
+    src={photo.file}
+    alt={photo.alt}
+    formats={['avif', 'webp']}
+    widths={widths}
+    sizes={sizes}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+  />
+  <figcaption class="t-caption">
+    <span>{photo.caption}</span>
+    <span>
+      {'title' in photo ? <>&ldquo;{photo.title}&rdquo; by </> : 'Photo by '}
+      <ExternalLink href={photo.photographerUrl}>{photo.photographer}</ExternalLink>
+      {'place' in photo ? <>, {photo.place},</> : null} on <ExternalLink href={photo.photoUrl}
+        >Unsplash</ExternalLink
+      >
+    </span>
+  </figcaption>
+</figure>
