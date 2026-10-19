@@ -27,7 +27,7 @@ export interface CustomProperty {
   readonly value: string;
 }
 
-export const typeTokenNames = ['display', 'title', 'subhead', 'lead', 'body', 'small', 'caption'] as const;
+export const typeTokenNames = ['hero', 'display', 'title', 'subhead', 'lead', 'body', 'small', 'caption'] as const;
 
 /**
  * The lowest WCAG contrast each colour token must reach against `paper`, in light and dark.

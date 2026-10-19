@@ -42,11 +42,12 @@ Colour:
 
 The accent was sampled from the hero mockup's nav underline. Error, warning and success colours are added only when a function needs one.
 
-Type: two families, self-hosted ([D-013](decisions.md)). Prata, a high-contrast display serif with one weight, sets headings (`display`, `title`, `subhead`) and the wordmark. Inter, with its optical-size axis, sets everything else. Both are under the SIL Open Font License.
+Type: two families, self-hosted ([D-013](decisions.md)). Prata, a high-contrast display serif with one weight, sets headings (`hero`, `display`, `title`, `subhead`) and the wordmark. Inter, with its optical-size axis, sets everything else. Both are under the SIL Open Font License.
 
 | Token | Size | Weight | Line height | Tracking | Use |
 |---|---|---|---|---|---|
-| `display` | clamp(3rem, 7vw, 5.5rem) | 400 | 0.95 | -0.01em | Page titles; section headings on the home page |
+| `hero` | clamp(3rem, 7vw, 5.5rem) | 400 | 0.95 | -0.01em | The home page's title, and nothing else |
+| `display` | clamp(2.4rem, 5.6vw, 4.4rem) | 400 | 0.95 | -0.01em | Page titles; section headings on the home page. Four fifths of `hero` |
 | `title` | clamp(1.75rem, 3vw, 2.5rem) | 400 | 1.1 | -0.02em | Section headings on text pages; the home page's h3 and its sign-up heading |
 | `subhead` | clamp(1.25rem, 2vw, 1.75rem) | 400 | 1.2 | -0.01em | Third-level headings, and the names of things in a list |
 | `lead` | clamp(1.25rem, 2vw, 1.75rem) | 400 | 1.35 | -0.01em | First line under a headline |
@@ -58,7 +59,7 @@ Hierarchy: every page uses the same four levels, and a site test holds them (`te
 
 | Level | Home page | Every other page |
 |---|---|---|
-| h1 | `display` | `display` |
+| h1 | `hero` | `display` |
 | h2 | `display` | `title` |
 | h3 | `title` | `subhead` |
 | A name inside an h3's content | `label`: body at weight 500 | `label` |

@@ -30,19 +30,20 @@ function headingsOf(page: Page, level: string): Promise<{ text: string; size: st
 
 // One hierarchy everywhere: the home page sets its section headings a step larger than the text pages.
 const scales = [
-  { route: '/', h2: 't-display', h3: 't-title' },
+  { route: '/', h1: 't-hero', h2: 't-display', h3: 't-title' },
   ...['/idea/', `/idea/${fn}/`, '/ledger/', `/ledger/${firstCase?.slug ?? ''}/`, '/approach/', '/privacy/', '/about/'].map((route) => ({
     route,
+    h1: 't-display',
     h2: 't-title',
     h3: 't-subhead',
   })),
 ];
 
-for (const { route, h2, h3 } of scales) {
-  test(`${route} sets h1 in display, h2 in ${h2} and h3 in ${h3}, all in the heading face`, async ({ page, siteUrl }) => {
+for (const { route, h1, h2, h3 } of scales) {
+  test(`${route} sets h1 in ${h1}, h2 in ${h2} and h3 in ${h3}, all in the heading face`, async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
     if (route === '/') expect(await headingsOf(page, 'h2')).toContainEqual(expect.objectContaining({ text: 'Updates from the ledger', size: await sizeOf(page, 't-title') }));
-    const want = { h1: await sizeOf(page, 't-display'), h2: await sizeOf(page, h2), h3: await sizeOf(page, h3) };
+    const want = { h1: await sizeOf(page, h1), h2: await sizeOf(page, h2), h3: await sizeOf(page, h3) };
     for (const level of ['h1', 'h2', 'h3'] as const) {
       // The sign-up at the foot of the home page is a form, so its heading is a step smaller.
       const found = (await headingsOf(page, level)).filter(({ text }) => !(route === '/' && text === 'Updates from the ledger'));
@@ -53,6 +54,16 @@ for (const { route, h2, h3 } of scales) {
     }
   });
 }
+
+test('only the home page title is set at the hero size, a fifth larger than every other title', async ({ page, siteUrl }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(siteUrl);
+  const hero = Number.parseFloat(await sizeOf(page, 't-hero'));
+  const display = Number.parseFloat(await sizeOf(page, 't-display'));
+  expect(display / hero).toBeCloseTo(0.8, 2);
+  expect(Number.parseFloat(await page.locator('h1').evaluate((element) => getComputedStyle(element).fontSize))).toBe(hero);
+  await expect(page.locator('main .t-hero')).toHaveCount(1);
+});
 
 for (const route of ['/idea/', '/ledger/', '/approach/']) {
   test(`${route} lists its sections on the page, numbered as the sections are`, async ({ page, siteUrl }) => {

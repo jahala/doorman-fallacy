@@ -61,6 +61,7 @@ code {
 
 /* Type scale: size and weight carry the hierarchy */
 
+.t-hero,
 .t-display,
 .t-title,
 .t-subhead,
@@ -77,6 +78,15 @@ h3 {
 p,
 li {
   text-wrap: pretty;
+}
+
+/* The home page's title, and only it. */
+.t-hero {
+  font-size: var(--hero-size);
+  font-weight: var(--hero-weight);
+  line-height: var(--hero-leading);
+  letter-spacing: var(--hero-tracking);
+  text-wrap: balance;
 }
 
 .t-display {
