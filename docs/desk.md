@@ -12,15 +12,20 @@ Most AI layoff news is not a doorman case. Many large cuts fund AI investment or
 | 2. Triage | Jev | Fractions of a cent per lead | Judges each headline: is it a named organisation's AI-linked reduction, what kind of news, how AI relates to the roles, which roles, which organisation, how many |
 | 3. Priority | Code | Free | Weighs Jev's answers into a doorman priority (`doormanPriority` in `desk/triage.ts`) and groups leads by organisation |
 | 4. Assessment | Claude agent | About $0.20 per organisation | Researches the lead and rates its doorman fit from 0 to 3, using `desk/prompts/assess.md` |
-| 5. Drafting | Claude agent, then Jev | Not built yet | Writes the case; quotes are selected from the fetched page, never written |
-| 6. Checks | Code and a second agent | Not built yet | The [publishing checks](engineering.md#publishing-checks) |
+| 5. Drafting | Claude agent | About $0.20 per case | Writes the case from the sources' numbered sentences (`desk/prompts/draft.md`), citing sentences by number; code copies each cited sentence in as the quote |
+| 6. Checks | Jev and code | Under $0.001 per case | The [publishing checks](engineering.md#publishing-checks); failures go back to the writer once, then are removed |
 
 Commands:
 
 ```sh
 node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
-node desk/assess.ts --top 4 --budget-each 0.35
+node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
+node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
+
+Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
+
+Archiving uses Save Page Now with Jan's archive.org keys, read from the Keychain (service `archive.org`, accounts `s3-access` and `s3-secret`) at the moment of use. Without them, anonymous saving is tried, and it often fails.
 
 Runs are written to `.desk-runs/`, which git ignores, because leads are unconfirmed claims about named companies. The sweep moves runs older than 30 days to the Trash.
 
@@ -46,3 +51,16 @@ Small run: 3 searches, Google News, 7 days. 69 leads, Jev triage in 3 seconds fo
 | GDELT refused most requests (HTTP 429) even at one request every 5.5 seconds | Retry GDELT with back-off |
 | One organisation split into groups under name variants ("DNB" and "DNB Bank") | Merge names where one is the start of the other, or ask Jev whether two names are the same organisation |
 | A plan to replace support staff with AI was dropped before any roles were cut; the assessor rejected it under the inclusion rule | Correct. The ledger finds cases where roles were cut and monitors them; plans dropped before a cut stay out (decided 2026-10-19) |
+
+## What the first drafting run showed (2026-10-19)
+
+The DNB case went from assessment to a published case file in under a minute, for $0.17 to $0.29 of Claude and under $0.001 of Jev per run.
+
+| Finding | Consequence |
+|---|---|
+| The release's text sat in a `<pre>` block inside a Next.js data block, so paragraph extraction found 2 sentences | `articleSentences` also reads `<pre>`, `articleBody` in structured data, and article HTML in Next.js data, and keeps whichever gives the most sentences |
+| Given only the quote, Jev failed true statements that named the publisher or the date ("DNB said ...", "On 6 October ...") | Jev now sees the source's publisher, date and kind with each quote. First-draft failures fell from 5 of 12 to 1 of 12 |
+| One revision round fixed every remaining failure in two of three runs; in the third, the update could not be supported and the case was not published | The pipeline fails closed: a case without a supported update or doorman reading is never written to `src/content/cases/` |
+| All quotes in the published case were found on the archived copy | Publishing check 2 holds when quotes are copied by code |
+| The only readable source was DNB's own release; Norwegian coverage was blocked or never searched | Add Norwegian and other Scandinavian searches to the sweep, and use Wayback copies for blocked publishers |
+

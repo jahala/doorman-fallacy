@@ -11,6 +11,7 @@ import { mkdir, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs, promisify } from 'node:util';
 import { dedupeLeads, type Lead, type RawLead } from '../src/lib/leads.ts';
+import { createBudget } from './budget.ts';
 import { createJevDoor } from './jev.ts';
 import { fullQueries, smallQueries } from './queries.ts';
 import { gdelt, googleNews, hackerNews, type Fetched } from './sources.ts';
@@ -39,6 +40,7 @@ const budget = Number(values.budget);
 const limit = Number(values.limit);
 const sources = values.sources.split(',');
 const queries = values.size === 'full' ? fullQueries : smallQueries;
+const runBudget = createBudget(budget);
 const outDir = path.join(runRoot, `${today}-${values.size}-${String(days)}d-${Date.now().toString(36)}`);
 
 /** Runs older than the retention window are moved to the Trash, so .desk-runs/ cannot grow without end. */
@@ -77,7 +79,7 @@ async function fetchAll(): Promise<{ leads: RawLead[]; failures: Extract<Fetched
 }
 
 async function triageAll(leads: readonly Lead[]): Promise<{ triaged: Triaged[]; door: ReturnType<typeof createJevDoor>; model: string }> {
-  const door = createJevDoor({ budgetUsd: budget, model: values.model, sleep });
+  const door = createJevDoor({ budget: runBudget, model: values.model, sleep });
   const triaged: Triaged[] = new Array<Triaged>(leads.length);
   let next = 0;
   let model = values.model;
@@ -169,7 +171,7 @@ const meta = {
   fetchFailures: fetched.failures,
   costUsd: Number(door.spentUsd().toFixed(5)),
   budgetUsd: budget,
-  calls: door.calls(),
+  calls: runBudget.calls(),
   seconds: { fetch: Math.round((fetchedAt - started) / 1000), triage: Math.round((finished - fetchedAt) / 1000) },
   prunedRuns: pruned,
 };

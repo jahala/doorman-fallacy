@@ -42,13 +42,15 @@ Test rules:
 
 No person reviews a case before it goes live ([D-009](decisions.md)). These checks take that place. A case is published only when all pass, and `scripts/check-cases` runs the mechanical ones in every build too.
 
-1. **Format.** The schema passes, every cited id exists, every source is cited, and the body's headings are present and in order.
+Checks 2 to 5 run in `desk/draft.ts` before a case is written; check 1 runs there and in every build.
+
+1. **Format.** The schema passes, every cited id exists, every source is cited, the body's headings are present and in order, and every paragraph under "What happened next" carries a footnote whose definition holds a quote.
 2. **Quotes are real.** Every quote is found word for word in its source's archived copy. This is a text match with no model involved, so an invented fact cannot pass.
-3. **Claims stay inside their quotes.** A second agent, separate from the writer, reads each sentence next to its quote. It fails a sentence that says more than its quote, guesses at motives, or uses loaded words.
-4. **Inclusion rule.** The same agent confirms the case meets the rule in [data-model.md](data-model.md#what-counts-as-a-case).
+3. **Claims stay inside their quotes.** Jev, separate from the writer, reads each statement next to its quote and the source's details (publisher, date, kind). It fails a statement that says more than its quote or suggests a motive; code fails one with loaded words. A failure goes back to the writer once, and what still fails is removed.
+4. **Inclusion rule.** The assessor confirms the case meets the rule in [data-model.md](data-model.md#what-counts-as-a-case) before drafting starts.
 5. **Sources.** One primary source, or two independent reports, counted from each source's `kind`.
 
-Checks 2 and 5 need no model. Checks 3 and 4 do, and their verdicts are stored with the run so a rejection can be read later.
+Checks 2 and 5 need no model. Checks 3 and 4 do, and their verdicts are written to the run's log so a rejection can be read later.
 
 ## Rules and their guards
 
@@ -58,12 +60,15 @@ Every rule this project states is listed here once, with what fails when it brea
 |---|---|
 | Every case matches the format in [data-model.md](data-model.md) | Content schema; the build fails. A fixture case must fail it |
 | Every update cites at least one source, each with an archive link | Content schema |
-| Every cited source id exists, and every source is cited | Content schema. Not built yet: arrives with the new case format |
-| Body headings present and in order; every factual sentence carries a footnote | `scripts/check-cases`. Not built yet |
-| Every quote appears word for word in its archived source | Publishing check 2. Not built yet. A fixture with an altered quote must fail |
+| Every cited source id exists and source ids are unique | Content schema. A fixture for each citing field must fail it |
+| Every source is cited, in the front matter or in a body footnote | `scripts/check-cases`, because only it sees both. A fixture with an uncited source must fail it |
+| Body headings present and in order, no other `##` heading | `scripts/check-cases`. A fixture each for a missing, a misplaced and an extra heading must fail it |
+| Every paragraph under "What happened next" carries a footnote, and the footnote matches a source | `scripts/check-cases`. A footnote label is a source id, or a source id plus `-n` for a second quote from the same source. Fixtures for a paragraph with no footnote, a label with no source, a label never defined and a label defined twice must fail it. Sentences under the other headings are not checked mechanically; publishing check 3 reads them |
+| Every footnote and every claim and update quote has at least four words | Content schema for `claims` and `updates`; `scripts/check-cases` for footnote definitions. A fixture each must fail it |
+| Every quote appears word for word in its archived source | Publishing check 2 in `desk/draft.ts`, using `quoteFound` in `src/lib/quotes.ts`. Unit test: a quote with one word changed is not found |
 | Statuses and hidden functions come from their vocabularies | Content schema reads `src/data/` |
 | Ledger text fits its columns (60 and 80 characters) | Content schema |
-| The next review date follows the status table in [data-model.md](data-model.md#derived-never-stored) | Unit test of `lib/review.ts`. Not built yet: the derived date arrives with the new case format |
+| The next review date follows the status table in [data-model.md](data-model.md#derived-never-stored) | Unit test of `lib/review.ts`: each status, the holding and reversed readings, and calendar-correct month arithmetic |
 | The current status is the latest update's status | Unit test of `lib/status.ts` |
 | `lib/` is pure: no clock, files or network | ESLint restricted globals and imports for `src/lib/`. A fixture file must be flagged |
 | No client-side JavaScript ships | Site test: `dist/` contains no script files or inline scripts |
@@ -76,8 +81,14 @@ Every rule this project states is listed here once, with what fails when it brea
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
 | The ledger page builds and stays light at 500 cases | Size test; the page-weight budget is set from the first measurement. Not built yet: arrives with the ledger page |
 | No promises left unawaited, scripts included | ESLint `no-floating-promises` |
+| Every metered call (Jev and Claude) reserves against one budget per run, settles at its real cost, and is never resent when it may have been charged | `desk/budget.ts`, used by `desk/jev.ts` and `desk/claude.ts`. Unit test: two spenders reaching for the last of the budget, exactly one gets it |
+| A desk run leaves no child process behind, even when killed | `desk/processes.ts`. Unit test kills a runner holding a real `sleep` child and waits for the child to end |
+| What the drafter renders passes the case checks | Contract test in `tests/unit/case-render.test.ts` runs `checkCaseText` on a rendered case |
+| Tests run on the Node major version in `.nvmrc` | `tests/unit/runtime.test.ts`, which names the switch command |
+| The fast checks pass before code leaves the machine | `.githooks/pre-push`, installed by `npm ci`. CI runs the same once the repository is public |
+| Checks pass on a fresh clone | `npm run check` generates Astro's types first (`npm run sync`) |
 | Cases due for review are reviewed | Unit test of `lib/review.ts`. The desk's review step is not built yet |
 | Sources still resolve | Not built yet: the desk's report will list dead links. It does not block a build, since outside sites fail on their own |
-| Write what was reported, never motives | Publishing check 3. Not built yet |
+| Write what was reported, never motives | Publishing check 3 in `desk/draft.ts` (Jev, plus a loaded-word list tested in `tests/unit/case-render.test.ts`) |
 | Personal data is deleted on time | Unit tests of the retention rules in `lib/`, run by the Worker's daily job. Not built yet |
 | No client-side JavaScript, forms included | Site test above; the forms are plain HTML posting to the Worker |

@@ -3,22 +3,22 @@
  * researches the lead and judges how well it fits the doorman fallacy (desk/prompts/assess.md).
  * Each quote the agent returns is then checked against the live page, word for word.
  *
- *   node desk/assess.ts --run .desk-runs/<run> --top 3 --budget-each 0.40
+ *   node desk/assess.ts --run .desk-runs/<run> --top 3 --budget-each 0.40 --budget 1.50
  */
-import { execFile } from 'node:child_process';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { parseArgs, promisify } from 'node:util';
+import { parseArgs } from 'node:util';
 import { quoteFound } from '../src/lib/quotes.ts';
+import { createBudget } from './budget.ts';
+import { askClaude } from './claude.ts';
 import { clusters, type Cluster, type Triaged } from './clusters.ts';
-
-const run = promisify(execFile);
 
 const { values } = parseArgs({
   options: {
     run: { type: 'string' },
     top: { type: 'string', default: '3' },
     'budget-each': { type: 'string', default: '0.40' },
+    budget: { type: 'string', default: '1.50' },
     model: { type: 'string', default: 'sonnet' },
     concurrency: { type: 'string', default: '3' },
     only: { type: 'string' },
@@ -98,34 +98,21 @@ async function pageText(url: string): Promise<string | null> {
   }
 }
 
+const budget = createBudget(Number(values.budget));
+
 async function assess(cluster: Cluster, prompt: string): Promise<Outcome> {
   const started = Date.now();
-  const args = [
-    '-p',
-    `${prompt}\n\n${leadText(cluster)}\n`,
-    '--output-format',
-    'json',
-    '--model',
-    values.model,
-    '--allowedTools',
-    'WebSearch',
-    'WebFetch',
-    '--max-budget-usd',
-    values['budget-each'],
-  ];
-  let stdout: string;
-  try {
-    ({ stdout } = await run('claude', args, { timeout: 15 * 60_000, maxBuffer: 32 * 1024 * 1024 }));
-  } catch (error) {
-    return { cluster: cluster.name, ok: false, costUsd: 0, seconds: Math.round((Date.now() - started) / 1000), error: String(error).slice(0, 400) };
-  }
+  const result = await askClaude(`${prompt}\n\n${leadText(cluster)}\n`, {
+    budget,
+    capUsd: Number(values['budget-each']),
+    model: values.model,
+    allowedTools: ['WebSearch', 'WebFetch'],
+  });
   const seconds = Math.round((Date.now() - started) / 1000);
-  const envelope = JSON.parse(stdout) as { result?: string; total_cost_usd?: number; is_error?: boolean };
-  const costUsd = envelope.total_cost_usd ?? 0;
-  const assessment = lastJsonFence(envelope.result ?? '') as Assessment | null;
-  if (assessment === null || envelope.is_error === true) {
-    return { cluster: cluster.name, ok: false, costUsd, seconds, error: (envelope.result ?? '').slice(-400) };
-  }
+  if (!result.ok) return { cluster: cluster.name, ok: false, costUsd: result.costUsd, seconds, error: `${result.reason}: ${result.message}` };
+  const costUsd = result.costUsd;
+  const assessment = lastJsonFence(result.text) as Assessment | null;
+  if (assessment === null) return { cluster: cluster.name, ok: false, costUsd, seconds, error: result.text.slice(-400) };
   const quoteChecks = await Promise.all(
     assessment.sources.map(async (source) => {
       const html = await pageText(source.url);

@@ -78,7 +78,7 @@ Plain Markdown with these headings, in this order:
 ## Open questions
 ```
 
-Every factual sentence ends with a footnote keyed by source id, and the footnote carries the verbatim quote the sentence rests on:
+Every factual sentence ends with a footnote, and the footnote carries the verbatim quote the sentence rests on. A footnote's label is the source id; when one source backs several sentences, later labels add `-2`, `-3` and so on:
 
 ```md
 The bank said the roles were not redundant after all.[^acs-2025-08]

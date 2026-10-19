@@ -11,7 +11,6 @@ export const briefMaxLines = 150;
  */
 export const notYetBuilt: readonly string[] = [
   // The case format, the Worker and the desk (D-008 to D-012). Each leaves the list when it lands.
-  'scripts/check-cases',
   'src/worker/',
   'migrations/',
 ];

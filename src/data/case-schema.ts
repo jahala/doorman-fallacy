@@ -1,5 +1,6 @@
 import { z } from 'astro/zod';
 import { hiddenFunctionIds } from './hidden-functions.ts';
+import { minQuoteWords, quoteLongEnough } from '../lib/quotes.ts';
 import { statusIds } from './statuses.ts';
 
 /**
@@ -30,7 +31,17 @@ const isoDate = z
 
 const text = z.string().trim().min(1);
 
+/** A short lowercase id such as acs-2025-08. Footnote labels in the body are built from these. */
+const slug = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'Expected a lowercase slug such as acs-2025-08');
+
+/** A verbatim quote. One that is shorter than four words proves nothing. */
+const quote = text.refine(quoteLongEnough, { message: `A quote needs at least ${String(minQuoteWords)} words` });
+
+export const sourceKinds = ['primary', 'reporting'] as const;
+
 export const sourceSchema = z.strictObject({
+  id: slug,
+  kind: z.enum(sourceKinds),
   url: z.url(),
   publisher: text,
   title: text,
@@ -38,11 +49,38 @@ export const sourceSchema = z.strictObject({
   archive: z.url({ message: 'Every source needs an archive link' }),
 });
 
+/** What the organisation said the change would do. */
+export const claimSchema = z.strictObject({
+  date: isoDate,
+  who: text,
+  said: text,
+  source: slug,
+  quote,
+});
+
+/** One point of the doorman reading: analysis, tied to the reported evidence it rests on. */
+export const missedSchema = z.strictObject({
+  function: z.enum(hiddenFunctionIds),
+  evidence: text,
+  sources: z.array(slug).min(1),
+});
+
 export const updateSchema = z.strictObject({
   date: isoDate,
   status: z.enum(statusIds),
   summary: text.max(80),
-  sources: z.tuple([sourceSchema], sourceSchema),
+  sources: z.array(slug).min(1),
+  quote,
+});
+
+export const correctionSchema = z.strictObject({
+  date: isoDate,
+  what: text,
+});
+
+export const watchSchema = z.strictObject({
+  queries: z.array(text).min(1),
+  signals: z.array(text).min(1),
 });
 
 /** The newest update. Updates are stored oldest first and a case has at least one. */
@@ -61,20 +99,49 @@ export const caseSchema = z
     announced: isoDate,
     headcount: z.number().int().positive().nullable(),
     door: text,
-    missed: z.tuple([z.enum(hiddenFunctionIds)], z.enum(hiddenFunctionIds)),
+    claims: z.array(claimSchema),
+    missed: z.tuple([missedSchema], missedSchema),
     updates: z.tuple([updateSchema], updateSchema),
-    nextReview: isoDate.optional(),
+    corrections: z.array(correctionSchema),
+    suggestedBy: text.nullable(),
+    lastChecked: isoDate,
+    /** An override. The review date is otherwise derived in lib/review.ts. */
+    nextReview: isoDate.nullable().optional(),
+    watch: watchSchema,
+    sources: z.array(sourceSchema).min(1),
+    related: z.array(text),
   })
   .superRefine((value, ctx) => {
-    const latest = latestOf(value.updates);
+    const known = new Set<string>();
+    value.sources.forEach((source, index) => {
+      if (known.has(source.id)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['sources', index, 'id'],
+          message: `Source id ${source.id} is used twice`,
+        });
+      }
+      known.add(source.id);
+    });
 
-    if (latest.status !== 'reversed' && value.nextReview === undefined) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['nextReview'],
-        message: 'nextReview is required unless the latest status is reversed',
+    const cite = (id: string, path: (string | number)[]): void => {
+      if (!known.has(id)) {
+        ctx.addIssue({ code: 'custom', path, message: `Cites ${id}, which is not in sources` });
+      }
+    };
+    value.claims.forEach((claim, index) => {
+      cite(claim.source, ['claims', index, 'source']);
+    });
+    value.missed.forEach((point, index) => {
+      point.sources.forEach((id, at) => {
+        cite(id, ['missed', index, 'sources', at]);
       });
-    }
+    });
+    value.updates.forEach((update, index) => {
+      update.sources.forEach((id, at) => {
+        cite(id, ['updates', index, 'sources', at]);
+      });
+    });
 
     value.updates.forEach((update, index) => {
       const previous = value.updates[index - 1];
@@ -89,5 +156,19 @@ export const caseSchema = z
   });
 
 export type Case = z.output<typeof caseSchema>;
-export type CaseUpdate = z.output<typeof updateSchema>;
 export type CaseSource = z.output<typeof sourceSchema>;
+export type CaseClaim = z.output<typeof claimSchema>;
+export type MissedPoint = z.output<typeof missedSchema>;
+export type CaseUpdate = z.output<typeof updateSchema>;
+
+/**
+ * Every source id the front matter cites: claims, missed points and updates.
+ * The body cites sources too, in its footnotes; scripts/check-cases adds those.
+ */
+export function citedSourceIds(value: Pick<Case, 'claims' | 'missed' | 'updates'>): Set<string> {
+  const cited = new Set<string>();
+  for (const claim of value.claims) cited.add(claim.source);
+  for (const point of value.missed) for (const id of point.sources) cited.add(id);
+  for (const update of value.updates) for (const id of update.sources) cited.add(id);
+  return cited;
+}
