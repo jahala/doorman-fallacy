@@ -1,32 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
 import { questions } from '../../src/data/questions.ts';
 import { expect, test } from './site.ts';
-
-test('the home page shows the whole job: the visible task, and each kind of hidden work linking to its page', async ({
-  page,
-  siteUrl,
-}) => {
-  await page.goto(siteUrl);
-  const figure = page.locator('figure.whole-job');
-  await expect(figure.locator('figcaption')).toHaveText(/job description draws the box in the middle/);
-  await expect(figure.locator('.whole-job__task')).toContainText('Opening the door');
-  for (const id of hiddenFunctionIds) {
-    await expect(figure.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea/${id}`);
-  }
-});
-
-test('the home page names the three questions, from the data file, and links to them explained', async ({ page, siteUrl }) => {
-  await page.goto(siteUrl);
-  const columns = page.locator('section[aria-labelledby="remains-title"] li.remains');
-  await expect(columns).toHaveCount(questions.length);
-  for (const [index, question] of questions.entries()) {
-    await expect(columns.nth(index).getByRole('heading', { level: 3 })).toHaveText(question.title);
-    await expect(columns.nth(index)).toContainText(question.ask);
-  }
-  await expect(page.getByRole('link', { name: 'The three questions, explained' })).toHaveAttribute('href', '/idea#questions');
-});
 
 test('/idea#questions gives each question its ideas, with every source, linking those that have an address', async ({ page, siteUrl }) => {
   await page.goto(new URL('/idea/', siteUrl).href);
@@ -49,7 +24,6 @@ test('/idea#questions gives each question its ideas, with every source, linking 
 
 test('every illustration is a figure with a caption, and its icons are hidden from assistive technology', async ({ page, siteUrl }) => {
   for (const [route, selector] of [
-    ['/', 'figure.whole-job'],
     ['/idea/', 'figure.where'],
     ['/ledger/', 'figure.saved-lost'],
   ] as const) {

@@ -54,7 +54,7 @@ scripts → lib, data
 
 | Path | Page | Mockup |
 |---|---|---|
-| `/` | Home: hero, definition band, what else was the person doing (the three questions and the whole job), ledger preview with its summary, sign-up | all five |
+| `/` | Home: hero, the work beyond the task (the six kinds of hidden work), ledger preview, sign-up | all five |
 | `/idea` | The idea, in five numbered sections: the story, the hidden work, the three questions (with the signs of the mistake), when automation is the right call, further reading. The head holds the definition, how to cite it and the contents | 1, 2 |
 | `/idea/<id>` | One page per hidden function, ids from `hiddenFunctionIds`: at the hotel, today, when it goes missing, the question to ask, the cases in the ledger | none yet |
 | `/ledger` | The ledger, in five numbered sections: the cases (newest announcement first, with a summary above; a designed empty state when there are none), what the ledger watches for, statuses and follow-up, what is known beyond the ledger, the data | 3 |
@@ -65,7 +65,7 @@ scripts → lib, data
 | `/suggest/thanks`, `/suggest/problem` | What the suggestion form answers | none yet |
 | `/subscribe/check-email`, `/subscribe/confirmed`, `/subscribe/problem`, `/subscribe/failed`, `/subscribe/unsubscribed` | What the sign-up, confirm and unsubscribe routes answer | none yet |
 | `/subscribe/unsubscribe` | The one-button page. The Worker serves it at `/unsubscribe`; it has no address of its own | none yet |
-| `/about` | The curator | none yet |
+| `/about` | What the site is, and how to write to it | none yet |
 | `/approach` | How the ledger is kept, in eight numbered sections: the inclusion rule, how a case is written, the checks, reported facts and the reading, following up, corrections, who keeps it, common questions | none yet |
 | `/privacy` | What is collected, why, and when it is deleted | none yet |
 | `/rss.xml` | One item per case, dated at its latest update | |

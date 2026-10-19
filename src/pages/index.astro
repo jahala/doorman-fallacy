@@ -1,20 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import LedgerEmpty from '../components/LedgerEmpty.astro';
-import LedgerSummary from '../components/LedgerSummary.astro';
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
-import WholeJob from '../components/WholeJob.astro';
-import { definition } from '../data/definition.ts';
-import { questions } from '../data/questions.ts';
+import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
 import Site from '../layouts/Site.astro';
 import { countLabel, ledgerRow, newestFirst } from '../lib/ledger.ts';
 
 const previewLength = 5;
 const cases = newestFirst(await getCollection('cases'));
 const previewRows = cases.slice(0, previewLength).map(ledgerRow);
-
 ---
 
 <Site title="The Doorman Fallacy">
@@ -37,81 +33,58 @@ const previewRows = cases.slice(0, previewLength).map(ledgerRow);
       </div>
     </section>
 
-    <section class="band grid" aria-labelledby="definition-label">
-      <h2 id="definition-label" class="band__label t-caption ink-2">The doorman fallacy</h2>
-      <p class="band__statement t-title">{definition}</p>
-      <p class="band__cite t-small"><a href="/idea#cite">How to cite</a></p>
-    </section>
-
-    <section class="section" aria-labelledby="remains-title">
-      <div class="grid split">
-        <h2 id="remains-title" class="t-display split__head">What else was the person doing?</h2>
-        <p class="split__side">
-          When a company automates customer support, answering questions is the obvious task. Recognising a
-          recurring problem, calming an angry customer and knowing when to make an exception are harder to
-          measure.
+    <section class="section grid beyond" aria-labelledby="beyond-title">
+      <div class="beyond__head">
+        <h2 id="beyond-title" class="t-display">The work beyond the task.</h2>
+        <p class="t-lead ink-2">
+          The fallacy is judging a role by its most visible task and overlooking the other work it carries.
         </p>
       </div>
-      <ul class="grid columns columns--3">
-        {
-          questions.map(({ title, ask }, index) => (
-            <li class="ruled remains">
-              <p class="section-number">Question {index + 1}</p>
-              <h3 class="t-title">{title}</h3>
-              <p class="t-lead ink-2">{ask}</p>
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="whole">
-        <WholeJob />
+      <div class="beyond__body">
+        <ul class="beyond__list">
+          {
+            hiddenFunctionIds.map((id) => (
+              <li>
+                <a class="beyond__name t-subhead" href={`/idea/${id}`}>
+                  {hiddenFunctions[id].label}
+                </a>
+                <p class="ink-2">{hiddenFunctions[id].meaning}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="beyond__link"><a href="/idea#questions">Before automating a role</a></p>
       </div>
-
-      <p class="section__link"><a href="/idea#questions">The three questions, explained</a></p>
     </section>
 
     <section class="section" aria-labelledby="ledger-title">
-      <div class="section-head">
-        <div>
-          <h2 id="ledger-title" class="t-display">The ledger</h2>
-          <p class="t-lead ink-2 section__sub">What happened after companies cut roles for AI.</p>
-        </div>
-        <p><a href="/ledger">View all cases</a></p>
-      </div>
+      <h2 id="ledger-title" class="t-display">The ledger</h2>
+      <p class="t-lead ink-2 section__sub">Following what happens after companies cut roles for AI.</p>
+      <p class="ledger-preview__all"><a href="/ledger">View all cases</a></p>
       {
         previewRows.length === 0 ? (
-          <LedgerEmpty heading="h3" size="title" />
+          <div class="ledger-preview">
+            <LedgerEmpty heading="h3" size="title" />
+          </div>
         ) : (
-          <>
-            <LedgerSummary cases={cases} />
+          <div class="ledger-preview">
             <LedgerTable
               rows={previewRows}
-              caption={`${countLabel(cases.length)} in the ledger, newest first.`}
+              compact
+              caption={`${countLabel(cases.length)} in the ledger, newest first. Each has its sources, an update history and a date for its next review, and cuts that hold up are followed as closely as those that are reversed.`}
               label="Ledger preview"
             />
-          </>
+          </div>
         )
       }
-      <div class="grid columns columns--2">
-        <div>
-          <h3 class="t-title">Follow-up is part of each case.</h3>
-          <p class="t-lead ink-2">Entries include linked sources, an update history and a date for the next review.</p>
-        </div>
-        <div>
-          <h3 class="t-title">Cuts that hold up belong here too.</h3>
-          <p class="t-lead ink-2">The ledger follows reversals, strained transitions and outcomes that are still unclear.</p>
-        </div>
-      </div>
     </section>
 
-    <section id="subscribe" class="section grid split" aria-labelledby="subscribe-title">
-      <div class="split__head">
-        <h2 id="subscribe-title" class="t-display">Get updates from the ledger.</h2>
-        <p class="t-lead section__sub">A short email once a month, when the ledger has changed.</p>
-        <p class="ink-2">Unsubscribe at any time.</p>
+    <section id="subscribe" class="section grid signup" aria-labelledby="subscribe-title">
+      <div class="signup__head">
+        <h2 id="subscribe-title" class="t-title">Updates from the ledger</h2>
+        <p class="signup__sub">A short email once a month, when the ledger has changed.</p>
       </div>
-      <div class="split__side">
+      <div class="signup__form">
         <SubscribeForm />
       </div>
     </section>
@@ -119,42 +92,89 @@ const previewRows = cases.slice(0, previewLength).map(ledgerRow);
 </Site>
 
 <style>
-  .band {
-    row-gap: var(--space-4);
-    padding-block: var(--space-12);
-    border-block-end: var(--hairline) solid var(--rule);
+  /* The work beyond the task: the heading under the hero's text, the six kinds in two columns under its photo. */
+  .beyond {
+    row-gap: var(--space-12);
   }
 
-  .band > * {
+  .beyond__head,
+  .beyond__body {
     grid-column: 1 / -1;
   }
 
-  .band__statement {
-    max-inline-size: 32em;
+  .beyond__head .t-lead {
+    max-inline-size: 22em;
+    margin-block-start: var(--space-8);
   }
 
-  .band__cite {
-    margin-block-start: var(--space-2);
+  .beyond__list {
+    display: grid;
+    gap: var(--space-8) var(--grid-gap);
+  }
+
+  .beyond__name {
+    text-decoration-color: var(--rule);
+  }
+
+  .beyond__name:hover {
+    text-decoration-color: currentcolor;
+  }
+
+  .beyond__list p {
+    max-inline-size: 24em;
+    margin-block-start: var(--space-1);
+  }
+
+  .beyond__link {
+    margin-block-start: var(--space-12);
+  }
+
+  @media (width >= 40rem) {
+    .beyond__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (width >= 56rem) {
-    .band > .band__label {
-      grid-column: 1 / span 4;
-      grid-row: 1;
-      padding-block-start: var(--space-2);
+    .beyond__head {
+      grid-column: 1 / span 6;
     }
 
-    .band > .band__statement,
-    .band > .band__cite {
-      grid-column: 5 / span 8;
+    .beyond__body {
+      grid-column: 7 / span 6;
     }
   }
 
-  .remains > .t-title {
+  .ledger-preview__all {
+    margin-block-start: var(--space-4);
+  }
+
+  .ledger-preview {
+    margin-block-start: var(--space-8);
+  }
+
+  /* The sign-up: a form, so its heading is a step smaller than the sections above. */
+  .signup {
+    row-gap: var(--space-8);
+    align-items: start;
+  }
+
+  .signup__head,
+  .signup__form {
+    grid-column: 1 / -1;
+  }
+
+  .signup__sub {
     margin-block-start: var(--space-3);
   }
 
-  .whole {
-    margin-block-start: var(--space-16);
+  @media (width >= 56rem) {
+    .signup__head {
+      grid-column: 1 / span 6;
+    }
+
+    .signup__form {
+      grid-column: 7 / span 6;
+    }
   }
 </style>

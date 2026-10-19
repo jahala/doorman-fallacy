@@ -27,7 +27,7 @@ const questions = [
   },
   {
     ask: 'Who pays for this?',
-    answer: 'Nobody. The site has no advertising and no sponsors. It is run by Jan Hallvard Larsen, and its code is open.',
+    answer: 'Nobody. The site has no advertising and no sponsors, and its code is open.',
   },
 ];
 
@@ -38,7 +38,7 @@ const contents = [
   { id: 'layers', label: 'Reported facts and the doorman reading' },
   { id: 'following', label: 'Following up' },
   { id: 'corrections', label: 'Corrections' },
-  { id: 'keeper', label: 'Who keeps it' },
+  { id: 'tools', label: 'Tools and licences' },
   { id: 'faq', label: 'Common questions' },
 ] as const;
 ---
@@ -127,10 +127,9 @@ const contents = [
       </p>
     </TextSection>
 
-    <TextSection id="keeper-title" anchor="keeper" number={7} title="Who keeps it">
+    <TextSection id="tools-title" anchor="tools" number={7} title="Tools and licences">
       <p>
-        The ledger is curated by <a href="/about">Jan Hallvard Larsen</a>. The desk uses Claude, by
-        Anthropic, for research and writing, and Jev, by TypeSafe, for the fast checks. The code is open
+        The desk uses Claude, by Anthropic, for research and writing, and Jev, by TypeSafe, for the fast checks. The code is open
         source under the{' '}
         <ExternalLink href="https://github.com/jahala/doorman-fallacy/blob/master/LICENSE">MIT licence</ExternalLink>;
         the cases and the text of this site are published under{' '}

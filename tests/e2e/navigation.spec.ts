@@ -41,10 +41,11 @@ const scales = [
 for (const { route, h2, h3 } of scales) {
   test(`${route} sets h1 in display, h2 in ${h2} and h3 in ${h3}, all in the heading face`, async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
+    if (route === '/') expect(await headingsOf(page, 'h2')).toContainEqual(expect.objectContaining({ text: 'Updates from the ledger', size: await sizeOf(page, 't-title') }));
     const want = { h1: await sizeOf(page, 't-display'), h2: await sizeOf(page, h2), h3: await sizeOf(page, h3) };
     for (const level of ['h1', 'h2', 'h3'] as const) {
-      // The home page's definition band labels itself with an h2 in the caption style.
-      const found = (await headingsOf(page, level)).filter(({ text }) => !(route === '/' && text === 'The doorman fallacy'));
+      // The sign-up at the foot of the home page is a form, so its heading is a step smaller.
+      const found = (await headingsOf(page, level)).filter(({ text }) => !(route === '/' && text === 'Updates from the ledger'));
       for (const heading of found) {
         expect(heading.size, `${level} "${heading.text}"`).toBe(want[level]);
         expect(heading.family, `${level} "${heading.text}"`).toContain('Prata');

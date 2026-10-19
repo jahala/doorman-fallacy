@@ -56,55 +56,30 @@ function style(locator: Locator): Promise<{ family: string; size: string; weight
 }
 
 test.describe('the home page', () => {
-  test('keeps its sections in order, with the definition band after the hero', async ({ page, siteUrl }) => {
+  test('keeps its sections in order after the hero', async ({ page, siteUrl }) => {
     await page.goto(new URL('/', siteUrl).href);
-    expect(await headings(page)).toEqual([
-      'The doorman fallacy',
-      'What else was the person doing?',
-      'The ledger',
-      'Get updates from the ledger.',
-    ]);
+    expect(await headings(page)).toEqual(['The work beyond the task.', 'The ledger', 'Updates from the ledger']);
     await expect(page.locator('h1')).toHaveText('What does a doorman actually do?');
   });
 
-  test('sets the definition from its data file as a statement in the title style, not italic, with a link to how to cite', async ({
-    page,
-    siteUrl,
-  }) => {
+  test('names the six kinds of hidden work from the data file, each linking to its page, then links on to the questions', async ({ page, siteUrl }) => {
     await page.goto(new URL('/', siteUrl).href);
-    const band = page.locator('section.band');
-    await expect(band.locator('.band__statement')).toHaveText(definition);
-    const statement = await style(band.locator('.band__statement'));
-    expect(statement.size).toBe(await sizeOf(page, 't-title'));
-    expect(statement.family).toContain('Prata');
-    expect(statement.fontStyle).toBe('normal');
-    const label = await style(band.locator('.band__label'));
-    expect(label.size).toBe(await sizeOf(page, 't-caption'));
-    expect(label.colour).toBe(await colourOf(page, 'ink-2'));
-    await expect(band.getByRole('link', { name: 'How to cite' })).toHaveAttribute('href', '/idea#cite');
-    await expect(band.locator('.band__label')).toHaveText('The doorman fallacy');
+    const items = page.locator('section.beyond li');
+    await expect(items).toHaveCount(hiddenFunctionIds.length);
+    for (const [index, id] of hiddenFunctionIds.entries()) {
+      const item = items.nth(index);
+      await expect(item.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea/${id}`);
+      await expect(item).toContainText(hiddenFunctions[id].meaning);
+    }
+    await expect(page.locator('section.beyond').getByRole('link', { name: 'Before automating a role' })).toHaveAttribute('href', '/idea#questions');
   });
 
-  test('is ruled above and below the definition band', async ({ page, siteUrl }) => {
+  test('previews the ledger without column heads in view, each row showing its status under the change', async ({ page, siteUrl }) => {
     await page.goto(new URL('/', siteUrl).href);
-    const widths = await page.locator('section.band').evaluate((element) => {
-      const bandRule = getComputedStyle(element).borderBottomWidth;
-      const above = element.previousElementSibling === null ? '0px' : getComputedStyle(element.previousElementSibling).borderBottomWidth;
-      return { bandRule, above };
-    });
-    expect(widths).toEqual({ bandRule: '1px', above: '1px' });
-  });
-
-  test('puts the ledger summary above the preview table', async ({ page, siteUrl }) => {
-    await page.goto(new URL('/', siteUrl).href);
-    const section = page.locator('section', { has: page.getByRole('heading', { name: 'The ledger', level: 2, exact: true }) });
-    const order = await section.evaluate((element) => {
-      const summary = element.querySelector('.ledger-summary');
-      const table = element.querySelector('table');
-      if (summary === null || table === null) return 'missing';
-      return summary.compareDocumentPosition(table) & Node.DOCUMENT_POSITION_FOLLOWING ? 'summary first' : 'table first';
-    });
-    expect(order).toBe('summary first');
+    const table = page.locator('table.ledger');
+    await expect(table.locator('thead')).toHaveClass(/visually-hidden/);
+    for (const row of await table.locator('tbody tr').all()) await expect(row).toContainText('Reported outcome: ');
+    await expect(page.getByRole('link', { name: 'View all cases' })).toHaveAttribute('href', '/ledger');
   });
 });
 
@@ -116,7 +91,7 @@ test.describe('the ledger summary', () => {
     .map(({ id, count }) => `${String(count)} ${statuses[id].label.toLowerCase()}`)
     .join(', ')}.`;
 
-  for (const route of ['/', '/ledger/']) {
+  for (const route of ['/ledger/']) {
     test(`on ${route} states the count and the statuses that have cases, and links each hidden function recorded as missing`, async ({
       page,
       siteUrl,
@@ -427,7 +402,7 @@ test.describe('/approach', () => {
       'Reported facts and the doorman reading',
       'Following up',
       'Corrections',
-      'Who keeps it',
+      'Tools and licences',
       'Common questions',
     ]);
     await expect(page.locator('#following').getByRole('link', { name: 'Statuses and follow-up' })).toHaveAttribute('href', '/ledger#statuses');
@@ -448,7 +423,7 @@ test.describe('/approach', () => {
       'A case records what sources reported, with quotes. The doorman reading is marked as the site’s own analysis and names the evidence it rests on. Motives are never guessed.',
       'The ledger is new. The desk adds cases every week, and only those that pass every check.',
       'Yes. They are published under CC BY 4.0: reuse them with credit to The Doorman Fallacy. The whole ledger can be downloaded from the ledger page.',
-      'Nobody. The site has no advertising and no sponsors. It is run by Jan Hallvard Larsen, and its code is open.',
+      'Nobody. The site has no advertising and no sponsors, and its code is open.',
     ]);
   });
 });

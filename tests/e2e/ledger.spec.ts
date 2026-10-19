@@ -32,7 +32,7 @@ test('the home page previews at most five cases and says how many the ledger hol
   const rows = await page.locator('table.ledger tbody tr').count();
   expect(rows).toBeGreaterThan(0);
   expect(rows).toBeLessThanOrEqual(5);
-  await expect(page.locator('table.ledger caption')).toHaveText(`${casePages.length === 1 ? '1 case' : `${String(casePages.length)} cases`} in the ledger, newest first.`);
+  await expect(page.locator('table.ledger caption')).toContainText(`${casePages.length === 1 ? '1 case' : `${String(casePages.length)} cases`} in the ledger, newest first.`);
   await expect(page.getByText('Example rows')).toHaveCount(0);
 });
 
