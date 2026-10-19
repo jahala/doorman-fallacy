@@ -27,9 +27,25 @@ export function normaliseText(text: string): string {
     .trim();
 }
 
-/** Quotes shorter than four words prove nothing, so they never count as found. */
+/** Quotes shorter than this prove nothing, so they never count as found. */
+export const minQuoteWords = 4;
+
+function stripQuoteMarks(quote: string): string {
+  return normaliseText(quote).replace(/^["']|["']$/g, '').trim();
+}
+
+/** The number of words in a quote, ignoring markup, case and the quotation marks around it. */
+export function quoteWordCount(quote: string): number {
+  const needle = stripQuoteMarks(quote);
+  return needle === '' ? 0 : needle.split(' ').length;
+}
+
+/** Whether the quote is long enough to prove anything. */
+export function quoteLongEnough(quote: string): boolean {
+  return quoteWordCount(quote) >= minQuoteWords;
+}
+
 export function quoteFound(quote: string, page: string): boolean {
-  const needle = normaliseText(quote).replace(/^["']|["']$/g, '').trim();
-  if (needle.split(' ').length < 4) return false;
-  return normaliseText(page).includes(needle);
+  if (!quoteLongEnough(quote)) return false;
+  return normaliseText(page).includes(stripQuoteMarks(quote));
 }

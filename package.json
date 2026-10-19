@@ -13,7 +13,8 @@
     "test:site": "node scripts/test-site.ts",
     "check:copy": "node scripts/check-copy.ts",
     "check:docs": "node scripts/check-docs.ts",
-    "check": "npm run lint && npm run lint:css && npm run typecheck && npm run test:unit && npm run check:copy && npm run check:docs",
+    "check:cases": "node scripts/check-cases.ts",
+    "check": "npm run lint && npm run lint:css && npm run typecheck && npm run test:unit && npm run check:copy && npm run check:docs && npm run check:cases",
     "release": "bash scripts/release.sh"
   },
   "dependencies": {

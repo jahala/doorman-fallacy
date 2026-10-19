@@ -1,6 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: npm
+    # TypeScript majors wait until @astrojs/check and typescript-eslint support them.
+    ignore:
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
     directory: /
     schedule:
       interval: weekly
