@@ -11,7 +11,7 @@ import { parseArgs } from 'node:util';
 import { quoteFound } from '../src/lib/quotes.ts';
 import { createBudget } from './budget.ts';
 import { askClaude } from './claude.ts';
-import { clusters, type Cluster, type Triaged } from './clusters.ts';
+import { assessable, clusters, type Cluster, type Triaged } from './clusters.ts';
 
 const { values } = parseArgs({
   options: {
@@ -72,7 +72,8 @@ function leadText(cluster: Cluster): string {
     published: item.published,
     url: item.url,
   }));
-  return JSON.stringify({ organisation: cluster.name, news_items: items }, null, 2);
+  const organisation = cluster.key.startsWith('unnamed:') ? 'not named in the headline; find it from the story' : cluster.name;
+  return JSON.stringify({ organisation, news_items: items }, null, 2);
 }
 
 function lastJsonFence(text: string): unknown {
@@ -127,7 +128,7 @@ const triaged = JSON.parse(await readFile(path.join(runDir, 'leads.json'), 'utf8
 const prompt = await readFile(path.join(import.meta.dirname, 'prompts', 'assess.md'), 'utf8');
 const only = values.only?.split(',').map((name) => name.trim().toLowerCase());
 const chosen = clusters(triaged)
-  .filter((cluster) => !cluster.key.startsWith('unnamed:'))
+  .filter(assessable)
   .filter((cluster) => only === undefined || only.includes(cluster.key))
   .slice(0, Number(values.top));
 
