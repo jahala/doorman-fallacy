@@ -1,0 +1,159 @@
+---
+import { suggestionLimits } from '../lib/suggestion.ts';
+import Honeypot from './Honeypot.astro';
+
+/**
+ * The suggestion form: the link to a report, an optional note, name and email, and the credit
+ * box. It posts to the Worker. Reports of an error in a case use the short form on the case page.
+ */
+const linkPattern = 'https?://.+';
+const linkHelp = 'Start with http:// or https://';
+---
+
+<form class="suggest" method="post" action="/api/suggest">
+  <div class="suggest__field">
+    <label class="field-label" for="suggest-link">Link to the report</label>
+    <input
+      class="field field--wide"
+      id="suggest-link"
+      name="link"
+      type="url"
+      inputmode="url"
+      placeholder="https://"
+      required
+      maxlength={suggestionLimits.linkLength}
+      pattern={linkPattern}
+      title={linkHelp}
+      aria-describedby="suggest-link-help"
+    />
+    <p class="field-help t-small" id="suggest-link-help">{linkHelp}</p>
+  </div>
+
+  <details class="suggest__more">
+        <summary>Add more links</summary>
+        <div class="suggest__more-fields">
+          {[2, 3, 4, 5].map((number) => (
+            <div class="suggest__field">
+              <label class="field-label" for={`suggest-link-${String(number)}`}>
+                {`Link ${String(number)} (optional)`}
+              </label>
+              <input
+                class="field field--wide"
+                id={`suggest-link-${String(number)}`}
+                name="link"
+                type="url"
+                inputmode="url"
+                placeholder="https://"
+                maxlength={suggestionLimits.linkLength}
+                pattern={linkPattern}
+                title={linkHelp}
+              />
+            </div>
+          ))}
+        </div>
+  </details>
+
+  <div class="suggest__field">
+    <label class="field-label" for="suggest-note">
+      What happened, in a sentence
+    </label>
+    <textarea
+      class="field field--wide field--note"
+      id="suggest-note"
+      name="note"
+      rows="4"
+      maxlength={suggestionLimits.note}></textarea>
+  </div>
+
+  <div class="suggest__field">
+    <label class="field-label" for="suggest-name">Name (optional)</label>
+    <input
+      class="field"
+      id="suggest-name"
+      name="name"
+      type="text"
+      autocomplete="name"
+      maxlength={suggestionLimits.name}
+      aria-describedby="suggest-people-help"
+    />
+  </div>
+
+  <div class="suggest__field">
+    <label class="field-label" for="suggest-email">Email (optional)</label>
+    <input
+      class="field"
+      id="suggest-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      maxlength={suggestionLimits.email}
+      aria-describedby="suggest-people-help"
+    />
+    <p class="field-help t-small" id="suggest-people-help">
+      Only used to ask you about this suggestion. Deleted 90 days after we have looked into it.
+    </p>
+  </div>
+
+  <div class="suggest__credit">
+    <input id="suggest-credit" name="credit" type="checkbox" value="on" />
+    <label for="suggest-credit">Credit me by name if this becomes a case</label>
+  </div>
+
+  <Honeypot />
+
+  <div class="suggest__submit">
+    <button class="button" type="submit">Send suggestion</button>
+  </div>
+</form>
+
+<style>
+  .suggest {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .field--wide {
+    inline-size: 46ch;
+  }
+
+  .field--note {
+    display: block;
+    min-block-size: 6rem;
+    resize: vertical;
+    line-height: var(--body-leading);
+  }
+
+  .suggest__more summary {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: 0.22em;
+  }
+
+  .suggest__more-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    margin-block-start: var(--space-6);
+  }
+
+  .suggest__credit {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .suggest__credit input {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    margin: 0.2rem 0 0;
+    accent-color: var(--ink);
+  }
+
+  .suggest__submit {
+    margin-block-start: var(--space-4);
+  }
+</style>

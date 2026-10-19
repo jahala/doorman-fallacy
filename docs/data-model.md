@@ -148,17 +148,86 @@ A change to the case format changes the schema and every case in the same commit
 
 ## D1
 
-Schema steps live in `migrations/`, numbered. An applied step is never edited; a change is a new step.
+Schema steps live in `migrations/`, numbered. An applied step is never edited; a change is a new step. The database is `doorman-fallacy`, bound to the Worker as `DB`. Times are ISO 8601 UTC text, so they sort as text.
 
 | Table | Holds | Kept until |
 |---|---|---|
 | `leads` | Items the sweep found: URL, title, outlet, date, triage label and reason | Published or rejected; then only the URL stays in `seen` |
 | `seen` | URLs already triaged, so they are not triaged twice | One year after last seen |
-| `suggestions` | Form entries: links, note, name, email, credit wish, triage label | Name and email deleted 90 days after the suggestion is resolved; the rest kept as a lead |
-| `subscribers` | Address, confirmed or not, token, dates | Unconfirmed: 7 days. Confirmed: until unsubscribe, which deletes the row |
+| `suggestions` | Form entries: links, note, name, email, credit wish, triage label | Name and email blanked 90 days after the suggestion is resolved; the rest kept as a lead |
+| `subscribers` | Address, confirmed or not, token, dates | Unconfirmed: 7 days after the last confirmation email. Confirmed: until unsubscribe, which deletes the row |
 | `runs` | Each desk run: start, end, counts, failures | One year |
+| `rate_hits` | One row per form attempt, under a hash of the form and the visitor's address, to hold the limit of 5 an hour | Counts for one hour; deleted by the daily job |
 
-A scheduled Worker job deletes what has passed its time each day.
+A scheduled Worker job runs daily at 03:17 UTC and deletes what has passed its time. The cut-offs come from `cutoffs` in `src/lib/limits.ts`, which takes today's date as an argument; a year is 365 days. The job leaves `leads` to the desk.
+
+The suggestion's `case_slug` column would be called `case` if it were not an SQL keyword. Name and email are set to null, never to an empty string, when blanked.
+
+### `suggestions`
+
+| Column | Holds |
+|---|---|
+| `id` | Row number |
+| `created_at` | When the form arrived |
+| `kind` | `case` for a suggested case, `error` for an error report |
+| `case_slug` | The case an error report is about; null for a suggested case. An error report must have one |
+| `links` | A JSON array of up to five http or https URLs; empty for an error report with no link |
+| `note` | What the sender wrote, at most 2000 characters, line breaks as `\n`; empty when nothing was written |
+| `name` | The sender's name, at most 100 characters; null when not given or after it is blanked |
+| `email` | The sender's address, lower case; null when not given or after it is blanked |
+| `credit` | 1 when the sender asked to be credited by name, else 0 |
+| `triage_label` | The desk's label; null until triaged |
+| `resolved_at` | When the desk finished with the suggestion; null until then. The 90 days run from here |
+
+### `subscribers`
+
+| Column | Holds |
+|---|---|
+| `id` | Row number |
+| `email` | The address, lower case; one row per address |
+| `token` | 32 random bytes as 64 hex characters. It confirms the address, then unsubscribes it. It is replaced when the confirmation email is sent again |
+| `created_at` | When the address first signed up |
+| `token_sent_at` | When the current token was emailed. A link works for 7 days from here, and a new email waits 10 minutes from here |
+| `confirmed_at` | When the link was followed; null while unconfirmed |
+
+### `rate_hits`
+
+| Column | Holds |
+|---|---|
+| `id` | Row number |
+| `key` | SHA-256 of the form kind and the visitor's address, as hex. The address itself is not kept, though an address can be guessed from its hash, so this is treated as personal data and kept for under a day |
+| `hit_at` | When the attempt was made |
+
+### `leads`
+
+| Column | Holds |
+|---|---|
+| `id` | Row number |
+| `url` | The article's address; one row per address |
+| `title` | The headline |
+| `outlet` | The publisher; null when unknown |
+| `published` | The publication date as the feed gave it; null when unknown |
+| `found_at` | When the sweep found it |
+| `triage_label` | The triage verdict; null until triaged |
+| `triage_reason` | Why; null until triaged |
+| `state` | `open`, `published` or `rejected` |
+
+### `seen`
+
+| Column | Holds |
+|---|---|
+| `url` | The address already triaged; the primary key |
+| `last_seen_at` | When the sweep last met it. The year runs from here |
+
+### `runs`
+
+| Column | Holds |
+|---|---|
+| `id` | Row number |
+| `started_at` | When the run began. The year runs from here |
+| `ended_at` | When it finished; null if it stopped part-way |
+| `counts` | A JSON object of counts: leads found, drafted, published and so on |
+| `failures` | A JSON array of what went wrong |
 
 ## Retention of cases
 

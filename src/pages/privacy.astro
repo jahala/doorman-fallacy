@@ -31,7 +31,9 @@ import Site from '../layouts/Site.astro';
       <p>
         The site sets no cookies and uses no tracking scripts. Cloudflare, which hosts the site, counts
         visits without cookies and without identifying you. Like any web host, it handles your
-        connection&rsquo;s address to deliver the pages.
+        connection&rsquo;s address to deliver the pages. When you send a form, we keep a scrambled form
+        of that address (a one-way hash) for one day, only to limit how many forms one connection can
+        send in an hour.
       </p>
     </TextSection>
 

@@ -1,10 +1,38 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "doorman-fallacy",
+  "main": "src/worker/index.ts",
   "compatibility_date": "2026-10-19",
-  // Static assets only. There is no Worker script.
+  // The four hostnames are the only way in. The Worker redirects all but the first (D-015).
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "thedoormanfallacy.com", "custom_domain": true },
+    { "pattern": "www.thedoormanfallacy.com", "custom_domain": true },
+    { "pattern": "doormanfallacy.com", "custom_domain": true },
+    { "pattern": "www.doormanfallacy.com", "custom_domain": true }
+  ],
+  // The built site. The Worker runs first so that it can redirect the other hostnames, and
+  // hands every other request to the assets through the ASSETS binding. Files under /_astro
+  // (styles, fonts, images) skip it: on the free plan every Worker request counts toward
+  // 100,000 a day, and a page would otherwise cost one request for each file it loads.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/*", "!/_astro/*"]
+  },
+  // No database_id here: wrangler provisions the database at the first deploy and local
+  // runs create their own. docs/operations.md has the steps.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "doorman-fallacy",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // The daily retention job (UTC).
+  "triggers": { "crons": ["17 3 * * *"] },
+  "secrets": { "required": ["CFMAIL_KEY"] },
+  "observability": { "enabled": true }
 }

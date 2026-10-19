@@ -1,0 +1,19 @@
+---
+// A field people never see. A bot that fills it is thanked and dropped without a trace.
+// Kept off screen rather than hidden with display: none, which bots tend to skip.
+---
+
+<div class="trap" aria-hidden="true">
+  <label for="website">Website, leave this empty</label>
+  <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+</div>
+
+<style>
+  .trap {
+    position: absolute;
+    inset-inline-start: -10000px;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+  }
+</style>

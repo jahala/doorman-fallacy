@@ -75,9 +75,17 @@ test('the not-yet-built lists are all in use, so none lingers after its link goe
   expect(unused).toEqual([]);
 });
 
-test('no page links to the specimen, and only the specimen asks search engines to skip it', () => {
+/** Pages that answer a form, or that a form links to for one case, are for people who just acted. */
+function answersAForm(route: string): boolean {
+  return /^\/(subscribe\/|suggest\/(thanks|problem|error)\/)/.test(route);
+}
+
+test('no page links to the specimen, and only the specimen and the form answers ask search engines to skip them', () => {
   const toSpecimen = references.filter(({ from, target }) => from !== '/specimen/' && target.startsWith('/specimen'));
   expect(toSpecimen).toEqual([]);
   const noindex = routes.filter((route) => /<meta name="robots" content="noindex"/.test(readBuilt(htmlFileForRoute(route))));
-  expect(noindex).toEqual(['/specimen/']);
+  expect(noindex.filter((route) => route !== '/specimen/' && !answersAForm(route))).toEqual([]);
+  expect(noindex).toContain('/specimen/');
+  const indexed = routes.filter((route) => answersAForm(route) && !noindex.includes(route));
+  expect(indexed).toEqual([]);
 });

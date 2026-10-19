@@ -45,9 +45,11 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 
 | Command | What | When | Time (2026-10-19) |
 |---|---|---|---|
-| `npm run check` | Types, lint, unit tests, copy, docs and case checks | Every change; the pre-push hook runs it | 8 s, 23 s from a fresh clone |
+| `npm run check` | Types, lint, unit tests, Worker tests, copy, docs and case checks | Every change; the pre-push hook runs it | 12 s |
 | `npm run build` | The static site into `dist/` | Before site tests and release | 3 s |
-| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 5 s |
+| `npm run test:worker` | The Worker's tests, part of `npm run check`; run alone while working on `src/worker/` | Every change to the Worker, `migrations/` or `wrangler.jsonc` | 1 s |
+| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 6 s |
+| `npm run dev:worker` | The site and the form routes on http://localhost:8787, with a local database | Working on the forms ([operations](docs/operations.md#running-the-worker-locally)) | |
 
 The whole suite runs in under 30 seconds, so every run is a full run; there is no changed-only selection. CI runs the same three once the repository is public. Node's major version comes from `.nvmrc`, and a test fails with the switch command when another is running.
 

@@ -114,3 +114,10 @@ Chosen: at the first deploy, the Worker takes thedoormanfallacy.com, www.thedoor
 
 Why: the redirect is then code: tested, versioned and deployed with the site. Custom domains create their own DNS records, so nothing is set by hand.
 
+## D-016 · 2026-10-19 · The rate limit lives in D1
+
+Context: the suggest and subscribe forms each allow 5 attempts per visitor per hour (D-011). Cloudflare's Rate Limiting binding was the first candidate. Its documentation (checked 2026-10-19) says a period can only be 10 or 60 seconds, that counters are kept per Cloudflare location, and that it is "permissive, eventually consistent, and intentionally designed to not be used as an accurate accounting system". It also advises against keying on IP addresses.
+
+Chosen: a D1 table, `rate_hits`. One SQL statement counts the visitor's attempts in the last hour and inserts a new row only if there are fewer than 5, so two requests arriving together cannot both take the last place. The key is the SHA-256 of the form kind and the visitor's address. The daily job deletes rows older than an hour.
+
+Why: a limit per hour cannot be written with the binding. A D1 count is exact across every location, and the load is a few writes a day. The cost is that visitors behind one shared address, such as an office or a mobile network, share five places an hour, which is more than a reader needs. A hash of an IPv4 address can be guessed back, so the table is treated as personal data and kept for under a day ([data-model.md](data-model.md#d1)). If real abuse arrives, Turnstile or a Cloudflare WAF rule goes in front of these routes; the D1 limit then stays as the second line.

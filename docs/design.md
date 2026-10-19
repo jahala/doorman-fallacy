@@ -65,7 +65,7 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 - Empty ledger: a headline, one lead sentence and a link to the idea, between two hairlines, in place of the table.
 - Case page: a kicker (country, area, announcement date), the company's short name in display type, the change as the lead, then a hairline-ruled facts row (status, roles, the door, last checked, next review). Each section below sits on the grid with its label on the left and a reading column of about 65 characters on the right: Reported (the Markdown body, then its footnotes as small ink-2 quotes), The doorman reading (labelled as analysis), What they said (pull quotes), Timeline, Changelog, Sources and Report an error. A statement outside the body cites its source with a small superscript link, S1, S2 and so on, to the numbered Sources list. The report form uses the same field style as the other forms, with a note field a few lines tall, and is hidden in print.
 - Checklist page: questions with ruled writing space, designed for print first.
-- Suggestion form: the same field style as sign-up. Link fields sized for a URL, the note field a few lines tall, name and email marked optional, the credit box below them.
+- Suggestion form: the same field style as sign-up. Link fields sized for a URL (the first shown, four more behind "Add more links", which needs no script), the note field a few lines tall, name and email marked optional, the credit box below them. A report of an error in one case is a short form on the case page itself, with a required note and an optional email.
 - Sign-up form: a visible label above the field, which is sized for an email address (about 28 characters), and the black Subscribe button. The help line sits below.
 - Footer: wordmark, curator line, About the curator, then Sources & approach, Suggest a case and Privacy. The Sutherland credit closes the page.
 
@@ -73,7 +73,8 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 - Focus: 2-pixel accent outline, offset 3 pixels, on every interactive element.
 - The sign-up form posts to the Worker, which answers with a "check your email" page in the site's layout. The confirmation email and the confirmed and unsubscribed pages use the same words and wordmark.
-- The suggestion form posts to the Worker, which answers with a thank-you page. A rejected entry (too long, missing links) comes back with the fields kept and the problem written next to the field.
+- The suggestion form posts to the Worker, which answers with a thank-you page. The browser's own checks catch a missing or malformed link, a field over its limit and a bad email before anything is sent. What still fails on the server goes to a problem page that says what to check and links back to the form; the fields are not kept, because keeping them needs a page built per request.
+- Every page that answers a form uses the Notice layout: a display heading, one line, and one link on. These pages ask search engines to skip them.
 - An empty ledger never ships; the site launches with ten cases. The empty state above exists so a build with no cases still reads well, and a test builds one.
 - Not found: a 404 page in the site's layout that links to the idea and the ledger.
 
