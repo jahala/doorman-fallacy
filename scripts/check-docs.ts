@@ -9,11 +9,7 @@ export const briefMaxLines = 150;
  * Each entry leaves the list in the change that creates the file; the check fails on an
  * entry whose path now exists, so the list can only shrink.
  */
-export const notYetBuilt: readonly string[] = [
-  // The case format, the Worker and the desk (D-008 to D-012). Each leaves the list when it lands.
-  'src/worker/',
-  'migrations/',
-];
+export const notYetBuilt: readonly string[] = [];
 
 const repoPathPattern = /^(src|docs|scripts|tests|public|desk|migrations)\//;
 

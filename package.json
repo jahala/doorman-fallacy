@@ -5,16 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "dev:worker": "wrangler dev --local --local-upstream localhost:8787",
     "build": "astro build",
     "lint": "eslint .",
     "lint:css": "stylelint \"src/**/*.{css,astro}\"",
-    "typecheck": "astro check && tsc --noEmit -p tsconfig.node.json",
+    "typecheck": "astro check && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.worker.json && wrangler types --check",
     "test:unit": "vitest run",
+    "test:worker": "vitest run -c vitest.worker.config.ts",
     "test:site": "node scripts/test-site.ts",
     "check:copy": "node scripts/check-copy.ts",
     "check:docs": "node scripts/check-docs.ts",
     "check:cases": "node scripts/check-cases.ts",
-    "check": "npm run sync && npm run lint && npm run lint:css && npm run typecheck && npm run test:unit && npm run check:copy && npm run check:docs && npm run check:cases",
+    "check": "npm run sync && npm run lint && npm run lint:css && npm run typecheck && npm run test:unit && npm run test:worker && npm run check:copy && npm run check:docs && npm run check:cases",
     "release": "bash scripts/release.sh",
     "sync": "astro sync",
     "prepare": "node scripts/install-hooks.ts"
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@axe-core/playwright": "4.14.0",
+    "@cloudflare/vitest-plugin": "1.4.5",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.64.1",
     "@types/node": "26.6.5",

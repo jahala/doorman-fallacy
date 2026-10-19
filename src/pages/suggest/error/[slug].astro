@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import SuggestForm from '../../../components/SuggestForm.astro';
+import Site from '../../../layouts/Site.astro';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((entry) => ({ params: { slug: entry.id }, props: { company: entry.data.company } }));
+}
+
+interface Props {
+  company: string;
+}
+
+const { slug } = Astro.params;
+const { company } = Astro.props;
+---
+
+<Site title={`Report an error in the ${company} case`} noindex>
+  <div class="page">
+    <section class="section grid split" aria-labelledby="report-title">
+      <div class="split__head">
+        <h1 id="report-title" class="t-display">Report an error</h1>
+        <p class="t-lead section__sub">Something in the {company} case is wrong or out of date.</p>
+        <p class="ink-2">
+          The desk checks every report against the case's sources. A confirmed error is fixed in the open and
+          recorded on the case. <a href="/ledger">Back to the ledger</a>
+        </p>
+      </div>
+      <div class="split__side">
+        <SuggestForm kind="error" caseSlug={slug} />
+      </div>
+    </section>
+  </div>
+</Site>

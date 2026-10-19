@@ -4,7 +4,7 @@ Thank you for helping. There are two kinds of contribution, and they take differ
 
 ## Cases and corrections
 
-Suggest a case, or report an error in one, through the form on [thedoormanfallacy.com/suggest](https://thedoormanfallacy.com/suggest). Please do not open issues or pull requests about specific companies. Unchecked claims about named organisations stay out of this public repository until the desk has checked them against their sources ([docs/desk.md](docs/desk.md)).
+Suggest a case through the form on [thedoormanfallacy.com/suggest](https://thedoormanfallacy.com/suggest), or report an error in one with the "Report an error" link on its page. Please do not open issues or pull requests about specific companies. Unchecked claims about named organisations stay out of this public repository until the desk has checked them against their sources ([docs/desk.md](docs/desk.md)).
 
 Case files in `src/content/cases/` are written by the desk and must pass its checks. A pull request that edits one by hand will not be merged; report the error through the form instead, and the desk corrects the case and records the correction on its page.
 

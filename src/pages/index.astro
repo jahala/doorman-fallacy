@@ -1,6 +1,7 @@
 ---
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 import { exampleRows } from '../data/example-rows.ts';
 import Site from '../layouts/Site.astro';
 
@@ -131,23 +132,9 @@ const checks = [
         <p class="t-lead section__sub">A short email once a month, when the ledger has changed.</p>
         <p class="ink-2">Unsubscribe at any time.</p>
       </div>
-      <form class="split__side subscribe" method="post" action="/api/subscribe">
-        <label class="field-label" for="subscribe-email">Email address</label>
-        <div class="subscribe__row">
-          <input
-            class="field"
-            id="subscribe-email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            placeholder="you@example.com"
-            required
-            aria-describedby="subscribe-help"
-          />
-          <button class="button" type="submit">Subscribe</button>
-        </div>
-        <p class="field-help t-small" id="subscribe-help">Only updates from The Doorman Fallacy.</p>
-      </form>
+      <div class="split__side">
+        <SubscribeForm />
+      </div>
     </section>
   </div>
 </Site>

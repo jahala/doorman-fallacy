@@ -18,13 +18,33 @@ All four hostnames are custom domains of the Worker, which redirects every host 
 
 One command, `npm run release`. It stops at the first failing step.
 
-1. Fast checks: lint, types, unit tests, copy, docs and case checks.
+1. Fast checks: lint, types, unit tests, Worker tests, copy, docs and case checks.
 2. Build `dist/` once.
 3. Site tests against that `dist/`.
-4. Apply pending D1 migrations, after a dry run.
+4. List the pending D1 migrations (`wrangler d1 migrations list doorman-fallacy --remote`), then apply them.
 5. `wrangler deploy --dry-run`, then `wrangler deploy` with the same `dist/`.
 
 To undo: `wrangler rollback` returns the previous Worker and site. A migration is undone by a new migration. The release command prints both before it acts.
+
+## Before the first deploy
+
+Five things exist only in Cloudflare and cfmail, so nothing in the repository can make them. Do them in this order. Each one says how to undo it. Nothing here is done yet (2026-10-19). `npm run release` fails until steps 1 and 4 are done, and sign-ups cannot send their confirmation email until steps 2 and 3 are.
+
+1. **The D1 database.** `npx wrangler d1 create doorman-fallacy --jurisdiction eu`. Wrangler prints the database's `database_id`; add it to the `d1_databases` entry in `wrangler.jsonc` as `"database_id"` and commit it (an identifier, not a secret). The EU jurisdiction keeps the subscribers' addresses inside the EU and cannot be changed afterwards. To undo: `npx wrangler d1 delete doorman-fallacy`, then remove the line. That deletes every row, which is harmless before launch.
+2. **The mail domain in cfmail.** Add thedoormanfallacy.com to the shared deployment, following cfmail's AGENTS.md section 3: check its mail, route it to the app, `wrangler email sending enable thedoormanfallacy.com`, and add it under Admin, Domains with the kind "service" ticked. To undo: reverse those steps, ending with removing the domain under Admin, Domains.
+3. **The service mailbox.** Following cfmail's AGENTS.md section 5.5: Admin, Service, the name `noreply`, the domain thedoormanfallacy.com, "send-only". The app shows the API key once. To undo: delete the service in Admin, Service, which stops its key at once.
+4. **The secret.** With the key still on the clipboard: `pbpaste | npx wrangler secret put CFMAIL_KEY`. The key never appears on screen or in the shell history. The Worker does not exist yet, so Wrangler offers to create it; accept. `wrangler deploy` refuses to run without this secret, because `wrangler.jsonc` lists it as required. To undo: `npx wrangler secret delete CFMAIL_KEY`. To replace a key that leaked, use "Rotate key" in cfmail, then repeat this step.
+5. **The four custom domains.** The first `npm run release` creates them from the `routes` in `wrangler.jsonc`, with their DNS records and certificates. They need no setup, but each hostname must have no DNS record in its zone, or the deploy refuses; delete a stray record first. To undo: remove the domain in the Worker's Domains and Routes settings in the Cloudflare dashboard, or remove its entry from `routes` and release again.
+
+After the first release, check that the Worker answers: the home page loads, `https://www.doormanfallacy.com/idea` redirects to `https://thedoormanfallacy.com/idea`, and a sign-up with Jan's own address delivers the confirmation email.
+
+## Running the Worker locally
+
+`npm run build`, then `npx wrangler d1 migrations apply doorman-fallacy --local`, then `npm run dev:worker`, which serves the site and the form routes on http://localhost:8787. The script passes `--local-upstream localhost:8787` because Wrangler otherwise shows the Worker the first custom domain as the request's host, and the Worker would redirect every page to https. The local database lives under `.wrangler/` and holds test data only. The confirmation email needs a `CFMAIL_KEY`; put one in `.dev.vars` (git ignores it) or leave it out, and a sign-up then fails at the mail step and shows the "did not go through" page. Never run `wrangler dev --remote`: it would use the real database.
+
+## Form data
+
+The suggest and subscribe routes hold their rate limit in D1, as a hash of the visitor's address ([D-016](decisions.md)); the daily job deletes those rows within a day. The daily job also deletes unconfirmed subscribers after 7 days and blanks names and emails on suggestions 90 days after they are resolved ([data-model.md](data-model.md#d1)). It logs counts only. To see that it ran, read the Worker's logs in the Cloudflare dashboard for a `retention` line.
 
 ## The desk's weekly run
 

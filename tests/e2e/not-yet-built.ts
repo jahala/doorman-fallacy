@@ -8,7 +8,6 @@ export const notYetBuiltRoutes: readonly string[] = [
   '/ledger', // The ledger
   '/about', // About the curator
   '/approach', // Sources and approach
-  '/suggest', // Suggest a case
   '/privacy', // Privacy
   '/checks/your-hidden-job', // Printable checklist
   '/checks/before-you-cut', // Printable checklist
