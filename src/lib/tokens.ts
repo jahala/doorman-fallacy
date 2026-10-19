@@ -35,6 +35,7 @@ export const typeTokenNames = ['display', 'title', 'subhead', 'lead', 'body', 's
  */
 export const contrastMinimum: Readonly<Record<string, number | null>> = {
   paper: null,
+  surface: null,
   ink: 4.5,
   'ink-2': 4.5,
   'ink-3': 4.5,
@@ -86,29 +87,36 @@ export function spaceTokens(css: string): SpaceToken[] {
   });
 }
 
+/** The colours text sits on: the page, and the bands that set an illustration apart. */
+const backgrounds = ['paper', 'surface'] as const;
+
 export interface ContrastFailure {
   readonly token: string;
   readonly mode: 'light' | 'dark';
-  /** The measured ratio against paper, or undefined when a colour is not a hex value. */
+  /** The background it was measured on. */
+  readonly background: (typeof backgrounds)[number];
+  /** The measured ratio against that background, or undefined when a colour is not a hex value. */
   readonly ratio: number | undefined;
   readonly minimum: number;
 }
 
 /**
- * Every colour token that falls short of its minimum against paper, in light and in dark.
+ * Every colour token that falls short of its minimum on each background, in light and in dark.
  * A token with a minimum that is missing from the css counts as a failure, so a rename cannot hide one.
  */
 export function contrastFailures(css: string): ContrastFailure[] {
   const tokens = colourTokens(css);
-  const paper = tokens.find((token) => token.name === 'paper');
   const failures: ContrastFailure[] = [];
-  for (const [name, minimum] of Object.entries(contrastMinimum)) {
-    if (minimum === null) continue;
-    const token = tokens.find((candidate) => candidate.name === name);
-    for (const mode of ['light', 'dark'] as const) {
-      const ratio =
-        token === undefined || paper === undefined ? undefined : contrastRatio(token[mode], paper[mode]);
-      if (ratio === undefined || ratio < minimum) failures.push({ token: name, mode, ratio, minimum });
+  for (const background of backgrounds) {
+    const ground = tokens.find((token) => token.name === background);
+    for (const [name, minimum] of Object.entries(contrastMinimum)) {
+      if (minimum === null) continue;
+      const token = tokens.find((candidate) => candidate.name === name);
+      for (const mode of ['light', 'dark'] as const) {
+        const ratio =
+          token === undefined || ground === undefined ? undefined : contrastRatio(token[mode], ground[mode]);
+        if (ratio === undefined || ratio < minimum) failures.push({ token: name, mode, background, ratio, minimum });
+      }
     }
   }
   return failures;
@@ -116,7 +124,7 @@ export function contrastFailures(css: string): ContrastFailure[] {
 
 export type Palette = Readonly<Record<'paper' | 'ink' | 'ink-2' | 'ink-3' | 'rule' | 'field' | 'accent', string>>;
 
-const paletteNames = ['paper', 'ink', 'ink-2', 'ink-3', 'rule', 'field', 'accent'] as const;
+const paletteNames = ['paper', 'surface', 'ink', 'ink-2', 'ink-3', 'rule', 'field', 'accent'] as const;
 
 /**
  * The colours of one scheme as plain hex values, for places that cannot use CSS variables: the

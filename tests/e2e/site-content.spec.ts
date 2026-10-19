@@ -216,7 +216,7 @@ test.describe('/idea', () => {
   test('opens with the definition as its lead, and a block on how to cite it', async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
     await expect(page.locator('h1')).toHaveText('The doorman fallacy');
-    await expect(page.locator('.page-head > .t-lead')).toHaveText(definition);
+    await expect(page.locator('.page-head__lead')).toHaveText(definition);
     const cite = page.locator('#cite');
     await expect(cite.getByText('How to cite', { exact: true })).toBeVisible();
     await expect(cite).toContainText(citation);

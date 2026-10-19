@@ -24,21 +24,28 @@ describe('tokens.css contrast', () => {
     );
   });
 
-  it('gives ink, ink-2, ink-3 and accent at least 4.5 : 1 and field at least 3 : 1 on paper, in light and dark', () => {
+  it('gives ink, ink-2, ink-3 and accent at least 4.5 : 1 and field at least 3 : 1 on paper and on surface, in light and dark', () => {
     expect(contrastFailures(tokensCss)).toEqual([]);
   });
 
   it('flags a text colour that is too pale, so the guard can fail', () => {
     const pale = tokensCss.replace(/--ink-2:\s*light-dark\([^)]*\)/, '--ink-2: light-dark(#bbbbbb, #444444)');
-    expect(contrastFailures(pale).map(({ token, mode }) => `${token} ${mode}`)).toEqual([
-      'ink-2 light',
-      'ink-2 dark',
+    expect(contrastFailures(pale).map(({ token, mode, background }) => `${token} ${mode} on ${background}`)).toEqual([
+      'ink-2 light on paper',
+      'ink-2 dark on paper',
+      'ink-2 light on surface',
+      'ink-2 dark on surface',
     ]);
+  });
+
+  it('flags a text colour that passes on paper but not on surface', () => {
+    const dim = tokensCss.replace(/--surface:\s*light-dark\([^)]*\)/, '--surface: light-dark(#ffffff, #5a5a5a)');
+    expect(contrastFailures(dim).map(({ token, mode, background }) => `${token} ${mode} on ${background}`)).toContain('ink-3 dark on surface');
   });
 
   it('flags a token that was renamed away', () => {
     const renamed = tokensCss.replace('--accent:', '--highlight:');
-    expect(contrastFailures(renamed).map(({ token }) => token)).toEqual(['accent', 'accent']);
+    expect(contrastFailures(renamed).map(({ token }) => token)).toEqual(['accent', 'accent', 'accent', 'accent']);
   });
 });
 

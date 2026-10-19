@@ -2,7 +2,7 @@
 /**
  * The top of a text page: where the page sits, the title, then one grey line that says what the page
  * is for. A default slot below the line holds a block that belongs to the head; `contents` lists the
- * page's numbered sections.
+ * page's numbered sections, in a column to the right on wide screens.
  */
 import type { ContentsItem, Crumb } from '../lib/navigation.ts';
 import Breadcrumbs from './Breadcrumbs.astro';
@@ -20,17 +20,19 @@ interface Props {
 const { title, lead, crumbs, contents } = Astro.props;
 ---
 
-<header class="page-head section">
-  {
-    crumbs !== undefined && (
-      <div class="page-head__crumbs">
-        <Breadcrumbs trail={crumbs} here={title} />
-      </div>
-    )
-  }
-  <h1 class="t-display">{title}</h1>
-  <p class="page-head__lead t-lead ink-2">{lead}</p>
-  {Astro.slots.has('default') && <slot />}
+<header class="page-head section grid">
+  <div class="page-head__main">
+    {
+      crumbs !== undefined && (
+        <div class="page-head__crumbs">
+          <Breadcrumbs trail={crumbs} here={title} />
+        </div>
+      )
+    }
+    <h1 class="t-display">{title}</h1>
+    <p class="page-head__lead t-lead ink-2">{lead}</p>
+    {Astro.slots.has('default') && <slot />}
+  </div>
   {
     contents !== undefined && (
       <div class="page-head__contents">
@@ -41,8 +43,19 @@ const { title, lead, crumbs, contents } = Astro.props;
 </header>
 
 <style>
+  /* The title, its lead and any block of its own on the left two thirds; the contents on the right third. */
   .page-head {
+    row-gap: var(--space-12);
+  }
+
+  .page-head__main,
+  .page-head__contents {
+    grid-column: 1 / -1;
+  }
+
+  .page-head__main {
     display: grid;
+    align-content: start;
     row-gap: var(--space-8);
   }
 
@@ -54,7 +67,15 @@ const { title, lead, crumbs, contents } = Astro.props;
     margin-block-end: calc(var(--space-4) * -1);
   }
 
-  .page-head__contents {
-    margin-block-start: var(--space-4);
+  @media (width >= 56rem) {
+    .page-head__main {
+      grid-column: 1 / span 8;
+    }
+
+    .page-head__contents {
+      grid-column: 9 / span 4;
+      align-self: start;
+      padding-block-start: var(--space-4);
+    }
   }
 </style>

@@ -35,6 +35,31 @@ test('every illustration is a figure with a caption, and its icons are hidden fr
   }
 });
 
+for (const [route, selector, name] of [
+  ['/idea/', 'figure.where', 'Where the hidden work goes'],
+  ['/ledger/', 'figure.saved-lost', 'Saved now, lost later'],
+] as const) {
+  test(`${route} sets ${name} apart: named by a heading, on the surface colour, painted to both edges of the window`, async ({ page, siteUrl }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(new URL(route, siteUrl).href);
+    const figure = page.locator(selector);
+    await expect(figure.getByRole('heading', { level: 3 })).toHaveText(name);
+    await expect(figure).toHaveAccessibleName(name);
+    const band = await figure.evaluate((element) => {
+      const probe = document.createElement('div');
+      probe.style.background = 'var(--surface)';
+      document.body.append(probe);
+      const surface = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      const computed = getComputedStyle(element);
+      return { background: computed.backgroundColor, surface, shadow: computed.boxShadow, scrolls: document.documentElement.scrollWidth > window.innerWidth };
+    });
+    expect(band.background).toBe(band.surface);
+    expect(band.shadow).toContain(band.surface);
+    expect(band.scrolls).toBe(false);
+  });
+}
+
 test('no SVG on any page writes a colour of its own; they all take currentColor from the tokens', async () => {
   const dist = path.resolve(import.meta.dirname, '../../dist');
   const pages: string[] = [];

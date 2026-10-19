@@ -39,7 +39,7 @@ test('/idea lists the six hidden functions from the data file, and the portrait 
   siteUrl,
 }) => {
   await page.goto(new URL('/idea/', siteUrl).href);
-  const section = page.locator('section', { has: page.getByRole('heading', { name: 'The hidden work' }) });
+  const section = page.locator('section', { has: page.getByRole('heading', { name: 'The hidden work', exact: true }) });
   for (const { label, meaning } of Object.values(hiddenFunctions)) {
     await expect(section).toContainText(label);
     await expect(section).toContainText(meaning);

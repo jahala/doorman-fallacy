@@ -25,13 +25,14 @@ What they establish:
 
 ## Tokens
 
-Proposed from the mockups, pending Jan's approval on the specimen page. They live in `src/styles/tokens.css`, the only file allowed to hold colour values. Contrast is measured against `paper` and tested ([engineering.md](engineering.md#rules-and-their-guards)).
+Proposed from the mockups, pending Jan's approval on the specimen page. They live in `src/styles/tokens.css`, the only file allowed to hold colour values. Contrast is stated against `paper`; the text colours are also tested against `surface` ([engineering.md](engineering.md#rules-and-their-guards)).
 
 Colour:
 
 | Token | Light | Dark | Use | Contrast (light / dark) |
 |---|---|---|---|---|
 | `paper` | #FAF9F7 | #121211 | Background | |
+| `surface` | #FFF | #1C1C1A | Bands that set an illustration apart | |
 | `ink` | #0B0B0A | #F3F2EE | Headlines, body, the button | 18.7 / 16.7 |
 | `ink-2` | #55544F | #B4B2AC | Secondary lines, table meta | 7.2 / 8.8 |
 | `ink-3` | #6A6964 | #9C9A94 | Captions, fine print | 5.2 / 6.7 |
@@ -73,7 +74,7 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 - Site header: wordmark left; The idea, The ledger, About and Subscribe right. The current section has a 2-pixel accent underline: The idea on `/idea` and its six pages; The ledger on `/ledger`, case pages, `/approach` and `/suggest`.
 - Navigation: the site has two sections, the idea and the ledger. Their pages read in order, `/idea` then `/ledger` then `/approach`, and each ends with a pager to the next.
 - Breadcrumbs: on pages below a section page (`/approach`, `/suggest`, case pages, the six hidden work pages), above the title, at the `small` size in `ink-2`, each level a link and the page itself last, separated by slashes. Top-level pages have none.
-- Contents ("On this page"): on `/idea`, `/ledger` and `/approach`, under the page head. Numbered, hairline-ruled rows in two columns on wide screens, linking each section. The same number sits above each section's heading.
+- Contents ("On this page"): on `/idea`, `/ledger` and `/approach`. On wide screens it sits in the right four columns of the page head, beside the title and lead, which take the left eight; on phones it follows them. Numbered, hairline-ruled rows, one column, linking each section. The same number sits above each section's heading.
 - Pager: at the foot of a page, under a hairline. A `small` `ink-2` word (Previous, Next or Back to) above the page name in `subhead`; previous on the left, next on the right.
 - Text link: 1-pixel underline in `ink`, offset below the baseline. ↗ only for external links.
 - Section: hairline, then the number and heading in the left four columns and the text in the right eight, about 65 characters wide. A section can hold a block under its heading (the portrait on `/idea#hidden`) and a wide block under its text that spans the grid.
@@ -92,9 +93,9 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 ## Illustrations
 
-Two diagrams and six icons explain the idea without photographs. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
+Two diagrams and six icons explain the idea without photographs. Each diagram sits in a respite: a band of `surface` that runs to both edges of the window, 96 pixels above and below, with the diagram's name as an h3 in the heading column and what it shows in the text column. A band that ends its section is the section's end, with no hairline after it. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
 
-- **Where the work goes** (`/idea#questions`, under the third question): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. The caption says it is one possible outcome.
+- **Where the hidden work goes** (`/idea#questions`, under the third question): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. Its text says it is one possible outcome.
 - **Saved now, lost later** (`/ledger#watch`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.
 - **Six icons**, one per kind of hidden work, on a 24-pixel grid with 1.5-pixel strokes, in `ink-2`: a figure with presence radiating (signal), an eye (deterrence), a path that forks at a decision (judgment), a notebook with a ribbon (memory), a wave dying down (absorption), and a container with headroom (slack). They sit beside the labels and never carry meaning alone.
 
