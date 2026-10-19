@@ -1,7 +1,9 @@
 ---
 import tokensCss from '../styles/tokens.css?raw';
 import ExternalLink from '../components/ExternalLink.astro';
+import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
+import { exampleRows } from '../data/example-rows.ts';
 import Site from '../layouts/Site.astro';
 import { contrastRatio } from '../lib/contrast.ts';
 import {
@@ -41,11 +43,7 @@ const modes = (['light', 'dark'] as const).map((mode) => ({
 const typeScale = typeTokens(tokensCss);
 const spaceScale = spaceTokens(tokensCss);
 const gridValues = customProperties(tokensCss).filter((property) => property.name.startsWith('grid-'));
-const weights = [
-  { letter: 'A', weight: 500, note: 'Medium, as in the hero mockup' },
-  { letter: 'B', weight: 600, note: 'Semibold, the proposal' },
-  { letter: 'C', weight: 700, note: 'Bold, as in the other mockups' },
-];
+const weights = [{ letter: 'A', weight: 400, note: 'Regular, the only weight Prata has' }];
 ---
 
 <Site title="Type and colour specimen" noindex>
@@ -92,7 +90,7 @@ const weights = [
     <section class="specimen__section" aria-labelledby="s-scale">
       <h2 id="s-scale" class="t-title">Type scale</h2>
       <p class="t-small ink-2 prose">
-        Inter, variable, with its optical-size axis, self-hosted. Each token is set in a sentence from the site.
+        Headings (display, title) in Prata, everything else in Inter with its optical-size axis. Both variable and self-hosted. Each token is set in a sentence from the site.
       </p>
       <div class="specimen__scale">
         {
@@ -115,7 +113,7 @@ const weights = [
     <section class="specimen__section" aria-labelledby="s-weight">
       <h2 id="s-weight" class="t-title">Display weight</h2>
       <p class="t-small ink-2 prose">
-        One weight for every headline. Choose A, B or C.
+        One weight for every headline. The heading face decides which weights exist.
       </p>
       <div class="specimen__scale">
         {
@@ -179,39 +177,7 @@ const weights = [
 
     <section class="specimen__section" aria-labelledby="s-ledger">
       <h2 id="s-ledger" class="t-title">Ledger table</h2>
-      <div class="specimen__table-wrap" role="region" aria-label="Ledger table sample" tabindex="0">
-      <table class="specimen__ledger">
-        <caption class="t-small ink-2">Specimen rows. Illustrative, not cases.</caption>
-        <thead>
-          <tr class="t-small ink-2">
-            <th scope="col">Company</th>
-            <th scope="col">Change</th>
-            <th scope="col">Reported outcome</th>
-            <th scope="col">Case</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">
-              <span class="t-lead specimen__company">Commonwealth Bank</span>
-              <span class="t-small ink-2 specimen__meta">Australia · Customer service</span>
-            </th>
-            <td>45 roles cut for a voice bot.</td>
-            <td>Decision reversed.</td>
-            <td><a href="/ledger">Read case<span class="visually-hidden"> on Commonwealth Bank</span></a></td>
-          </tr>
-          <tr>
-            <th scope="row">
-              <span class="t-lead specimen__company">Klarna</span>
-              <span class="t-small ink-2 specimen__meta">Sweden · Customer service</span>
-            </th>
-            <td>AI-first customer support.</td>
-            <td>Human support hired back.</td>
-            <td><a href="/ledger">Read case<span class="visually-hidden"> on Klarna</span></a></td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
+      <LedgerTable rows={exampleRows} caption="Specimen rows. Illustrative, not cases." label="Ledger table sample" />
     </section>
 
     <section class="specimen__section" aria-labelledby="s-photos">
@@ -341,39 +307,6 @@ const weights = [
     gap: var(--space-4);
   }
 
-  .specimen__ledger {
-    inline-size: 100%;
-    border-collapse: collapse;
-    text-align: start;
-  }
-
-  .specimen__ledger caption {
-    margin-block-end: var(--space-3);
-    text-align: start;
-  }
-
-  .specimen__ledger th,
-  .specimen__ledger td {
-    padding: var(--space-4);
-    border-block-end: var(--hairline) solid var(--rule);
-    font-weight: inherit;
-    text-align: start;
-    vertical-align: top;
-  }
-
-  .specimen__ledger thead th {
-    border-block-start: var(--hairline) solid var(--rule);
-  }
-
-  .specimen__company {
-    display: block;
-    font-weight: 600;
-  }
-
-  .specimen__meta {
-    display: block;
-  }
-
   .specimen__photos {
     row-gap: var(--space-8);
     align-items: start;
@@ -415,12 +348,6 @@ const weights = [
       grid-template-columns: 8rem 10rem 1fr;
       align-items: center;
     }
-  }
-
-  .specimen__table-wrap {
-    /* Positioned so visually hidden text in a cell is clipped with the table, not the page. */
-    position: relative;
-    overflow-x: auto;
   }
 
   @media (width >= 56rem) {

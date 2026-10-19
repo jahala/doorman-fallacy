@@ -24,6 +24,7 @@
   },
   "include": [
     "scripts/**/*.ts",
+    "desk/**/*.ts",
     "tests/**/*.ts",
     "eslint/**/*.ts",
     "eslint.config.ts",

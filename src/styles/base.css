@@ -9,7 +9,7 @@
 html {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font);
+  font-family: var(--font-body);
   font-optical-sizing: auto;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -60,6 +60,23 @@ code {
 }
 
 /* Type scale: size and weight carry the hierarchy */
+
+.t-display,
+.t-title,
+.wordmark {
+  font-family: var(--font-heading);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
 
 .t-display {
   font-size: var(--display-size);
@@ -230,7 +247,7 @@ a {
 
 .wordmark {
   font-size: var(--lead-size);
-  font-weight: 600;
+  font-weight: var(--title-weight);
   line-height: var(--title-leading);
   letter-spacing: var(--title-tracking);
   text-decoration: none;
@@ -349,6 +366,99 @@ a {
 
   .hero__photo {
     grid-column: 7 / span 6;
+  }
+}
+
+/* Home sections */
+
+.split {
+  row-gap: var(--space-8);
+  align-items: start;
+}
+
+.split__head,
+.split__side {
+  grid-column: 1 / -1;
+}
+
+.section__sub {
+  margin-block-start: var(--space-4);
+}
+
+.section__sub + p {
+  margin-block-start: var(--space-3);
+}
+
+.section__link {
+  margin-block-start: var(--space-12);
+}
+
+.section__note {
+  margin-block-start: var(--space-8);
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-block-end: var(--space-12);
+}
+
+.columns {
+  row-gap: var(--space-12);
+  margin-block-start: var(--space-16);
+}
+
+.columns > * {
+  grid-column: 1 / -1;
+}
+
+.columns h3 + p {
+  margin-block-start: var(--space-4);
+}
+
+.ruled {
+  padding-block-start: var(--space-8);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+
+.check__questions {
+  display: grid;
+  gap: var(--space-4);
+  margin-block-start: var(--space-8);
+  color: var(--ink-2);
+}
+
+.check__link {
+  margin-block-start: var(--space-8);
+}
+
+.subscribe__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (width >= 40rem) {
+  .columns--3 > * {
+    grid-column: span 4;
+  }
+
+  .columns--2 > * {
+    grid-column: span 6;
+  }
+}
+
+@media (width >= 56rem) {
+  .split__head {
+    grid-column: 1 / span 7;
+  }
+
+  .split__side {
+    grid-column: 8 / span 5;
+    padding-block-start: var(--space-4);
   }
 }
 

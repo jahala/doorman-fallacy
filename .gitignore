@@ -7,3 +7,5 @@ playwright-report
 .DS_Store
 .env*
 *.log
+# Desk runs hold unconfirmed leads about named companies; never committed
+.desk-runs

@@ -6,7 +6,7 @@ The five mockups in [design-reference/](design-reference/) are the visual refere
 
 What they establish:
 - Warm paper background, near-black type, hairline rules between sections.
-- One sans-serif family. Very large, tightly set headlines; a grey secondary line under each.
+- A grotesque sans-serif. Very large, tightly set headlines; a grey secondary line under each.
 - A wide two-column grid: headline left, supporting text or form right.
 - Black-and-white documentary photography with a small caption.
 - One red accent, used only to mark where you are.
@@ -17,7 +17,7 @@ What they establish:
 | Mockup difference | Site does |
 |---|---|
 | Hero greys are warm; ledger, checks and sign-up greys are cool blue-grey | Warm greys everywhere |
-| Hero headline is medium weight; the other headlines are bold | One display weight for every headline, chosen on the type specimen page (proposed: 600) |
+| Hero headline is medium weight; the other headlines are bold | One weight for every headline: Prata's only weight, 400 ([D-013](decisions.md)) |
 | Paper is #FAF9F7 on the hero and near-white elsewhere | #FAF9F7 everywhere |
 | ↗ appears on internal links ("Read case", "View all cases") | ↗ marks only links that leave the site. Internal links have no arrow |
 | "Who takes it on" copy uses an em dash | Rewritten without it |
@@ -41,12 +41,12 @@ Colour:
 
 The accent was sampled from the hero mockup's nav underline. Error, warning and success colours are added only when a function needs one.
 
-Type: one family, Inter (variable, with its display optical size), self-hosted. Proposed because it is free, close to the mockups' grotesque, and has a display cut for the large headlines. The specimen page confirms or replaces it.
+Type: two families, self-hosted ([D-013](decisions.md)). Prata, a high-contrast display serif with one weight, sets headings (`display`, `title`) and the wordmark. Inter, with its optical-size axis, sets everything else. Both are under the SIL Open Font License.
 
 | Token | Size | Weight | Line height | Tracking | Use |
 |---|---|---|---|---|---|
-| `display` | clamp(3rem, 7vw, 5.5rem) | 600 | 0.95 | -0.035em | Section headlines |
-| `title` | clamp(1.75rem, 3vw, 2.5rem) | 600 | 1.1 | -0.02em | Column heads, company names |
+| `display` | clamp(3rem, 7vw, 5.5rem) | 400 | 0.95 | -0.01em | Section headlines |
+| `title` | clamp(1.75rem, 3vw, 2.5rem) | 400 | 1.1 | -0.02em | Column heads, company names |
 | `lead` | clamp(1.25rem, 2vw, 1.75rem) | 400 | 1.35 | -0.01em | First line under a headline |
 | `body` | 1.125rem | 400 | 1.55 | 0 | Running text |
 | `small` | 0.9375rem | 400 | 1.45 | 0 | Table meta, form help |
@@ -61,15 +61,17 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 - Site header: wordmark left; The idea, The ledger, About and Subscribe right. The current page has a 2-pixel accent underline.
 - Text link: 1-pixel underline in `ink`, offset below the baseline. ↗ only for external links.
 - Section: hairline, headline, lead, then content in the grid.
-- Ledger table: company with country and area beneath; change; reported outcome; case link. Rows split by hairlines. Status is written as a word, never shown as a coloured pill.
+- Ledger table: company with country and area beneath; change; reported outcome; case link. Rows split by hairlines. Status is written as a word, never shown as a coloured pill. On screens narrower than 40rem each row stacks into a block and each cell shows its column name.
 - Checklist page: questions with ruled writing space, designed for print first.
+- Suggestion form: the same field style as sign-up. Link fields sized for a URL, the note field a few lines tall, name and email marked optional, the credit box below them.
 - Sign-up form: a visible label above the field, which is sized for an email address (about 28 characters), and the black Subscribe button. The help line sits below.
 - Footer: wordmark, curator line, About the curator, then Sources & approach, Suggest a case and Privacy. The Sutherland credit closes the page.
 
 ## States
 
 - Focus: 2-pixel accent outline, offset 3 pixels, on every interactive element.
-- The sign-up form posts to Buttondown, which shows its own confirmation page. Its "check your email" message and confirmation email use the site's wordmark and words.
+- The sign-up form posts to the Worker, which answers with a "check your email" page in the site's layout. The confirmation email and the confirmed and unsubscribed pages use the same words and wordmark.
+- The suggestion form posts to the Worker, which answers with a thank-you page. A rejected entry (too long, missing links) comes back with the fields kept and the problem written next to the field.
 - An empty ledger never ships; the site launches with ten cases.
 - Not found: a 404 page in the site's layout that links to the idea and the ledger.
 

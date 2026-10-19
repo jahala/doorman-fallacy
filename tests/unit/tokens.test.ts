@@ -62,7 +62,7 @@ describe('docs/design.md matches tokens.css', () => {
   });
 
   it('lists the same type scale', () => {
-    const fromDoc = tableAfter(designDoc, 'Type: one family').map(([name, size, weight, leading, tracking]) => ({ name, size, weight, leading, tracking }));
+    const fromDoc = tableAfter(designDoc, 'Type: two families').map(([name, size, weight, leading, tracking]) => ({ name, size, weight, leading, tracking }));
     expect(typeTokens(tokensCss)).toEqual(fromDoc);
   });
 });
