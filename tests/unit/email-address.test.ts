@@ -3,7 +3,7 @@ import { parseEmail } from '../../src/lib/email-address.ts';
 
 describe('parseEmail', () => {
   it('accepts an ordinary address and lower-cases it', () => {
-    expect(parseEmail('Jan.Larsen+news@Example.co.uk')).toBe('jan.larsen+news@example.co.uk');
+    expect(parseEmail('Ada.Lovelace+news@Example.co.uk')).toBe('ada.lovelace+news@example.co.uk');
   });
 
   it('trims surrounding whitespace', () => {

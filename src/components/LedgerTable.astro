@@ -6,19 +6,21 @@ interface Props {
   /** A line under the table. Left out when the page puts its own line there. */
   caption?: string;
   label: string;
+  /** The home page's preview: no visible column heads, and the status under the change in place of the outcome. */
+  compact?: boolean;
 }
 
-const { rows, caption, label } = Astro.props;
+const { rows, caption, label, compact = false } = Astro.props;
 ---
 
 <div class="ledger-wrap" role="region" aria-label={label} tabindex="0">
-  <table class="ledger" role="table">
+  <table class:list={['ledger', { 'ledger--compact': compact }]} role="table">
     {caption !== undefined && <caption class="t-small ink-3">{caption}</caption>}
-    <thead>
+    <thead class:list={{ 'visually-hidden': compact }}>
       <tr class="t-small ink-2" role="row">
         <th scope="col" role="columnheader">Company</th>
-        <th scope="col" role="columnheader">Change</th>
-        <th scope="col" role="columnheader">Reported outcome</th>
+        <th scope="col" role="columnheader">{compact ? 'Change and reported outcome' : 'Change'}</th>
+        {!compact && <th scope="col" role="columnheader">Reported outcome</th>}
         <th scope="col" role="columnheader">Case</th>
       </tr>
     </thead>
@@ -30,11 +32,22 @@ const { rows, caption, label } = Astro.props;
               <span class="ledger__company t-subhead">{row.company}</span>
               <span class="ledger__meta t-small ink-2">{row.meta}</span>
             </th>
-            <td role="cell" data-label="Change">{row.change}</td>
-            <td role="cell" data-label="Reported outcome">
-              <span class="ledger__status t-small ink-2">{row.status}</span>
-              {row.outcome}
-            </td>
+            {
+              compact ? (
+                <td role="cell">
+                  <span class="ledger__change">{row.change}</span>
+                  <span class="ledger__status t-small ink-2">Reported outcome: {row.status}.</span>
+                </td>
+              ) : (
+                <>
+                  <td role="cell" data-label="Change">{row.change}</td>
+                  <td role="cell" data-label="Reported outcome">
+                    <span class="ledger__status t-small ink-2">{row.status}</span>
+                    {row.outcome}
+                  </td>
+                </>
+              )
+            }
             <td role="cell" class="ledger__case">
               <a href={row.href}>
                 Read case<span class="visually-hidden"> on {row.company}</span>
@@ -88,6 +101,21 @@ const { rows, caption, label } = Astro.props;
     margin-block-end: var(--space-1);
   }
 
+  /* The preview: the change, then its status beneath it. */
+  .ledger--compact .ledger__change {
+    display: block;
+  }
+
+  .ledger--compact .ledger__status {
+    margin-block: var(--space-2) 0;
+  }
+
+  @media (width >= 40rem) {
+    .ledger--compact tbody tr:first-child > * {
+      border-block-start: var(--hairline) solid var(--rule);
+    }
+  }
+
   .ledger__meta {
     display: block;
     margin-block-start: var(--space-1);
@@ -103,12 +131,17 @@ const { rows, caption, label } = Astro.props;
       clip-path: inset(50%);
     }
 
-    .ledger,
     .ledger tbody,
     .ledger tr,
     .ledger th,
     .ledger td {
       display: block;
+    }
+
+    /* A column, so the caption can follow the rows as it does on wide screens. */
+    .ledger {
+      display: flex;
+      flex-direction: column;
     }
 
     .ledger tbody tr {
@@ -140,6 +173,7 @@ const { rows, caption, label } = Astro.props;
 
     .ledger caption {
       display: block;
+      order: 1;
     }
   }
 </style>

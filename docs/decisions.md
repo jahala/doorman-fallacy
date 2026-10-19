@@ -145,3 +145,12 @@ Context: after D-018 the site still read as a patchwork. `/idea` held eleven sec
 Chosen: the site has two sections, the idea and the ledger, and their pages read in order: `/idea`, then `/ledger`, then `/approach`. The three questions are the one way of seeing the whole job; the five steps became the ideas under them, and the signs of the mistake close them. What to watch after an announcement, the statuses and what is known beyond the ledger moved to `/ledger`; reuse moved to `/ledger#data`. Long pages open with a numbered contents list and end with a pager; pages below a section page show breadcrumbs; the header marks the section; the footer is a site map. One hierarchy holds on every page ([design.md](design.md)): h1 `display`, h2 `title`, h3 a new `subhead` token, and names inside an h3's content at body weight 500. The home page sets its h2 and h3 one step larger. A case's Markdown headings render one level lower, so they sit under their section's h2.
 
 Why: a reader should always know where they are, what the page covers and where to go next. The questions and the ledger each answer one job, so content that serves the ledger now sits there. A site test checks the hierarchy, the contents, the breadcrumbs and the footer on every page, so the structure cannot drift back.
+
+## D-020 · 2026-10-19 · The site is about the idea, not its owner
+
+Context: the About page, the footer and How the ledger is kept named Jan and gave his career. Jan did not want that: the site is about the doorman fallacy and the ledger. He also gave a mockup for a calmer landing page.
+
+Chosen: Jan's name is removed from every page but one. About describes the site. The privacy page keeps one line naming the person responsible for the data, because EU data protection law (GDPR article 13) requires a privacy notice to identify the controller; a registered business could be named there instead. The MIT licence keeps its copyright line, which the licence needs. The landing page follows the mockup: the hero, the six kinds of hidden work, a compact ledger preview and a smaller sign-up. The definition band, the three question columns and the whole-job diagram leave it. The definition stays at the head of `/idea`, the questions stay on `/idea`, and the diagram is removed, since the six kinds are now listed on the home page and on `/idea`.
+
+Why: a site that argues for seeing the whole job should not lead with its owner. A shorter landing page reaches the ledger sooner.
+

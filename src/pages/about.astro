@@ -1,5 +1,4 @@
 ---
-import ExternalLink from '../components/ExternalLink.astro';
 import PageHead from '../components/PageHead.astro';
 import Site from '../layouts/Site.astro';
 ---
@@ -7,26 +6,24 @@ import Site from '../layouts/Site.astro';
 <Site
   title="About"
   current="about"
-  description="The Doorman Fallacy is curated by Jan Hallvard Larsen."
+  description="The Doorman Fallacy explains Rory Sutherland's idea and keeps a sourced ledger of what happened after organisations cut roles for AI."
 >
   <div class="page">
-    <PageHead title="About" lead="The Doorman Fallacy is curated by Jan Hallvard Larsen." />
+    <PageHead
+      title="About"
+      lead="The Doorman Fallacy explains one idea, and keeps a record of what happens when organisations overlook it."
+    />
 
-    <section class="about section grid" aria-label="The curator">
+    <section class="about section grid" aria-label="About the site">
       <div class="about__body stack">
         <p>
-
-
-
+          The site has two parts. <a href="/idea">The idea</a> explains Rory Sutherland&rsquo;s doorman fallacy:
+          judging a job by its most visible task, and replacing the task. <a href="/ledger">The ledger</a> follows
+          organisations that cut roles because AI was to do the work, and checks back on each one over time.
         </p>
         <p>
-
-
-
-        </p>
-        <p>
-          He started this site because the question at its centre keeps coming back in every field he has
-          worked in: before replacing a person with a system, what else was the person doing?
+          It is independent, with no advertising and no sponsors. How the cases are found, written and checked is
+          set out in <a href="/approach">How the ledger is kept</a>.
         </p>
         <p>Write to <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.</p>
       </div>
@@ -43,5 +40,4 @@ import Site from '../layouts/Site.astro';
     grid-column: 1 / -1;
     max-inline-size: var(--measure);
   }
-
 </style>
