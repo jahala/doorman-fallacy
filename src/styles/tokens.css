@@ -34,6 +34,11 @@
   --title-leading: 1.1;
   --title-tracking: -0.02em;
 
+  --subhead-size: clamp(1.25rem, 2vw, 1.75rem);
+  --subhead-weight: 400;
+  --subhead-leading: 1.2;
+  --subhead-tracking: -0.01em;
+
   --lead-size: clamp(1.25rem, 2vw, 1.75rem);
   --lead-weight: 400;
   --lead-leading: 1.35;

@@ -1,13 +1,53 @@
 ---
 import { getCollection } from 'astro:content';
+import ExternalLink from '../../components/ExternalLink.astro';
 import LedgerEmpty from '../../components/LedgerEmpty.astro';
 import LedgerSummary from '../../components/LedgerSummary.astro';
 import LedgerTable from '../../components/LedgerTable.astro';
+import NumberedList from '../../components/NumberedList.astro';
+import PageHead from '../../components/PageHead.astro';
+import Pager from '../../components/Pager.astro';
+import SavedLost from '../../components/SavedLost.astro';
+import TextSection from '../../components/TextSection.astro';
+import { afterSigns } from '../../data/signs.ts';
+import { statuses } from '../../data/statuses.ts';
 import Site from '../../layouts/Site.astro';
 import { countLabel, ledgerRow, newestFirst } from '../../lib/ledger.ts';
 
 const cases = newestFirst(await getCollection('cases'));
 const rows = cases.map(ledgerRow);
+const statusRows = Object.values(statuses);
+
+const contents = [
+  { id: 'cases', label: 'The cases' },
+  { id: 'watch', label: 'What the ledger watches for' },
+  { id: 'statuses', label: 'Statuses and follow-up' },
+  { id: 'known', label: 'What is known beyond the ledger' },
+  { id: 'data', label: 'The data' },
+] as const;
+
+const known = [
+  {
+    text: 'Commonwealth Bank of Australia cut 45 customer-service roles in July 2025 as a voice bot took inbound calls. On 21 August 2025, after the Finance Sector Union challenged the cut, the bank said its initial assessment “did not adequately consider all relevant business considerations and this error meant the roles were not redundant”, and reversed it.',
+    source: 'ACS Information Age, 21 August 2025',
+    href: 'https://ia.acs.org.au/article/2025/cba-reverses-ai-driven-job-cuts--admits--error-.html',
+  },
+  {
+    text: 'In 2024 Klarna reported that its AI assistant did work equivalent to about 700 customer-service staff. In May 2025 it began hiring people for customer service again. Its chief executive said: “I just think it’s so critical that you are clear to your customer that there will always be a human if you want.”',
+    source: 'Tech.co, 20 May 2025',
+    href: 'https://tech.co/news/klarna-reverses-ai-overhaul',
+  },
+  {
+    text: 'Forrester’s Predictions 2026: The Future of Work, published in October 2025, forecast that about half of AI-attributed layoffs would be reversed through quiet rehiring, at lower pay or offshore.',
+    source: 'Resultsense, 30 October 2025',
+    href: 'https://www.resultsense.com/news/2025-10-30-forrester-predicts-ai-layoff-reversals-lower-pay/',
+  },
+  {
+    text: 'A 2025 survey by Orgvue, which sells organisational design and planning software, asked more than 1,000 business leaders. About 4 in 10 said they had laid off employees as a result of deploying AI. Of those, 55 percent said they had made the wrong decisions about it.',
+    source: 'HR Dive, 29 April 2025',
+    href: 'https://www.hrdive.com/news/leaders-who-laid-off-workers-due-to-ai-regretted-it/746643/',
+  },
+] as const;
 ---
 
 <Site
@@ -16,31 +56,108 @@ const rows = cases.map(ledgerRow);
   current="ledger"
 >
   <div class="page">
-    <section class="section" aria-labelledby="ledger-title">
-      <div class="section-head">
-        <div>
-          <h1 id="ledger-title" class="t-display">The ledger</h1>
-          <p class="t-lead ink-2 section__sub">What happened after organisations cut roles for AI.</p>
-        </div>
-      </div>
+    <PageHead title="The ledger" lead="What happened after organisations cut roles for AI." contents={contents} />
+
+    <TextSection id="cases-title" anchor="cases" number={1} title="The cases">
       {
         rows.length === 0 ? (
-          <LedgerEmpty heading="h2" />
+          <LedgerEmpty heading="h3" size="subhead" />
         ) : (
-          <>
-            <LedgerSummary cases={cases} />
-            <LedgerTable rows={rows} label="Cases, newest announcement first" />
-            <p class="ledger-count t-small ink-3">
-              {countLabel(rows.length)} in the ledger. <a href="/approach">How the ledger is kept</a>
-            </p>
-            <p class="ledger-download t-small">
-              Download the ledger: <a href="/ledger.csv">CSV</a> &middot; <a href="/ledger.json">JSON</a>. Free to
-              reuse under CC BY 4.0, with credit to The Doorman Fallacy.
-            </p>
-          </>
+          <LedgerSummary cases={cases} />
         )
       }
-    </section>
+      {
+        rows.length > 0 && (
+          <div slot="wide">
+            <LedgerTable rows={rows} label="Cases, newest announcement first" />
+            <p class="ledger-count t-small ink-2">
+              {countLabel(rows.length)} in the ledger. <a href="/approach">How the ledger is kept</a>
+            </p>
+          </div>
+        )
+      }
+    </TextSection>
+
+    <TextSection id="watch-title" anchor="watch" number={2} title="What the ledger watches for">
+      <p>
+        When an organisation announces cuts linked to AI, these are the signs, months later, that the hidden work
+        went missing. The ledger looks for them each time it checks a case again. A case that holds up shows the
+        opposite.
+      </p>
+      <NumberedList items={afterSigns} />
+      <SavedLost slot="wide" />
+    </TextSection>
+
+    <TextSection id="statuses-title" anchor="statuses" number={3} title="Statuses and follow-up">
+      <p>
+        A case is a record that keeps changing. Each one is checked again on a schedule set by its status, and its
+        page says when it was last checked, even when nothing new was found.
+      </p>
+      <table class="statuses">
+        <thead>
+          <tr class="t-small ink-2">
+            <th scope="col">Status</th>
+            <th scope="col">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            statusRows.map(({ label, meaning }) => (
+              <tr>
+                <th scope="row" class="t-label">{label}</th>
+                <td class="ink-2">{meaning}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p>
+        Too early to tell and strained cases are checked after three months. Holding cases after six months, then
+        every year. Partly reversed cases after six months. Reversed cases once more after a year.
+      </p>
+    </TextSection>
+
+    <TextSection id="known-title" anchor="known" number={4} title="What is known beyond the ledger">
+      <p>
+        The ledger records named cases with sources. Around it, a few facts and forecasts are widely quoted. Here is
+        what they say, and where they come from.
+      </p>
+      {
+        known.map(({ text, source, href }) => (
+          <div class="known__item">
+            <p>{text}</p>
+            <p class="t-small ink-2">
+              Source: <ExternalLink href={href}>{source}</ExternalLink>
+            </p>
+          </div>
+        ))
+      }
+      <p class="ink-2">
+        Surveys and forecasts are not cases. A survey reports what people say, a forecast is a judgement about the
+        future, and some come from companies that sell tools for the decision they describe. The ledger counts only
+        what named organisations did, from sources anyone can check.
+      </p>
+    </TextSection>
+
+    <TextSection id="data-title" anchor="data" number={5} title="The data">
+      <p>
+        Download the whole ledger as <a href="/ledger.csv">CSV</a> or <a href="/ledger.json">JSON</a>, or follow new
+        cases and updates with the <a href="/rss.xml">RSS feed</a>.
+      </p>
+      <p>
+        The cases are free to reuse under{' '}
+        <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>, with credit to The
+        Doorman Fallacy. To cite the idea itself, use the <a href="/idea#cite">citation on the idea page</a>.
+      </p>
+      <p>
+        For press and research questions, write to <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.
+      </p>
+    </TextSection>
+
+    <Pager
+      previous={{ label: 'The idea', href: '/idea' }}
+      next={{ label: 'How the ledger is kept', href: '/approach' }}
+    />
   </div>
 </Site>
 
@@ -49,7 +166,35 @@ const rows = cases.map(ledgerRow);
     margin-block-start: var(--space-4);
   }
 
-  .ledger-download {
+  .known__item > p + p {
     margin-block-start: var(--space-2);
+  }
+
+  .statuses {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .statuses th,
+  .statuses td {
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    border-block-end: var(--hairline) solid var(--rule);
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  .statuses thead th {
+    border-block-start: var(--hairline) solid var(--rule);
+    font-weight: inherit;
+  }
+
+  .statuses tbody th {
+    inline-size: 11rem;
+  }
+
+  @media (width < 40rem) {
+    .statuses tbody th {
+      inline-size: 7rem;
+    }
   }
 </style>

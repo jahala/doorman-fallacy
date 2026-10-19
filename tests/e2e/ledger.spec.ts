@@ -12,7 +12,7 @@ test('the ledger lists every case, each row linking to its page', async ({ page,
     anchors.map((anchor) => anchor.getAttribute('href')),
   );
   expect(hrefs.map((href) => `${href ?? ''}/`).sort()).toEqual(casePages);
-  await expect(page.getByRole('link', { name: 'How the ledger is kept' })).toHaveAttribute('href', '/approach');
+  await expect(page.locator('.ledger-count').getByRole('link', { name: 'How the ledger is kept' })).toHaveAttribute('href', '/approach');
   await expect(page.getByRole('link', { name: 'The ledger', exact: true })).toHaveAttribute('aria-current', 'page');
 });
 

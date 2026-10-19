@@ -19,7 +19,7 @@ const right = hiddenFunctionIds.slice(3);
           <li class="whole-job__item">
             <HiddenIcon id={id} class="ink-2" />
             <span>
-              <a class="whole-job__name" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
+              <a class="whole-job__name t-subhead" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
               <span class="whole-job__meaning t-small ink-2">{hiddenFunctions[id].meaning}</span>
             </span>
           </li>
@@ -28,7 +28,7 @@ const right = hiddenFunctionIds.slice(3);
     </ul>
     <div class="whole-job__task">
       <p class="t-caption ink-2">The visible task</p>
-      <p class="whole-job__task-name">Opening the door</p>
+      <p class="whole-job__task-name t-subhead">Opening the door</p>
       <p class="t-small ink-2">What the job description says, and what a machine can take.</p>
     </div>
     <ul class="whole-job__side whole-job__side--right">
@@ -37,7 +37,7 @@ const right = hiddenFunctionIds.slice(3);
           <li class="whole-job__item">
             <HiddenIcon id={id} class="ink-2" />
             <span>
-              <a class="whole-job__name" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
+              <a class="whole-job__name t-subhead" href={`/idea/${id}`}>{hiddenFunctions[id].label}</a>
               <span class="whole-job__meaning t-small ink-2">{hiddenFunctions[id].meaning}</span>
             </span>
           </li>
@@ -80,9 +80,6 @@ const right = hiddenFunctionIds.slice(3);
 
   .whole-job__name {
     display: block;
-    font-family: var(--font-heading);
-    font-size: var(--lead-size);
-    line-height: var(--title-leading);
     text-decoration-color: var(--rule);
   }
 
@@ -104,12 +101,6 @@ const right = hiddenFunctionIds.slice(3);
 
   .whole-job__task p {
     margin: 0;
-  }
-
-  .whole-job__task-name {
-    font-family: var(--font-heading);
-    font-size: var(--title-size);
-    line-height: var(--title-leading);
   }
 
   .whole-job figcaption {

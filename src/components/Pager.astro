@@ -1,0 +1,74 @@
+---
+/**
+ * The end of a page: where to go back to and where to go next, each with a small label and the
+ * page's name in the subhead style. Either side may be empty.
+ */
+import type { PagerLink } from '../lib/navigation.ts';
+
+interface Props {
+  previous?: PagerLink;
+  next?: PagerLink;
+  /** What the previous link means here: "Previous", or "Back to" for a parent page. */
+  previousKind?: string;
+}
+
+const { previous, next, previousKind = 'Previous' } = Astro.props;
+---
+
+<nav class="pager" aria-label="More pages">
+  <div class="pager__side">
+    {
+      previous !== undefined && (
+        <a href={previous.href} rel={previousKind === 'Previous' ? 'prev' : undefined}>
+          <span class="pager__kind t-small ink-2">{previousKind}</span>
+          <span class="pager__name t-subhead">{previous.label}</span>
+        </a>
+      )
+    }
+  </div>
+  <div class="pager__side pager__side--next">
+    {
+      next !== undefined && (
+        <a href={next.href} rel="next">
+          <span class="pager__kind t-small ink-2">Next</span>
+          <span class="pager__name t-subhead">{next.label}</span>
+        </a>
+      )
+    }
+  </div>
+</nav>
+
+<style>
+  .pager {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8) var(--space-16);
+  }
+
+  .pager a {
+    display: grid;
+    gap: var(--space-1);
+    text-decoration: none;
+  }
+
+  .pager__name {
+    text-decoration: underline;
+    text-decoration-thickness: var(--hairline);
+    text-decoration-color: var(--rule);
+    text-underline-offset: 0.18em;
+  }
+
+  .pager a:hover .pager__name {
+    text-decoration-color: currentcolor;
+  }
+
+  @media (width >= 40rem) {
+    .pager {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .pager__side--next {
+      text-align: end;
+    }
+  }
+</style>

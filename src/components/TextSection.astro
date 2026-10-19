@@ -1,22 +1,36 @@
 ---
-/** One section of a text page: a hairline, the heading on the left, running text in a 65 character column on the right. */
+/**
+ * One section of a text page: a hairline, the heading on the left, running text in a 65 character
+ * column on the right. A numbered section shows its number above the heading, matching the page's
+ * contents list. The `aside` slot sits under the heading; the `wide` slot spans the grid below.
+ */
 interface Props {
   title: string;
   /** The id of the heading, which names the section. */
   id: string;
-  /** An id for the section itself, when other pages link to it. */
+  /** An id for the section itself, for the contents list and for links from other pages. */
   anchor?: string;
+  /** The section's place in the page's contents, from 1. */
+  number?: number;
+  /** Let the body use its whole column, for blocks laid out in columns of their own. */
+  full?: boolean;
 }
 
-const { title, id, anchor } = Astro.props;
+const { title, id, anchor, number, full = false } = Astro.props;
+// Rendered first, so a wide slot whose content is conditional and empty adds no empty block.
+const wide = Astro.slots.has('wide') ? (await Astro.slots.render('wide')).trim() : '';
 ---
 
 <section id={anchor} class="text-section section grid" aria-labelledby={id}>
-  <h2 id={id} class="t-title">{title}</h2>
-  <div class="text-section__body stack">
+  <div class="text-section__head">
+    {number !== undefined && <p class="section-number" aria-hidden="true">{String(number).padStart(2, '0')}</p>}
+    <h2 id={id} class="t-title">{title}</h2>
+    {Astro.slots.has('aside') && <div class="text-section__aside"><slot name="aside" /></div>}
+  </div>
+  <div class:list={['text-section__body stack', { 'text-section__body--full': full }]}>
     <slot />
   </div>
-  {Astro.slots.has('wide') && <div class="text-section__wide"><slot name="wide" /></div>}
+  {wide !== '' && <div class="text-section__wide" set:html={wide} />}
 </section>
 
 <style is:global>
@@ -28,14 +42,28 @@ const { title, id, anchor } = Astro.props;
     border-block-end: 0;
   }
 
-  .text-section > h2,
+  .text-section__head,
   .text-section__body,
   .text-section__wide {
     grid-column: 1 / -1;
   }
 
+  .text-section__head {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+  }
+
+  .text-section__aside {
+    margin-block-start: var(--space-8);
+  }
+
   .text-section__body {
     max-inline-size: var(--measure);
+  }
+
+  .text-section__body--full {
+    max-inline-size: none;
   }
 
   .text-section__body ol {
@@ -61,9 +89,15 @@ const { title, id, anchor } = Astro.props;
     font-variant-numeric: tabular-nums;
   }
 
+  /* A heading inside a section: the third level of the hierarchy. */
+  .text-section__body > h3 {
+    margin-block-start: var(--space-8);
+  }
+
   @media (width >= 56rem) {
-    .text-section > h2 {
+    .text-section__head {
       grid-column: 1 / span 4;
+      padding-inline-end: var(--space-8);
     }
 
     .text-section__body {

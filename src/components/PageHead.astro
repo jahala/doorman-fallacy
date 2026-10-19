@@ -1,21 +1,43 @@
 ---
 /**
- * The top of a text page: the title, then one grey line that says what the page is for. A kicker
- * slot sits above the title and a default slot below the line, for a block that belongs to the head.
+ * The top of a text page: where the page sits, the title, then one grey line that says what the page
+ * is for. A default slot below the line holds a block that belongs to the head; `contents` lists the
+ * page's numbered sections.
  */
+import type { ContentsItem, Crumb } from '../lib/navigation.ts';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Contents from './Contents.astro';
+
 interface Props {
   title: string;
   lead: string;
+  /** The pages above this one, top first. Top-level pages have none. */
+  crumbs?: readonly Crumb[];
+  /** This page's numbered sections, in order. */
+  contents?: readonly ContentsItem[];
 }
 
-const { title, lead } = Astro.props;
+const { title, lead, crumbs, contents } = Astro.props;
 ---
 
 <header class="page-head section">
-  {Astro.slots.has('kicker') && <p class="page-head__kicker t-small ink-2"><slot name="kicker" /></p>}
+  {
+    crumbs !== undefined && (
+      <div class="page-head__crumbs">
+        <Breadcrumbs trail={crumbs} here={title} />
+      </div>
+    )
+  }
   <h1 class="t-display">{title}</h1>
-  <p class="t-lead ink-2">{lead}</p>
+  <p class="page-head__lead t-lead ink-2">{lead}</p>
   {Astro.slots.has('default') && <slot />}
+  {
+    contents !== undefined && (
+      <div class="page-head__contents">
+        <Contents items={contents} />
+      </div>
+    )
+  }
 </header>
 
 <style>
@@ -24,12 +46,15 @@ const { title, lead } = Astro.props;
     row-gap: var(--space-8);
   }
 
-  .page-head > p {
+  .page-head__lead {
     max-inline-size: 28em;
   }
 
-  .page-head > .page-head__kicker {
-    max-inline-size: none;
+  .page-head__crumbs {
     margin-block-end: calc(var(--space-4) * -1);
+  }
+
+  .page-head__contents {
+    margin-block-start: var(--space-4);
   }
 </style>

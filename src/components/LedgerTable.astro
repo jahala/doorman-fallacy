@@ -27,7 +27,7 @@ const { rows, caption, label } = Astro.props;
         rows.map((row) => (
           <tr role="row">
             <th scope="row" role="rowheader">
-              <span class="ledger__company t-title">{row.company}</span>
+              <span class="ledger__company t-subhead">{row.company}</span>
               <span class="ledger__meta t-small ink-2">{row.meta}</span>
             </th>
             <td role="cell" data-label="Change">{row.change}</td>

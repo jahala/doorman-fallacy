@@ -1,0 +1,63 @@
+---
+/**
+ * On this page: the page's numbered sections, linking to each. The numbers match the small numbers
+ * above the section headings (TextSection's `number`), so a reader can see where they are.
+ */
+import type { ContentsItem } from '../lib/navigation.ts';
+
+interface Props {
+  items: readonly ContentsItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="contents" aria-labelledby="contents-title">
+  <p id="contents-title" class="t-small ink-2">On this page</p>
+  <ol class="contents__list">
+    {
+      items.map(({ id, label }, index) => (
+        <li>
+          <a href={`#${id}`}>
+            <span class="section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <span class="contents__label">{label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .contents {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .contents__list {
+    display: grid;
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .contents__list a {
+    display: flex;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block: var(--space-3);
+    border-block-end: var(--hairline) solid var(--rule);
+    text-decoration: none;
+  }
+
+  .contents__list a:hover .contents__label {
+    text-decoration: underline;
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: 0.22em;
+  }
+
+  @media (width >= 56rem) {
+    .contents__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--grid-gap);
+    }
+  }
+</style>

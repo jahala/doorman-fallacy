@@ -11,6 +11,38 @@ import { ogPath, shareImage, siteCard, type ShareImage } from '../lib/share.ts';
 import { schemePalette } from '../lib/tokens.ts';
 
 const siteName = 'The Doorman Fallacy';
+/** The site map in the footer: every page and chapter, grouped as the header groups them. */
+const siteMap = [
+  {
+    label: 'The idea',
+    links: [
+      { label: 'The story', href: '/idea#story' },
+      { label: 'The hidden work', href: '/idea#hidden' },
+      { label: 'The three questions', href: '/idea#questions' },
+      { label: 'When automation is right', href: '/idea#right-call' },
+      { label: 'Further reading', href: '/idea#reading' },
+    ],
+  },
+  {
+    label: 'The ledger',
+    links: [
+      { label: 'The cases', href: '/ledger' },
+      { label: 'What it watches for', href: '/ledger#watch' },
+      { label: 'The data', href: '/ledger#data' },
+      { label: 'How the ledger is kept', href: '/approach' },
+      { label: 'Suggest a case', href: '/suggest' },
+    ],
+  },
+  {
+    label: 'The site',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Subscribe', href: '/#subscribe' },
+      { label: 'RSS feed', href: '/rss.xml' },
+      { label: 'Privacy', href: '/privacy' },
+    ],
+  },
+] as const;
 const nav = [
   { key: 'idea', label: 'The idea', href: '/idea' },
   { key: 'ledger', label: 'The ledger', href: '/ledger' },
@@ -104,16 +136,24 @@ if (light === undefined || dark === undefined) throw new Error('src/styles/token
       <div class="page">
         <div class="grid site-footer__top">
           <div class="site-footer__id stack">
-            <p class="t-title">{siteName}</p>
-            <p class="t-lead ink-2">Curated by Jan Hallvard Larsen.</p>
-            <p><a href="/about">About the curator</a></p>
+            <p class="wordmark">{siteName}</p>
+            <p class="ink-2">Curated by <a href="/about">Jan Hallvard Larsen</a>.</p>
           </div>
-          <nav class="site-footer__links" aria-label="Footer">
-            <ul>
-              <li><a href="/approach">Sources &amp; approach</a></li>
-              <li><a href="/suggest">Suggest a case</a></li>
-              <li><a href="/privacy">Privacy</a></li>
-            </ul>
+          <nav class="site-footer__map" aria-label="Site map">
+            {
+              siteMap.map((group) => (
+                <div>
+                  <p class="t-small ink-2">{group.label}</p>
+                  <ul class="t-small">
+                    {group.links.map((link) => (
+                      <li>
+                        <a href={link.href}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
           </nav>
         </div>
         <p class="print-only t-caption">{address.href}</p>

@@ -1,10 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import HiddenIcon from '../../components/HiddenIcon.astro';
+import Pager from '../../components/Pager.astro';
 import TextSection from '../../components/TextSection.astro';
 import { hiddenFunctionIds, hiddenFunctions, type HiddenFunctionId } from '../../data/hidden-functions.ts';
 import Site from '../../layouts/Site.astro';
 import { casesMissing, neighbours } from '../../lib/hidden-work.ts';
+import type { PagerLink } from '../../lib/navigation.ts';
 import { ideaCard, ogPath, shareImage } from '../../lib/share.ts';
 
 export function getStaticPaths() {
@@ -15,6 +18,10 @@ const id = Astro.params.fn as HiddenFunctionId;
 const { label, meaning, atTheHotel, today, whenMissing, ask } = hiddenFunctions[id];
 const found = casesMissing(await getCollection('cases'), id);
 const { previous, next } = neighbours(id);
+const fnLink = (fn: HiddenFunctionId): PagerLink => ({ label: hiddenFunctions[fn].label, href: `/idea/${fn}` });
+// The first kind leads back to the list of six, and the last on to the next chapter of /idea.
+const previousLink = previous === null ? { label: 'The hidden work', href: '/idea#hidden' } : fnLink(previous);
+const nextLink = next === null ? { label: 'The three questions', href: '/idea#questions' } : fnLink(next);
 ---
 
 <Site
@@ -26,7 +33,15 @@ const { previous, next } = neighbours(id);
 >
   <div class="page">
     <header class="fn-head section">
-      <p class="t-small ink-2"><a href="/idea">The hidden work</a></p>
+      <div class="fn-head__crumbs">
+        <Breadcrumbs
+          trail={[
+            { label: 'The idea', href: '/idea' },
+            { label: 'The hidden work', href: '/idea#hidden' },
+          ]}
+          here={label}
+        />
+      </div>
       <HiddenIcon id={id} size="large" class="ink-2" />
       <h1 class="t-display">{label}</h1>
       <p class="t-lead ink-2">{meaning}</p>
@@ -46,7 +61,7 @@ const { previous, next } = neighbours(id);
     </TextSection>
 
     <TextSection id="ask-title" title="The question to ask">
-      <p class="fn-ask t-title">{ask}</p>
+      <p class="fn-ask t-subhead">{ask}</p>
     </TextSection>
 
     <TextSection id="ledger-title" title="In the ledger">
@@ -58,7 +73,7 @@ const { previous, next } = neighbours(id);
             <ul class="fn-cases">
               {found.map((item) => (
                 <li>
-                  <p class="fn-cases__name t-lead">
+                  <p class="fn-cases__name t-subhead">
                     <a href={item.href}>{item.short}</a>
                   </p>
                   <p class="ink-2">{item.change}</p>
@@ -74,46 +89,21 @@ const { previous, next } = neighbours(id);
       }
     </TextSection>
 
-    <nav class="fn-pager grid" aria-label="The six kinds of hidden work">
-      {
-        previous !== null && (
-          <p class="fn-pager__previous">
-            <span class="t-caption ink-2">Previous</span>{' '}
-            <a class="t-title" href={`/idea/${previous}`}>{hiddenFunctions[previous].label}</a>
-          </p>
-        )
-      }
-      {
-        next !== null && (
-          <p class="fn-pager__next">
-            <span class="t-caption ink-2">Next</span>{' '}
-            <a class="t-title" href={`/idea/${next}`}>{hiddenFunctions[next].label}</a>
-          </p>
-        )
-      }
-    </nav>
+    <Pager
+      previous={previousLink}
+      previousKind={previous === null ? 'Back to' : 'Previous'}
+      next={nextLink}
+    />
   </div>
 </Site>
 
 <style>
-  .fn-pager {
-    row-gap: var(--space-8);
-    padding-block: var(--space-12) var(--space-24);
-  }
-
-  .fn-pager p {
-    display: grid;
-    gap: var(--space-1);
-    grid-column: 1 / -1;
-    justify-items: start;
-  }
-
   .fn-head {
     display: grid;
     row-gap: var(--space-8);
   }
 
-  .fn-head > p:first-child {
+  .fn-head__crumbs {
     margin-block-end: calc(var(--space-4) * -1);
   }
 
@@ -133,16 +123,4 @@ const { previous, next } = neighbours(id);
   .fn-cases li > * + * {
     margin-block-start: var(--space-2);
   }
-
-  @media (width >= 56rem) {
-    .fn-pager .fn-pager__previous {
-      grid-column: 1 / span 6;
-    }
-
-    .fn-pager .fn-pager__next {
-      grid-column: 7 / span 6;
-      justify-items: end;
-    }
-  }
-
 </style>

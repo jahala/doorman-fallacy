@@ -11,7 +11,9 @@ const hiddenWorkPages = hiddenFunctionIds.map((id) => ({
 const contentPages = [
   { route: '/idea/', h1: 'The doorman fallacy', current: 'The idea' },
   ...hiddenWorkPages,
-  { route: '/approach/', h1: 'How the ledger is kept', current: undefined },
+  { route: '/ledger/', h1: 'The ledger', current: 'The ledger' },
+  { route: '/approach/', h1: 'How the ledger is kept', current: 'The ledger' },
+  { route: '/suggest/', h1: 'Suggest a case', current: 'The ledger' },
   { route: '/privacy/', h1: 'Privacy', current: undefined },
   { route: '/about/', h1: 'About', current: 'About' },
 ] satisfies readonly { route: string; h1: string; current: string | undefined }[];
@@ -43,13 +45,13 @@ test('/idea lists the six hidden functions from the data file, and the portrait 
     await expect(section).toContainText(meaning);
   }
   await expect(page.locator('figure.photo')).toHaveCount(1);
-  await expect(page.getByRole('link', { name: 'See what happened in practice' })).toHaveAttribute('href', '/ledger');
+  await expect(page.getByRole('navigation', { name: 'More pages' }).getByRole('link', { name: /The ledger/ })).toHaveAttribute('href', '/ledger');
   await expect(page.locator('main')).toContainText('The idea and the story are Rory Sutherland');
 });
 
-test('/approach lists every status from the data file', async ({ page, siteUrl }) => {
-  await page.goto(new URL('/approach/', siteUrl).href);
-  const table = page.locator('table');
+test('/ledger#statuses lists every status from the data file', async ({ page, siteUrl }) => {
+  await page.goto(new URL('/ledger/', siteUrl).href);
+  const table = page.locator('#statuses table');
   for (const { label, meaning } of Object.values(statuses)) {
     await expect(table).toContainText(label);
     await expect(table).toContainText(meaning);
@@ -69,10 +71,10 @@ for (const { route } of contentPages) {
   });
 }
 
-test('/idea lists what to watch after an announcement, from the data file', async ({ page, siteUrl }) => {
+test('/ledger#watch lists what to watch after an announcement, from the data file', async ({ page, siteUrl }) => {
   const { afterSigns } = await import('../../src/data/signs.ts');
-  await page.goto(new URL('/idea/', siteUrl).href);
-  const after = page.locator('#after');
+  await page.goto(new URL('/ledger/', siteUrl).href);
+  const after = page.locator('#watch');
   for (const sign of afterSigns) await expect(after.getByText(sign.title)).toBeVisible();
 });
 

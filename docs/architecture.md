@@ -54,10 +54,10 @@ scripts → lib, data
 
 | Path | Page | Mockup |
 |---|---|---|
-| `/` | Home: hero, definition band, start here, what else was the person doing, ledger preview with its summary, checklists, sign-up | all five |
-| `/idea` | The full explanation: definition and how to cite it, the story, the six signs, the hidden functions, what is known so far, when automation is right, further reading | 1, 2 |
+| `/` | Home: hero, definition band, what else was the person doing (the three questions and the whole job), ledger preview with its summary, sign-up | all five |
+| `/idea` | The idea, in five numbered sections: the story, the hidden work, the three questions (with the signs of the mistake), when automation is the right call, further reading. The head holds the definition, how to cite it and the contents | 1, 2 |
 | `/idea/<id>` | One page per hidden function, ids from `hiddenFunctionIds`: at the hotel, today, when it goes missing, the question to ask, the cases in the ledger | none yet |
-| `/ledger` | Every case, newest announcement first, with a summary above and the download links below; a designed empty state when there are none | 3 |
+| `/ledger` | The ledger, in five numbered sections: the cases (newest announcement first, with a summary above; a designed empty state when there are none), what the ledger watches for, statuses and follow-up, what is known beyond the ledger, the data | 3 |
 | `/ledger.csv`, `/ledger.json` | The whole ledger as data, built from the cases ([data-model.md](data-model.md#the-dataset)) | |
 | `/og/default.png`, `/og/idea/<id>.png`, `/og/ledger/<slug>.png` | Share cards, 1200 by 630, drawn at build time. Every page names one in its head: its own where it has one, the site's otherwise | |
 | `/ledger/<slug>` | One case, slug = file name without `.md`: facts, reported body, the doorman reading, what they said, timeline, changelog, sources, report-an-error form | none yet |
@@ -66,7 +66,7 @@ scripts → lib, data
 | `/subscribe/check-email`, `/subscribe/confirmed`, `/subscribe/problem`, `/subscribe/failed`, `/subscribe/unsubscribed` | What the sign-up, confirm and unsubscribe routes answer | none yet |
 | `/subscribe/unsubscribe` | The one-button page. The Worker serves it at `/unsubscribe`; it has no address of its own | none yet |
 | `/about` | The curator | none yet |
-| `/approach` | How the ledger is kept: the AI agents, the inclusion rule, the checks, corrections, reuse and citation, common questions | none yet |
+| `/approach` | How the ledger is kept, in eight numbered sections: the inclusion rule, how a case is written, the checks, reported facts and the reading, following up, corrections, who keeps it, common questions | none yet |
 | `/privacy` | What is collected, why, and when it is deleted | none yet |
 | `/rss.xml` | One item per case, dated at its latest update | |
 

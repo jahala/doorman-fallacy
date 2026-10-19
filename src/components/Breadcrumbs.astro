@@ -1,0 +1,54 @@
+---
+/**
+ * Where this page sits: each level above it as a link, then the page itself, not linked.
+ * Sits above the page title, in the small size and ink-2, separated by slashes.
+ */
+import type { Crumb } from '../lib/navigation.ts';
+
+interface Props {
+  /** The levels above this page, top first. */
+  trail: readonly Crumb[];
+  /** This page. */
+  here: string;
+}
+
+const { trail, here } = Astro.props;
+---
+
+<nav class="crumbs t-small" aria-label="Breadcrumb">
+  <ol>
+    {
+      trail.map(({ label, href }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))
+    }
+    <li aria-current="page">{here}</li>
+  </ol>
+</nav>
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 0;
+    color: var(--ink-2);
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    padding-inline: var(--space-2);
+    color: var(--ink-3);
+  }
+
+  .crumbs a {
+    color: var(--ink-2);
+    text-decoration-color: var(--rule);
+  }
+
+  .crumbs a:hover {
+    color: var(--ink);
+    text-decoration-color: currentcolor;
+  }
+</style>

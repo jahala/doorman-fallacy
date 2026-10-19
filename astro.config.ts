@@ -1,4 +1,6 @@
+import { satteri } from '@astrojs/markdown-satteri';
 import { defineConfig } from 'astro/config';
+import { demotedHeadings, lowerHeading } from './src/lib/demote-headings.ts';
 
 // The size test and the empty-ledger test build into folders of their own and keep their caches
 // there too: Astro's, and Vite's dependency cache, which otherwise lives in node_modules/.vite and
@@ -12,4 +14,16 @@ export default defineConfig({
   output: 'static',
   build: { format: 'directory' },
   devToolbar: { enabled: false },
+  // Case bodies are the only Markdown. Their headings, and the footnotes' label, sit one level
+  // below the h2 of the section that holds them.
+  markdown: {
+    processor: satteri({
+      hastPlugins: [
+        {
+          name: 'lower-headings',
+          element: { filter: [...demotedHeadings], visit: (node) => ({ ...node, tagName: lowerHeading(node.tagName) }) },
+        },
+      ],
+    }),
+  },
 });
