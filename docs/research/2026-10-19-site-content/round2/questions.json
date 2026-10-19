@@ -1,0 +1,70 @@
+[
+  {
+    "id": "use",
+    "primitive": "noul",
+    "per": "item",
+    "personas": true,
+    "subjects": [
+      "content"
+    ],
+    "wording": "Coming to this website as part of the work described in `person`, would this person look for this and use it? {item}",
+    "alt_wording": "Is this something this person would want to find on this website, for the work described in `person`? {item}",
+    "options": {
+      "true": "They would look for it and use it.",
+      "false": "They would not look for it, or would not use it."
+    }
+  },
+  {
+    "id": "weight",
+    "primitive": "choice",
+    "per": "item",
+    "personas": true,
+    "subjects": [
+      "content"
+    ],
+    "wording": "For what this person comes to this website to do, how much does this matter? {item}",
+    "alt_wording": "How important is this to this person's reason for visiting this website? {item}",
+    "options": {
+      "essential": "Without it the visit would fail.",
+      "useful": "It clearly helps the visit.",
+      "minor": "Nice to have; rarely used.",
+      "irrelevant": "Unrelated to why they came."
+    }
+  },
+  {
+    "id": "visit",
+    "primitive": "noul",
+    "per": "item",
+    "personas": true,
+    "subjects": [
+      "pages"
+    ],
+    "wording": "As part of the work described in `person`, would this person go to this page at all? {item}",
+    "alt_wording": "Would this person, doing the work in `person`, end up visiting this page? {item}",
+    "options": {
+      "true": "They would go there.",
+      "false": "They would not go there."
+    }
+  },
+  {
+    "id": "first",
+    "primitive": "choice",
+    "per": "subject",
+    "personas": true,
+    "subjects": [
+      "home"
+    ],
+    "wording": "A first-time visitor like this person lands on the home page. Which one of these should they see first?",
+    "alt_wording": "Which one of these would this person most need to see at the top of the home page on a first visit?",
+    "options": {
+      "question": "A large opening question with a photograph: what does a doorman actually do?",
+      "definition": "A one-sentence definition of the doorman fallacy.",
+      "latest_cases": "The latest real cases and what happened after them.",
+      "summary": "A summary of what all the cases show so far.",
+      "guides": "The two printable question sheets, for employees and for managers.",
+      "start_here": "Starting points for managers, employees and journalists.",
+      "signup": "The monthly email sign-up.",
+      "none": "None of these."
+    }
+  }
+]

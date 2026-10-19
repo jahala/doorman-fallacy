@@ -1,6 +1,6 @@
 # Who the site is for, and what they need from it (2026-10-19)
 
-**Conclusion.** Readers come for two things: the cases, and a way to think about their own decision. The site gives them the case table and three good questions, but it leaves out what most of them want next: **how to recognise the mistake**, **worked examples of each kind of hidden work**, and **a summary of what the cases show**. Those three, plus a quotable definition, are the changes to make. The about, privacy and press material matter to few readers and should stay small.
+**Conclusion (revised after round 2).** The site needs entry points by reader as well as by topic. People whose own job is at stake, leaders deciding, and people who build AI service each need a page written for their situation. That comes on top of round 1's findings: readers come for two things: the cases, and a way to think about their own decision. The site gives them the case table and three good questions, but it leaves out what most of them want next: **how to recognise the mistake**, **worked examples of each kind of hidden work**, and **a summary of what the cases show**. Those three, plus a quotable definition, are the changes to make. The about, privacy and press material matter to few readers and should stay small.
 
 Method: nine composite personas ([personas](2026-10-19-site-content/personas.md)), 35 content blocks (14 built, 19 candidates, 2 calibration items) and 8 pages, judged by Jev 1.13 (`jev-1.13.0`). 27 requests, 711 questions, $0.006. Inputs, results and the analysis script are in [2026-10-19-site-content/](2026-10-19-site-content/).
 
@@ -48,3 +48,34 @@ Method: nine composite personas ([personas](2026-10-19-site-content/personas.md)
 ## Spend
 
 $0.006 for the full run and $0.0002 for the small batch, summed from the recordings.
+
+## Round 2: the readers round 1 left out
+
+Round 1 had no one who had been laid off, no one in a redundancy consultation, and no one who stayed after a cut, so the content written for them was judged only by people it did not serve, and "after a cut" was wrongly marked "do not build". The persona set was checked against the role list too loosely. Round 2 added ten readers ([round2/personas.md](2026-10-19-site-content/round2/personas.md)): laid off, at risk, stayed, a customer who cannot reach a person, a chief executive, a small-practice owner, a lecturer, a ministry adviser, an equity analyst, and an AI agent designer. 30 requests, 990 questions, $0.009; second wording agreed 91 percent, repeats 98 percent.
+
+Each new block, judged by the reader it was written for:
+
+| Block | Reader | Use | Essential or useful | Decision |
+|---|---|---|---|---|
+| Questions for a redundancy consultation | at risk | 0.80 | 0.95 | Build |
+| What to watch after an announcement | analyst (and 0.73 across all ten) | 0.80 | 1.00 | Build, on /idea after the signs |
+| One-page brief for leaders | chief executive | 0.77 | 1.00 | Build |
+| A small-business version of the questions | practice owner | 0.77 | 1.00 | Build, inside the leaders' page |
+| Designing the hand-over to a person | AI agent designer | 0.74 | 1.00 | Build |
+| Making extra work visible | stayed | 0.69 | 0.93 | Build |
+| Next steps after a cut | laid off | 0.43 | 0.48 | Build anyway (judgment below) |
+| A job-search link | laid off | 0.46 | 0.64 | Later, when a suitable service is live |
+| Telling your own story privately | laid off | 0.46 | 0.66 | Not now: the suggest form takes links; first-hand accounts need consent and care |
+| Advice for customers | customer | 0.41 | 0.70 | Out of scope: this reader would not come to the site (page visits 0.08 to 0.36) |
+| Teaching notes | lecturer | 0.43 | 0.74 | Defer until the ledger has cases worth teaching |
+
+Judgment over Jev: the laid-off reader ranked the cases, the signs and the examples highest and practical help low. Jev reads the site's description literally (an explainer and a ledger), so a reader "would not expect" help there. A person who has just lost a role needs words for the work they did, for interviews; what to ask the employer for in writing; and where to get advice. The site can give all three without giving legal advice.
+
+**Decisions:** four pages by reader, linked from "Start here" on the home page:
+- **If your job is changing** (at risk, cut, or stayed): consultation questions, next steps after a cut, making the extra work visible; with the hidden-job sheet.
+- **For leaders**: a one-page brief, printable, and a short version for a small business.
+- **For people who build AI service**: designing the hand-over so the hidden work reaches someone.
+- **For journalists and researchers**: the existing reuse and citation section on /approach and the dataset.
+
+Round 2 spend: $0.009 (full) and $0.0002 (small), from the recordings.
+
