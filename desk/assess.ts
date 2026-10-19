@@ -11,6 +11,7 @@ import { parseArgs } from 'node:util';
 import { quoteFound } from '../src/lib/quotes.ts';
 import { createBudget } from './budget.ts';
 import { askClaude } from './claude.ts';
+import { sameOrganisation } from '../src/lib/leads.ts';
 import { assessable, clusters, type Cluster, type Triaged } from './clusters.ts';
 
 const { values } = parseArgs({
@@ -22,6 +23,8 @@ const { values } = parseArgs({
     model: { type: 'string', default: 'sonnet' },
     concurrency: { type: 'string', default: '3' },
     only: { type: 'string' },
+    exclude: { type: 'string' },
+    summary: { type: 'string' },
   },
 });
 
@@ -127,9 +130,12 @@ const runDir = values.run ?? (await latestRun());
 const triaged = JSON.parse(await readFile(path.join(runDir, 'leads.json'), 'utf8')) as Triaged[];
 const prompt = await readFile(path.join(import.meta.dirname, 'prompts', 'assess.md'), 'utf8');
 const only = values.only?.split(',').map((name) => name.trim().toLowerCase());
+// Organisations already in the ledger, or assessed recently, are left to the review step.
+const excluded = (values.exclude ?? '').split('|').map((name) => name.trim()).filter((name) => name !== '');
 const chosen = clusters(triaged)
   .filter(assessable)
   .filter((cluster) => only === undefined || only.includes(cluster.key))
+  .filter((cluster) => !excluded.some((name) => sameOrganisation(name, cluster.name)))
   .slice(0, Number(values.top));
 
 const outcomes: Outcome[] = new Array<Outcome>(chosen.length);
@@ -144,9 +150,10 @@ await Promise.all(Array.from({ length: Number(values.concurrency) }, worker));
 
 const outDir = path.join(runDir, 'assessments');
 await mkdir(outDir, { recursive: true });
+const fileOf = (outcome: Outcome): string =>
+  path.join(outDir, `${outcome.cluster.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.json`);
 for (const outcome of outcomes) {
-  const slug = outcome.cluster.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  await writeFile(path.join(outDir, `${slug}.json`), `${JSON.stringify(outcome, null, 2)}\n`);
+  await writeFile(fileOf(outcome), `${JSON.stringify(outcome, null, 2)}\n`);
 }
 
 const rows = outcomes.map((outcome) => {
@@ -173,3 +180,16 @@ const reportText = [
 ].join('\n');
 await writeFile(path.join(runDir, 'assess-report.md'), reportText);
 console.log(reportText);
+if (values.summary !== undefined) {
+  const summary = outcomes.map((outcome) => ({
+    organisation: outcome.assessment?.organisation ?? outcome.cluster,
+    cluster: outcome.cluster,
+    file: fileOf(outcome),
+    ok: outcome.ok,
+    fit: outcome.assessment?.doorman_fit ?? null,
+    recommendation: outcome.assessment?.recommendation ?? null,
+    reason: outcome.assessment?.fit_reason ?? outcome.error ?? '',
+    costUsd: outcome.costUsd,
+  }));
+  await writeFile(values.summary, `${JSON.stringify(summary, null, 2)}\n`);
+}
