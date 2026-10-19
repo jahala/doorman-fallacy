@@ -1,15 +1,14 @@
-import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
-import os from 'node:os';
+import { mkdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { startCasesBuild } from '../../scripts/cases-build.ts';
+import { makeBuildFolder, startCasesBuild } from '../../scripts/cases-build.ts';
 
 // A build of the real site with no cases at all: the one state the shipped content can never show.
 let work: string;
 let outDir: string;
 
 beforeAll(async () => {
-  work = await mkdtemp(path.join(os.tmpdir(), 'doorman-empty-'));
+  work = await makeBuildFolder(path.resolve(import.meta.dirname, '../..'), 'empty');
   const casesDir = path.join(work, 'cases');
   outDir = path.join(work, 'dist');
   await mkdir(casesDir);
