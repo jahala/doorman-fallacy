@@ -63,6 +63,7 @@ code {
 
 .t-display,
 .t-title,
+.t-subhead,
 .wordmark {
   font-family: var(--font-heading);
 }
@@ -91,6 +92,15 @@ li {
   font-weight: var(--title-weight);
   line-height: var(--title-leading);
   letter-spacing: var(--title-tracking);
+  text-wrap: balance;
+}
+
+/* The third heading level, and the name of a thing in a list: a kind of hidden work, a step, a company. */
+.t-subhead {
+  font-size: var(--subhead-size);
+  font-weight: var(--subhead-weight);
+  line-height: var(--subhead-leading);
+  letter-spacing: var(--subhead-tracking);
   text-wrap: balance;
 }
 
@@ -277,37 +287,53 @@ a {
 }
 
 .site-footer__top {
-  row-gap: var(--space-8);
+  row-gap: var(--space-12);
 }
 
-.site-footer__id {
+.site-footer__id,
+.site-footer__map {
   grid-column: 1 / -1;
 }
 
-.site-footer__links {
-  grid-column: 1 / -1;
+/* The site map: three columns of links, each under a small label. */
+.site-footer__map {
+  display: grid;
+  gap: var(--space-8) var(--grid-gap);
 }
 
-.site-footer__links ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-8);
+.site-footer__map ul {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+/* Like the header's links: a list of places, so no underline until pointed at. */
+.site-footer__map a {
+  text-decoration: none;
+}
+
+.site-footer__map a:hover {
+  text-decoration-line: underline;
 }
 
 .site-footer__credit {
-  margin-block-start: var(--space-12);
+  margin-block-start: var(--space-16);
   color: var(--ink-3);
+}
+
+@media (width >= 40rem) {
+  .site-footer__map {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (width >= 56rem) {
   .site-footer__id {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 4;
   }
 
-  .site-footer__links {
-    grid-column: 7 / span 6;
-    justify-self: end;
-    padding-block-start: var(--space-3);
+  .site-footer__map {
+    grid-column: 5 / span 8;
   }
 }
 
@@ -393,16 +419,6 @@ a {
   margin-block-start: var(--space-12);
 }
 
-.section__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-8);
-}
-
-.section__note {
-  margin-block-start: var(--space-8);
-}
-
 .section-head {
   display: flex;
   flex-wrap: wrap;
@@ -430,8 +446,6 @@ a {
   border-block-start: var(--hairline) solid var(--rule);
 }
 
-
-
 .subscribe__row {
   display: flex;
   flex-wrap: wrap;
@@ -457,6 +471,20 @@ a {
     grid-column: 8 / span 5;
     padding-block-start: var(--space-4);
   }
+}
+
+/* The fourth level: the name of an item inside a subsection, in body text at medium weight. */
+.t-label {
+  font-weight: 500;
+}
+
+/* A section's number, shared by the contents list and the small number above each section heading. */
+.section-number {
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: var(--small-size);
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.04em;
 }
 
 /* Used where a label is spoken but not shown */

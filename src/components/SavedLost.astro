@@ -19,7 +19,7 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
       {columns.map(({ when }) => <span role="columnheader" class="t-caption ink-2">{when}</span>)}
     </div>
     <div class="saved-lost__row" role="row">
-      <span role="rowheader" class="saved-lost__rowhead">Counted in the business case</span>
+      <span role="rowheader" class="saved-lost__rowhead t-subhead">Counted in the business case</span>
       {
         columns.map(({ when, counted }) => (
           <span role="cell" class="saved-lost__cell" data-when={when}>
@@ -29,7 +29,7 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
       }
     </div>
     <div class="saved-lost__row" role="row">
-      <span role="rowheader" class="saved-lost__rowhead">Not counted, booked elsewhere</span>
+      <span role="rowheader" class="saved-lost__rowhead t-subhead">Not counted, booked elsewhere</span>
       {
         columns.map(({ when, uncounted }) => (
           <span role="cell" class="saved-lost__cell" data-when={when}>
@@ -67,12 +67,6 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
 
   .saved-lost__row--head {
     display: none;
-  }
-
-  .saved-lost__rowhead {
-    font-family: var(--font-heading);
-    font-size: var(--lead-size);
-    line-height: var(--title-leading);
   }
 
   .saved-lost__cell {

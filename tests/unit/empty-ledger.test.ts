@@ -32,7 +32,8 @@ describe('a ledger with no cases', () => {
     const html = await readFile(path.join(outDir, 'ledger', 'index.html'), 'utf8');
     expect(html).toContain('The ledger opens with its first cases.');
     expect(html).toMatch(/<a href="\/idea">/);
-    expect(html).not.toContain('<table');
+    // The page has other tables (the statuses), so look for the ledger's own.
+    expect(html).not.toMatch(/<table class="ledger"/);
   });
 
   it('shows the same empty state in the home page preview', async () => {

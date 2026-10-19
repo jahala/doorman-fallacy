@@ -69,7 +69,9 @@ async function main(count: number): Promise<number> {
     }
 
     const ledger = await readFile(path.join(outDir, 'ledger', 'index.html'));
-    const rows = (ledger.toString('utf8').match(/<tbody[\s>][\s\S]*<\/tbody>/)?.[0].match(/<tr[\s>]/g) ?? []).length;
+    // The page has other tables (the statuses), so count the body rows of the ledger's own.
+    const table = ledger.toString('utf8').match(/<table class="ledger"[\s\S]*?<\/table>/)?.[0] ?? '';
+    const rows = (table.match(/<tbody[\s>][\s\S]*<\/tbody>/)?.[0].match(/<tr[\s>]/g) ?? []).length;
     const bytes = (await stat(path.join(outDir, 'ledger', 'index.html'))).size;
     const gzipped = gzipSync(ledger).length;
 

@@ -138,3 +138,10 @@ Chosen: the site does two things, explains the doorman fallacy and records what 
 
 Why: everything on the site should serve one of its two jobs. Jev judges whether a reader would use a block, not whether the site should offer it, so it cannot set the site's scope.
 
+## D-019 · 2026-10-19 · Two sections, read in order, with one type hierarchy
+
+Context: after D-018 the site still read as a patchwork. `/idea` held eleven sections, five overlapping lists (three questions, five steps, six signs, six signs to watch after an announcement, six kinds of hidden work), and things that belong to the ledger. Headings below h2 used four different styles. Nothing told a reader where they were or where to go next.
+
+Chosen: the site has two sections, the idea and the ledger, and their pages read in order: `/idea`, then `/ledger`, then `/approach`. The three questions are the one way of seeing the whole job; the five steps became the ideas under them, and the signs of the mistake close them. What to watch after an announcement, the statuses and what is known beyond the ledger moved to `/ledger`; reuse moved to `/ledger#data`. Long pages open with a numbered contents list and end with a pager; pages below a section page show breadcrumbs; the header marks the section; the footer is a site map. One hierarchy holds on every page ([design.md](design.md)): h1 `display`, h2 `title`, h3 a new `subhead` token, and names inside an h3's content at body weight 500. The home page sets its h2 and h3 one step larger. A case's Markdown headings render one level lower, so they sit under their section's h2.
+
+Why: a reader should always know where they are, what the page covers and where to go next. The questions and the ledger each answer one job, so content that serves the ledger now sits there. A site test checks the hierarchy, the contents, the breadcrumbs and the footer on every page, so the structure cannot drift back.

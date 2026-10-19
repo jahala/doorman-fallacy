@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
-import { modelSteps } from '../../src/data/model.ts';
+import { questions } from '../../src/data/questions.ts';
 import { expect, test } from './site.ts';
 
 test('the home page shows the whole job: the visible task, and each kind of hidden work linking to its page', async ({
@@ -17,25 +17,32 @@ test('the home page shows the whole job: the visible task, and each kind of hidd
   }
 });
 
-test('the home page lists the five steps by title, from the data file, and links to them with sources', async ({ page, siteUrl }) => {
+test('the home page names the three questions, from the data file, and links to them explained', async ({ page, siteUrl }) => {
   await page.goto(siteUrl);
-  const steps = page.locator('.model__steps li');
-  await expect(steps).toHaveCount(modelSteps.length);
-  for (const [index, step] of modelSteps.entries()) await expect(steps.nth(index)).toContainText(step.title);
-  await expect(page.getByRole('link', { name: 'The five steps, with their sources' })).toHaveAttribute('href', '/idea#model');
+  const columns = page.locator('section[aria-labelledby="remains-title"] li.remains');
+  await expect(columns).toHaveCount(questions.length);
+  for (const [index, question] of questions.entries()) {
+    await expect(columns.nth(index).getByRole('heading', { level: 3 })).toHaveText(question.title);
+    await expect(columns.nth(index)).toContainText(question.ask);
+  }
+  await expect(page.getByRole('link', { name: 'The three questions, explained' })).toHaveAttribute('href', '/idea#questions');
 });
 
-test('/idea#model gives each step its detail and every source, linking those that have an address', async ({ page, siteUrl }) => {
+test('/idea#questions gives each question its ideas, with every source, linking those that have an address', async ({ page, siteUrl }) => {
   await page.goto(new URL('/idea/', siteUrl).href);
-  const items = page.locator('#model .model-steps__item');
-  await expect(items).toHaveCount(modelSteps.length);
-  for (const [index, step] of modelSteps.entries()) {
-    const item = items.nth(index);
-    await expect(item).toContainText(step.title);
-    await expect(item).toContainText(step.detail);
-    for (const source of step.sources) {
-      if (source.href === undefined) await expect(item).toContainText(source.cite);
-      else await expect(item.locator(`a[href="${source.href}"]`)).toContainText(source.cite);
+  const rows = page.locator('#questions .question:not(#signs)');
+  await expect(rows).toHaveCount(questions.length);
+  for (const [index, question] of questions.entries()) {
+    const row = rows.nth(index);
+    await expect(row.getByRole('heading', { level: 3 })).toHaveText(question.title);
+    await expect(row).toContainText(question.ask);
+    for (const part of question.parts) {
+      await expect(row).toContainText(part.title);
+      await expect(row).toContainText(part.detail);
+      for (const source of part.sources) {
+        if (source.href === undefined) await expect(row).toContainText(source.cite);
+        else await expect(row.locator(`a[href="${source.href}"]`)).toContainText(source.cite);
+      }
     }
   }
 });
@@ -44,7 +51,7 @@ test('every illustration is a figure with a caption, and its icons are hidden fr
   for (const [route, selector] of [
     ['/', 'figure.whole-job'],
     ['/idea/', 'figure.where'],
-    ['/idea/', 'figure.saved-lost'],
+    ['/ledger/', 'figure.saved-lost'],
   ] as const) {
     await page.goto(new URL(route, siteUrl).href);
     const figure = page.locator(selector);

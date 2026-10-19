@@ -1,0 +1,46 @@
+---
+/** A numbered list of short items, each a name at the label level and a line in ink-2. Used for the signs on /idea and /ledger. */
+interface Props {
+  items: readonly { readonly title: string; readonly detail: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="numbered">
+  {
+    items.map(({ title, detail }, index) => (
+      <li class="numbered__item">
+        <span class="section-number" aria-hidden="true">{index + 1}</span>
+        <div>
+          <p class="t-label">{title}</p>
+          <p class="ink-2">{detail}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  /* Set on the list and its items, so a text column's own list styles do not reach them. */
+  .numbered {
+    display: grid;
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .numbered__item {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    margin: 0;
+  }
+
+  .numbered__item .section-number {
+    padding-block-start: 0.2em;
+  }
+
+  .numbered__item p + p {
+    margin-block-start: var(--space-1);
+  }
+</style>

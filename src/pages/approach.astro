@@ -1,12 +1,9 @@
 ---
 import ExternalLink from '../components/ExternalLink.astro';
 import PageHead from '../components/PageHead.astro';
+import Pager from '../components/Pager.astro';
 import TextSection from '../components/TextSection.astro';
-import { citation } from '../data/definition.ts';
-import { statuses } from '../data/statuses.ts';
 import Site from '../layouts/Site.astro';
-
-const statusRows = Object.values(statuses);
 
 const questions = [
   {
@@ -33,19 +30,33 @@ const questions = [
     answer: 'Nobody. The site has no advertising and no sponsors. It is run by Jan Hallvard Larsen, and its code is open.',
   },
 ];
+
+const contents = [
+  { id: 'counts', label: 'What counts as a case' },
+  { id: 'written', label: 'How a case is written' },
+  { id: 'checks', label: 'The checks every case passes' },
+  { id: 'layers', label: 'Reported facts and the doorman reading' },
+  { id: 'following', label: 'Following up' },
+  { id: 'corrections', label: 'Corrections' },
+  { id: 'keeper', label: 'Who keeps it' },
+  { id: 'faq', label: 'Common questions' },
+] as const;
 ---
 
 <Site
   title="How the ledger is kept"
+  current="ledger"
   description="AI agents find, write and check every case under fixed rules. What counts as a case, how it is written, the checks it passes, and how it is kept up to date."
 >
   <div class="page">
     <PageHead
       title="How the ledger is kept"
       lead="AI agents find, write and check every case, under fixed rules. No person reviews a case before it goes live, so the rules do that work. This page lists them."
+      crumbs={[{ label: 'The ledger', href: '/ledger' }]}
+      contents={contents}
     />
 
-    <TextSection id="counts-title" title="What counts as a case">
+    <TextSection id="counts-title" anchor="counts" number={1} title="What counts as a case">
       <p>A case needs all three:</p>
       <ol>
         <li>A named organisation.</li>
@@ -61,7 +72,7 @@ const questions = [
       </p>
     </TextSection>
 
-    <TextSection id="written-title" title="How a case is written">
+    <TextSection id="written-title" anchor="written" number={2} title="How a case is written">
       <p>
         A news sweep runs every week. A small, fast model reads each headline and sets aside the ones that
         cannot be cases. A larger model researches the rest and judges how well each one shows the question
@@ -74,7 +85,7 @@ const questions = [
       </p>
     </TextSection>
 
-    <TextSection id="checks-title" title="The checks every case passes">
+    <TextSection id="checks-title" anchor="checks" number={3} title="The checks every case passes">
       <ol>
         <li>Every quote is found word for word on the archived copy of its source. No model is involved in this check.</li>
         <li>
@@ -91,7 +102,7 @@ const questions = [
       <p>A case that fails is not published.</p>
     </TextSection>
 
-    <TextSection id="layers-title" title="Reported facts and the doorman reading">
+    <TextSection id="layers-title" anchor="layers" number={4} title="Reported facts and the doorman reading">
       <p>
         Each case keeps two layers apart. What sources report is marked as reported. Which hidden work the
         change may have missed is the site&rsquo;s own reading, marked as analysis, and each point names the
@@ -99,36 +110,15 @@ const questions = [
       </p>
     </TextSection>
 
-    <TextSection id="following-title" title="Following up">
+    <TextSection id="following-title" anchor="following" number={5} title="Following up">
       <p>
-        A case is a record that keeps changing. Each one is checked again on a schedule set by its status,
-        and the page says when it was last checked, even when nothing new was found.
-      </p>
-      <table class="statuses">
-        <thead>
-          <tr class="t-small ink-2">
-            <th scope="col">Status</th>
-            <th scope="col">Meaning</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            statusRows.map(({ label, meaning }) => (
-              <tr>
-                <th scope="row">{label}</th>
-                <td class="ink-2">{meaning}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      <p>
-        Too early to tell and strained cases are checked after three months. Holding cases after six months,
-        then every year. Partly reversed cases after six months. Reversed cases once more after a year.
+        A case is a record that keeps changing. Each one is checked again on a schedule set by its status. What
+        each status means, and when it is checked, is on the ledger page under{' '}
+        <a href="/ledger#statuses">Statuses and follow-up</a>.
       </p>
     </TextSection>
 
-    <TextSection id="corrections-title" title="Corrections">
+    <TextSection id="corrections-title" anchor="corrections" number={6} title="Corrections">
       <p>
         If something in a case is wrong, use Report an error on its page, or <a href="/suggest">suggest a case</a>.
         The desk checks the report against the sources. Corrections are listed on the case page, and every
@@ -137,7 +127,7 @@ const questions = [
       </p>
     </TextSection>
 
-    <TextSection id="keeper-title" title="Who keeps it">
+    <TextSection id="keeper-title" anchor="keeper" number={7} title="Who keeps it">
       <p>
         The ledger is curated by <a href="/about">Jan Hallvard Larsen</a>. The desk uses Claude, by
         Anthropic, for research and writing, and Jev, by TypeSafe, for the fast checks. The code is open
@@ -149,83 +139,31 @@ const questions = [
       </p>
     </TextSection>
 
-    <TextSection id="reuse-title" anchor="reuse" title="Reuse and citation">
-      <p>
-        The cases and the text of this site are published under{' '}
-        <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>. Reuse them
-        with credit to The Doorman Fallacy.
-      </p>
-      <p>Cite the idea as:</p>
-      <p class="reuse__citation">{citation}</p>
-      <p>Download the ledger as <a href="/ledger.csv">CSV</a> or <a href="/ledger.json">JSON</a>.</p>
-      <p>
-        For press and research questions, write to{' '}
-        <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.
-      </p>
-    </TextSection>
-
-    <TextSection id="questions-title" title="Common questions">
+    <TextSection id="faq-title" anchor="faq" number={8} title="Common questions">
       <dl class="questions">
         {
           questions.map(({ ask, answer }) => (
             <div>
-              <dt>{ask}</dt>
+              <dt class="t-subhead">{ask}</dt>
               <dd>{answer}</dd>
             </div>
           ))
         }
       </dl>
     </TextSection>
+
+    <Pager previous={{ label: 'The ledger', href: '/ledger' }} next={{ label: 'Suggest a case', href: '/suggest' }} />
   </div>
 </Site>
 
 <style>
-  .reuse__citation {
-    padding-inline-start: var(--space-6);
-    border-inline-start: var(--hairline) solid var(--rule);
-  }
-
   .questions {
     display: grid;
     gap: var(--space-8);
   }
 
-  .questions dt {
-    font-weight: 500;
-  }
-
   .questions dd {
     margin-block-start: var(--space-2);
     color: var(--ink-2);
-  }
-
-  .statuses {
-    inline-size: 100%;
-    border-collapse: collapse;
-  }
-
-  .statuses th,
-  .statuses td {
-    padding: var(--space-3) var(--space-4) var(--space-3) 0;
-    border-block-end: var(--hairline) solid var(--rule);
-    font-weight: inherit;
-    text-align: start;
-    vertical-align: baseline;
-  }
-
-  .statuses thead th {
-    border-block-start: var(--hairline) solid var(--rule);
-    font-weight: 500;
-  }
-
-  .statuses tbody th {
-    inline-size: 11rem;
-    font-weight: 500;
-  }
-
-  @media (width < 40rem) {
-    .statuses tbody th {
-      inline-size: 7rem;
-    }
   }
 </style>

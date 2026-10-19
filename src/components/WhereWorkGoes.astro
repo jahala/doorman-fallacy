@@ -18,7 +18,7 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
   <div class="where__grid">
     <div class="where__panel">
       <p class="t-caption ink-2">Before the change</p>
-      <p class="where__holder">One person</p>
+      <p class="where__holder t-subhead">One person</p>
       <p class="where__task">The visible task</p>
       <ul class="where__icons">
         {
@@ -39,14 +39,14 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
     <div class="where__after">
       <div class="where__panel">
         <p class="t-caption ink-2">After the change</p>
-        <p class="where__holder">The system</p>
+        <p class="where__holder t-subhead">The system</p>
         <p class="where__task">The visible task</p>
       </div>
       <ul class="where__destinations">
         {
           destinations.map(({ name, note, ids }) => (
             <li class="where__destination">
-              <p class="where__holder">{name}</p>
+              <p class="where__holder t-subhead">{name}</p>
               <ul class="where__icons">
                 {ids.map((id) => (
                   <li>
@@ -90,12 +90,6 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
   .where__panel p,
   .where__destination p {
     margin: 0;
-  }
-
-  .where__holder {
-    font-family: var(--font-heading);
-    font-size: var(--lead-size);
-    line-height: var(--title-leading);
   }
 
   .where__task {

@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ExternalLink from '../../components/ExternalLink.astro';
+import Pager from '../../components/Pager.astro';
 import Reported from '../../components/Reported.astro';
 import ReportError from '../../components/ReportError.astro';
 import SourceLinks from '../../components/SourceLinks.astro';
@@ -47,6 +49,9 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
 >
   <article class="page case">
     <header class="case__head">
+      <div class="case__crumbs">
+        <Breadcrumbs trail={[{ label: 'The ledger', href: '/ledger' }]} here={data.short} />
+      </div>
       <p class="t-small ink-2">{caseKicker(data)}</p>
       <h1 class="t-display">{data.short}</h1>
       <p class="t-lead ink-2 case__lead">{data.change}</p>
@@ -57,7 +62,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
         facts.map((fact) => (
           <div class="facts__item">
             <dt class="t-small ink-2">{fact.term}</dt>
-            <dd>{fact.value}</dd>
+            <dd class="t-label">{fact.value}</dd>
           </div>
         ))
       }
@@ -86,7 +91,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
         {
           reading.map((point) => (
             <li class="reading__item">
-              <h3>{point.label}</h3>
+              <h3 class="t-subhead">{point.label}</h3>
               <p class="t-small ink-2">{point.meaning}</p>
               <p class="reading__evidence">
                 {point.evidence}
@@ -133,7 +138,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
             <li class="timeline__item">
               <div class="timeline__when">
                 <p class="t-small ink-2">{update.date}</p>
-                <p class="timeline__status">{update.status}</p>
+                <p class="t-label">{update.status}</p>
               </div>
               <div class="timeline__what">
                 <p>
@@ -187,7 +192,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
               <span class="sources__number t-small ink-2" aria-hidden="true">S{source.number}</span>
               <div>
                 <p>
-                  <span class="sources__publisher">{source.publisher}</span>
+                  <span class="t-label">{source.publisher}</span>
                 </p>
                 <p>
                   <ExternalLink href={source.url}>{source.title}</ExternalLink>
@@ -213,6 +218,8 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
         </p>
       </div>
     </section>
+
+    <Pager previous={{ label: 'The ledger', href: '/ledger' }} previousKind="Back to" />
   </article>
 </Site>
 
@@ -220,6 +227,10 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
   /* Head: kicker, name, the change */
   .case__head {
     padding-block: var(--space-16) var(--space-12);
+  }
+
+  .case__crumbs {
+    margin-block-end: var(--space-6);
   }
 
   .case__head > h1 {
@@ -246,7 +257,6 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
 
   .facts dd {
     margin-block-start: var(--space-1);
-    font-weight: 500;
   }
 
   @media (width >= 64rem) {
@@ -289,15 +299,6 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
     .case__body {
       grid-column: 5 / span 7;
     }
-  }
-
-  /* Headings inside the sections: Prata at the lead size */
-  .case__body h3 {
-    font-family: var(--font-heading);
-    font-size: var(--lead-size);
-    font-weight: var(--lead-weight);
-    line-height: var(--lead-leading);
-    letter-spacing: var(--lead-tracking);
   }
 
   /* The doorman reading */
@@ -353,10 +354,6 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
     border-block-start: 0;
   }
 
-  .timeline__status {
-    font-weight: 500;
-  }
-
   .timeline__what > p {
     max-inline-size: var(--measure);
   }
@@ -368,10 +365,6 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
   .changelog__list {
     margin-block-end: var(--space-6);
     border-block-end: var(--hairline) solid var(--rule);
-  }
-
-  .sources__publisher {
-    font-weight: 500;
   }
 
   .sources__item > div > p + p {

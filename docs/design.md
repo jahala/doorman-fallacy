@@ -41,16 +41,28 @@ Colour:
 
 The accent was sampled from the hero mockup's nav underline. Error, warning and success colours are added only when a function needs one.
 
-Type: two families, self-hosted ([D-013](decisions.md)). Prata, a high-contrast display serif with one weight, sets headings (`display`, `title`) and the wordmark. Inter, with its optical-size axis, sets everything else. Both are under the SIL Open Font License.
+Type: two families, self-hosted ([D-013](decisions.md)). Prata, a high-contrast display serif with one weight, sets headings (`display`, `title`, `subhead`) and the wordmark. Inter, with its optical-size axis, sets everything else. Both are under the SIL Open Font License.
 
 | Token | Size | Weight | Line height | Tracking | Use |
 |---|---|---|---|---|---|
-| `display` | clamp(3rem, 7vw, 5.5rem) | 400 | 0.95 | -0.01em | Section headlines |
-| `title` | clamp(1.75rem, 3vw, 2.5rem) | 400 | 1.1 | -0.02em | Column heads, company names |
+| `display` | clamp(3rem, 7vw, 5.5rem) | 400 | 0.95 | -0.01em | Page titles; section headings on the home page |
+| `title` | clamp(1.75rem, 3vw, 2.5rem) | 400 | 1.1 | -0.02em | Section headings on text pages; column heads on the home page |
+| `subhead` | clamp(1.25rem, 2vw, 1.75rem) | 400 | 1.2 | -0.01em | Third-level headings, and the names of things in a list |
 | `lead` | clamp(1.25rem, 2vw, 1.75rem) | 400 | 1.35 | -0.01em | First line under a headline |
 | `body` | 1.125rem | 400 | 1.55 | 0 | Running text |
 | `small` | 0.9375rem | 400 | 1.45 | 0 | Table meta, form help |
 | `caption` | 0.875rem | 400 | 1.4 | 0 | Photo captions, footnotes |
+
+Hierarchy: every page uses the same four levels, and a site test holds them (`tests/e2e/navigation.spec.ts`).
+
+| Level | Home page | Every other page |
+|---|---|---|
+| h1 | `display` | `display` |
+| h2 | `display` | `title` |
+| h3 | `title` | `subhead` |
+| A name inside an h3's content | `label`: body at weight 500 | `label` |
+
+Names of things in a list, in an illustration or in a table (a kind of hidden work, a company, a status row's holder) use `subhead`. Values in data (a fact, a status, a publisher) use `label`. Section and list numbers are Inter at the `small` size in `ink-2` (`section-number`), because Prata's 1 reads as a lowercase l. A case's Markdown is written with `##` headings; the Markdown processor renders them one level lower, as h3, so they sit under the section's h2 (`src/lib/demote-headings.ts`).
 
 Space: a 4-pixel base, with steps at 4, 8, 12, 16, 24, 32, 48, 64, 96 and 128. Sections are separated by a hairline and 96 to 128 pixels above and below.
 
@@ -58,31 +70,34 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 ## Components
 
-- Site header: wordmark left; The idea, The ledger, About and Subscribe right. The current page has a 2-pixel accent underline.
+- Site header: wordmark left; The idea, The ledger, About and Subscribe right. The current section has a 2-pixel accent underline: The idea on `/idea` and its six pages; The ledger on `/ledger`, case pages, `/approach` and `/suggest`.
+- Navigation: the site has two sections, the idea and the ledger. Their pages read in order, `/idea` then `/ledger` then `/approach`, and each ends with a pager to the next.
+- Breadcrumbs: on pages below a section page (`/approach`, `/suggest`, case pages, the six hidden work pages), above the title, at the `small` size in `ink-2`, each level a link and the page itself last, separated by slashes. Top-level pages have none.
+- Contents ("On this page"): on `/idea`, `/ledger` and `/approach`, under the page head. Numbered, hairline-ruled rows in two columns on wide screens, linking each section. The same number sits above each section's heading.
+- Pager: at the foot of a page, under a hairline. A `small` `ink-2` word (Previous, Next or Back to) above the page name in `subhead`; previous on the left, next on the right.
 - Text link: 1-pixel underline in `ink`, offset below the baseline. ↗ only for external links.
-- Section: hairline, headline, lead, then content in the grid.
-- Ledger table: company with country and area beneath; change; reported outcome; case link. Company names are set in Prata at the `title` size. The outcome cell opens with the current status as a word at the `small` size in `ink-2`, normal weight, then the latest update's summary. Rows split by hairlines. Status is never a coloured pill. On screens narrower than 40rem each row stacks into a block and each cell shows its column name. The home page shows the five newest cases and counts the rest in its caption; `/ledger` shows all, with a count and a link to the approach under the table.
-- Ledger summary: one sentence at the `lead` size, "5 cases: 2 holding, 1 strained." (only statuses that have cases), then a `small` row, "Hidden work recorded as missing:", with each hidden function as a link to its page and its count in `ink-2`. It sits above the table on the home page and on `/ledger`, and is left out when there are no cases. The download line sits under the `/ledger` table at the `small` size.
+- Section: hairline, then the number and heading in the left four columns and the text in the right eight, about 65 characters wide. A section can hold a block under its heading (the portrait on `/idea#hidden`) and a wide block under its text that spans the grid.
+- Ledger table: company with country and area beneath; change; reported outcome; case link. Company names are set in `subhead`. The outcome cell opens with the current status as a word at the `small` size in `ink-2`, normal weight, then the latest update's summary. Rows split by hairlines. Status is never a coloured pill. On screens narrower than 40rem each row stacks into a block and each cell shows its column name. The home page shows the five newest cases and counts the rest in its caption; `/ledger` shows all under The cases, with a count and a link to the approach under the table.
+- Ledger summary: one sentence at the `lead` size, "5 cases: 2 holding, 1 strained." (only statuses that have cases), then a `small` row, "Hidden work recorded as missing:", with each hidden function as a link to its page and its count in `ink-2`. It sits above the table on the home page and on `/ledger`, and is left out when there are no cases.
 - Definition band: on the home page, directly after the hero. A full-width section between two hairlines with a smaller 48-pixel space. The label "The doorman fallacy" in `caption` and `ink-2` sits in the left four columns; the definition sits in the right eight, in the `title` style and not italic, with a small "How to cite" link under it. On phones they stack.
-- Signs of the mistake (`/idea#signs`): six numbered items in two columns on wide screens and one on phones, each under a hairline. The number is Prata in `ink-2`; the sign is medium-weight body text and its detail is `ink-2`.
+- The three questions (`/idea#questions`): each question is a row under a hairline, with "Question 1" and its name in the heading column and its ideas, each with its sources, in the text column. On phones they stack. The signs of the mistake close the section as a fourth row.
+- Numbered list (the signs on `/idea#signs` and `/ledger#watch`): one column of items, each with its number, the sign in `label` and its detail in `ink-2`.
 - Hidden work on `/idea`: the cards sit in two columns on the right, and the portrait sits under the section heading on the left. Each card links to `/idea/<id>` with "At the hotel, today, and in the ledger". Visually hidden text after the link names the function, so the six links differ.
-- Hidden function page: a kicker linking to `/idea`, the label in display type, the meaning as the lead. Its sections sit on the same grid as the text pages. The question to ask is set at the `title` size as a pull question. The cases in the ledger are listed as the short name (a link), the change in `ink-2` and the evidence sentence. Previous and next links close the page and do not loop.
+- Hidden function page: breadcrumbs, the icon, the label in display type, the meaning as the lead. Its sections sit on the same grid as the text pages. The question to ask is set in `subhead` as a pull question. The cases in the ledger are listed as the short name (a link, in `subhead`), the change in `ink-2` and the evidence sentence. The pager leads to the kinds either side; past the first it leads back to `/idea#hidden`, past the last on to `/idea#questions`.
 - Empty ledger: a headline, one lead sentence and a link to the idea, between two hairlines, in place of the table.
-- Case page: a kicker (country, area, announcement date), the company's short name in display type, the change as the lead, then a hairline-ruled facts row (status, roles, the door, last checked, next review). Each section below sits on the grid with its label on the left and a reading column of about 65 characters on the right: Reported (the Markdown body, then its footnotes as small ink-2 quotes), The doorman reading (labelled as analysis), What they said (pull quotes), Timeline, Changelog, Sources and Report an error. A statement outside the body cites its source with a small superscript link, S1, S2 and so on, to the numbered Sources list. The report form uses the same field style as the other forms, with a note field a few lines tall, and is hidden in print.
+- Case page: breadcrumbs, a kicker (country, area, announcement date), the company's short name in display type, the change as the lead, then a hairline-ruled facts row (status, roles, the door, last checked, next review). Each section below sits on the grid with its label on the left and a reading column of about 65 characters on the right: Reported (the Markdown body, then its footnotes as small ink-2 quotes), The doorman reading (labelled as analysis), What they said (pull quotes), Timeline, Changelog, Sources and Report an error. A statement outside the body cites its source with a small superscript link, S1, S2 and so on, to the numbered Sources list. The report form uses the same field style as the other forms, with a note field a few lines tall, and is hidden in print. A pager leads back to the ledger.
 - Suggestion form: the same field style as sign-up. Link fields sized for a URL (the first shown, four more behind "Add more links", which needs no script), the note field a few lines tall, name and email marked optional, the credit box below them. A report of an error in one case is a short form on the case page itself, with a required note and an optional email.
 - Sign-up form: a visible label above the field, which is sized for an email address (about 28 characters), and the black Subscribe button. The help line sits below.
-- Footer: wordmark, curator line, About the curator, then Sources & approach, Suggest a case and Privacy. The Sutherland credit closes the page.
+- Footer: the wordmark and the curator line in the left four columns; a site map in the right eight, in three groups (The idea, The ledger, The site), each a `small` `ink-2` label over its links, which are underlined only on hover, like the header's. The Sutherland credit closes the page.
 
 ## Illustrations
 
 Three diagrams and six icons explain the idea without photographs. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
 
 - **The whole job** (home page, "What else was the person doing?"): the visible task in a box drawn in `ink` at 2 pixels, inside a hairline frame, with the six kinds of hidden work around it, three on each side. On phones the task comes first and the six follow.
-- **Where the work goes** (`/idea#model`): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. The caption says it is one possible outcome.
-- **Saved now, lost later** (`/idea#after`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.
+- **Where the work goes** (`/idea#questions`, under the third question): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. The caption says it is one possible outcome.
+- **Saved now, lost later** (`/ledger#watch`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.
 - **Six icons**, one per kind of hidden work, on a 24-pixel grid with 1.5-pixel strokes, in `ink-2`: a figure with presence radiating (signal), an eye (deterrence), a path that forks at a decision (judgment), a notebook with a ribbon (memory), a wave dying down (absorption), and a container with headroom (slack). They sit beside the labels and never carry meaning alone.
-
-Numbers in numbered lists are set in Inter, because Prata's 1 reads as a lowercase l.
 
 ## Share cards
 
