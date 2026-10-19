@@ -73,6 +73,17 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 - Sign-up form: a visible label above the field, which is sized for an email address (about 28 characters), and the black Subscribe button. The help line sits below.
 - Footer: wordmark, curator line, About the curator, then Sources & approach, Suggest a case and Privacy. The Sutherland credit closes the page.
 
+## Illustrations
+
+Three diagrams and six icons explain the idea without photographs. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
+
+- **The whole job** (home page, "What else was the person doing?"): the visible task in a box drawn in `ink` at 2 pixels, inside a hairline frame, with the six kinds of hidden work around it, three on each side. On phones the task comes first and the six follow.
+- **Where the work goes** (`/idea#model`): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. The caption says it is one possible outcome.
+- **Saved now, lost later** (`/idea#after`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.
+- **Six icons**, one per kind of hidden work, on a 24-pixel grid with 1.5-pixel strokes, in `ink-2`: a figure with presence radiating (signal), an eye (deterrence), a path that forks at a decision (judgment), a notebook with a ribbon (memory), a wave dying down (absorption), and a container with headroom (slack). They sit beside the labels and never carry meaning alone.
+
+Numbers in numbered lists are set in Inter, because Prata's 1 reads as a lowercase l.
+
 ## Share cards
 
 Every page names a 1200 by 630 card for Open Graph and Twitter: the site's own, one per hidden function and one per case. A card has the paper colour, the wordmark in Prata at the top with a hairline under it, a small `ink-2` kicker, the title in Prata, one line in Inter and `ink-2`, and the site address at the foot. A case card shows the current status as a word at the foot, never as a pill. There is no photograph and no accent. Colours come from the tokens through `lib/tokens.ts`; the title steps down from 96 to 64 pixels as it gets longer. Only the Prata and Inter files that satori can read are used ([D-017](decisions.md)). The pages also set the favicon (`/favicon.svg`), the touch icon and a `theme-color` for each scheme, read from the `paper` token.

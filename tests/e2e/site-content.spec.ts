@@ -218,6 +218,7 @@ test.describe('/idea', () => {
     expect(await headings(page)).toEqual([
       'The story',
       'Why it matters now',
+      'How to see the whole job',
       'Six signs of the mistake',
       'After the announcement: what to watch',
       'The hidden work',

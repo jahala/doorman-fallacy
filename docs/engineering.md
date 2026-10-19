@@ -75,6 +75,7 @@ Every rule this project states is listed here once, with what fails when it brea
 | `lib/` is pure: no clock, files or network | ESLint restricted globals and imports for `src/lib/`. A fixture file must be flagged |
 | No client-side JavaScript ships | Site test: `dist/` contains no script files or inline scripts |
 | Colours come only from tokens | Stylelint bans colour values outside `tokens.css`. A fixture must be flagged |
+| SVG drawn on the site writes no colour of its own; it uses `currentColor` | `tests/e2e/model.spec.ts` reads every built page and fails on a `fill`, `stroke` or `color` with a hex, rgb or hsl value inside an SVG. A red fill added to an icon fails it |
 | Text tokens meet WCAG AA in light and dark mode | Unit test computes contrast from `tokens.css` |
 | Pages pass an accessibility scan | Site test runs axe on every route |
 | Internal links resolve | Site test crawls `dist/` |

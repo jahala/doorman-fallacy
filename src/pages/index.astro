@@ -5,7 +5,9 @@ import LedgerSummary from '../components/LedgerSummary.astro';
 import LedgerTable from '../components/LedgerTable.astro';
 import Photo from '../components/Photo.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
+import WholeJob from '../components/WholeJob.astro';
 import { definition } from '../data/definition.ts';
+import { modelSteps } from '../data/model.ts';
 import Site from '../layouts/Site.astro';
 import { countLabel, ledgerRow, newestFirst } from '../lib/ledger.ts';
 
@@ -66,9 +68,32 @@ const remains = [
           ))
         }
       </ul>
+
+      <div class="whole">
+        <WholeJob />
+      </div>
+
+      <div class="grid model">
+        <div class="model__head">
+          <h3 class="t-title">How to see the whole job</h3>
+          <p class="t-lead ink-2">Five steps to take before replacing a role, each resting on research.</p>
+        </div>
+        <ol class="model__steps">
+          {
+            modelSteps.map((step, index) => (
+              <li class="ruled">
+                <span class="model__number">{index + 1}</span>
+                <span class="model__title">{step.title}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
       <ul class="section__link section__links">
-        <li><a href="/ledger">See what happened in practice</a></li>
+        <li><a href="/idea#model">The five steps, with their sources</a></li>
         <li><a href="/idea#signs">Six signs of the mistake</a></li>
+        <li><a href="/ledger">See what happened in practice</a></li>
       </ul>
     </section>
 
@@ -153,6 +178,61 @@ const remains = [
     .band > .band__statement,
     .band > .band__cite {
       grid-column: 5 / span 8;
+    }
+  }
+
+  .whole {
+    margin-block-start: var(--space-16);
+  }
+
+  .model {
+    row-gap: var(--space-8);
+    margin-block-start: var(--space-16);
+  }
+
+  .model__head,
+  .model__steps {
+    grid-column: 1 / -1;
+  }
+
+  .model__head .t-lead {
+    margin-block-start: var(--space-3);
+  }
+
+  .model__steps {
+    display: grid;
+    gap: var(--space-4) var(--grid-gap);
+  }
+
+  .model__steps li {
+    display: flex;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block-start: var(--space-4);
+  }
+
+  .model__number {
+    flex: none;
+    min-inline-size: 1.5ch;
+    color: var(--ink-2);
+
+    /* Inter, not Prata: Prata's 1 reads as a lowercase l. */
+    font-variant-numeric: lining-nums tabular-nums;
+    font-size: var(--lead-size);
+  }
+
+  .model__title {
+    font-size: var(--lead-size);
+    line-height: var(--lead-leading);
+  }
+
+  @media (width >= 56rem) {
+    .model__head {
+      grid-column: 1 / span 5;
+    }
+
+    .model__steps {
+      grid-column: 7 / span 6;
     }
   }
 </style>

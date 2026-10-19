@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import HiddenIcon from '../../components/HiddenIcon.astro';
 import TextSection from '../../components/TextSection.astro';
 import { hiddenFunctionIds, hiddenFunctions, type HiddenFunctionId } from '../../data/hidden-functions.ts';
 import Site from '../../layouts/Site.astro';
@@ -26,6 +27,7 @@ const { previous, next } = neighbours(id);
   <div class="page">
     <header class="fn-head section">
       <p class="t-small ink-2"><a href="/idea">The hidden work</a></p>
+      <HiddenIcon id={id} size="large" class="ink-2" />
       <h1 class="t-display">{label}</h1>
       <p class="t-lead ink-2">{meaning}</p>
     </header>
@@ -142,4 +144,5 @@ const { previous, next } = neighbours(id);
       justify-items: end;
     }
   }
+
 </style>

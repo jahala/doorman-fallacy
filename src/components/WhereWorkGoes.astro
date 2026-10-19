@@ -1,0 +1,160 @@
+---
+/**
+ * Where the work goes: before the change one person holds the visible task and the hidden work;
+ * after it, the system takes the task and the hidden work goes to another team, the customer or
+ * nobody. The split is an illustration, not a finding. Real text; the arrows are decorative.
+ */
+import { hiddenFunctionIds, hiddenFunctions, type HiddenFunctionId } from '../data/hidden-functions.ts';
+import HiddenIcon from './HiddenIcon.astro';
+
+const destinations: readonly { name: string; note: string; ids: readonly HiddenFunctionId[] }[] = [
+  { name: 'Another team', note: 'Takes the hardest cases, often with less practice.', ids: ['judgment', 'memory'] },
+  { name: 'The customer', note: 'Does the work themselves, or takes the frustration elsewhere.', ids: ['absorption'] },
+  { name: 'Nobody', note: 'The work stops. Nobody notices until it is needed.', ids: ['signal', 'deterrence', 'slack'] },
+];
+---
+
+<figure class="where" aria-labelledby="where-caption">
+  <div class="where__grid">
+    <div class="where__panel">
+      <p class="t-caption ink-2">Before the change</p>
+      <p class="where__holder">One person</p>
+      <p class="where__task">The visible task</p>
+      <ul class="where__icons">
+        {
+          hiddenFunctionIds.map((id) => (
+            <li>
+              <HiddenIcon id={id} class="ink-2" />
+              <span class="t-small">{hiddenFunctions[id].label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <svg class="where__arrow ink-3" viewBox="0 0 48 24" aria-hidden="true" focusable="false">
+      <path d="M2 12h42M36 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+    <div class="where__after">
+      <div class="where__panel">
+        <p class="t-caption ink-2">After the change</p>
+        <p class="where__holder">The system</p>
+        <p class="where__task">The visible task</p>
+      </div>
+      <ul class="where__destinations">
+        {
+          destinations.map(({ name, note, ids }) => (
+            <li class="where__destination">
+              <p class="where__holder">{name}</p>
+              <ul class="where__icons">
+                {ids.map((id) => (
+                  <li>
+                    <HiddenIcon id={id} class="ink-2" />
+                    <span class="t-small">{hiddenFunctions[id].label}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="t-small ink-2">{note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <figcaption id="where-caption" class="t-caption ink-3">
+    One possible outcome, for illustration. The system takes the visible task; the hidden work goes to another team,
+    to the customer, or to nobody. Those who take it on get the hardest cases (Bainbridge, 1983).
+  </figcaption>
+</figure>
+
+<style>
+  .where {
+    margin: 0;
+  }
+
+  .where__grid {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .where__panel,
+  .where__destination {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border: var(--hairline) solid var(--rule);
+  }
+
+  .where__panel p,
+  .where__destination p {
+    margin: 0;
+  }
+
+  .where__holder {
+    font-family: var(--font-heading);
+    font-size: var(--lead-size);
+    line-height: var(--title-leading);
+  }
+
+  .where__task {
+    justify-self: start;
+    padding: var(--space-1) var(--space-3);
+    border: 2px solid var(--ink);
+    font-size: var(--small-size);
+  }
+
+  .where__icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-block-start: var(--space-2);
+  }
+
+  .where__icons li {
+    display: flex;
+    gap: var(--space-1);
+    align-items: center;
+  }
+
+  .where__after {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .where__destinations {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .where__destination:last-child {
+    border-style: dashed;
+  }
+
+  .where__arrow {
+    justify-self: center;
+    inline-size: 3rem;
+    block-size: 1.5rem;
+    transform: rotate(90deg);
+  }
+
+  .where figcaption {
+    margin-block-start: var(--space-3);
+    max-inline-size: var(--measure);
+  }
+
+  @media (width >= 56rem) {
+    .where__grid {
+      grid-template-columns: minmax(0, 0.8fr) auto minmax(0, 2fr);
+    }
+
+    .where__arrow {
+      transform: none;
+    }
+
+    .where__destinations {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

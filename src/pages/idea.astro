@@ -1,10 +1,14 @@
 ---
 import ExternalLink from '../components/ExternalLink.astro';
+import HiddenIcon from '../components/HiddenIcon.astro';
 import PageHead from '../components/PageHead.astro';
 import Photo from '../components/Photo.astro';
+import SavedLost from '../components/SavedLost.astro';
 import TextSection from '../components/TextSection.astro';
+import WhereWorkGoes from '../components/WhereWorkGoes.astro';
 import { citation, definition } from '../data/definition.ts';
 import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
+import { modelSteps } from '../data/model.ts';
 import { afterSigns, signs } from '../data/signs.ts';
 import Site from '../layouts/Site.astro';
 
@@ -79,6 +83,31 @@ const known = [
       </p>
     </TextSection>
 
+    <TextSection id="model-title" anchor="model" title="How to see the whole job">
+      <p>Five steps to take before replacing a role. Each rests on research from safety, economics and sociology.</p>
+      <div slot="wide" class="model-wide">
+        <ol class="model-steps">
+          {
+            modelSteps.map(({ title, detail, sources }, index) => (
+              <li class="model-steps__item">
+                <span class="signs__number">{index + 1}</span>
+                <div class="model-steps__body">
+                  <p class="signs__title">{title}</p>
+                  <p>{detail}</p>
+                  <ul class="model-steps__sources t-small ink-2">
+                    {sources.map(({ cite, href }) =>
+                      href === undefined ? <li>{cite}</li> : <li><ExternalLink href={href}>{cite}</ExternalLink></li>,
+                    )}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <WhereWorkGoes />
+      </div>
+    </TextSection>
+
     <TextSection id="signs-title" anchor="signs" title="Six signs of the mistake">
       <p>A decision that shows several of these is probably counting the task and missing the job.</p>
       <ol slot="wide" class="signs">
@@ -100,17 +129,20 @@ const known = [
         went missing. They are what the ledger looks for each time it checks a case again. A case that holds up
         shows the opposite.
       </p>
-      <ol slot="wide" class="signs">
-        {
-          afterSigns.map(({ title, detail }, index) => (
-            <li class="signs__item">
-              <span class="signs__number">{index + 1}</span>
-              <p class="signs__title">{title}</p>
-              <p class="ink-2">{detail}</p>
-            </li>
-          ))
-        }
-      </ol>
+      <div slot="wide" class="after-wide">
+        <ol class="signs">
+          {
+            afterSigns.map(({ title, detail }, index) => (
+              <li class="signs__item">
+                <span class="signs__number">{index + 1}</span>
+                <p class="signs__title">{title}</p>
+                <p class="ink-2">{detail}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <SavedLost />
+      </div>
     </TextSection>
 
     <section class="section grid hidden-work" aria-labelledby="hidden-title">
@@ -121,7 +153,7 @@ const known = [
           {
             hiddenFunctionIds.map((id) => (
               <li class="ruled">
-                <h3 class="t-title">{hiddenFunctions[id].label}</h3>
+                <h3 class="t-title hidden-work__label"><HiddenIcon id={id} class="ink-2" />{hiddenFunctions[id].label}</h3>
                 <p class="t-lead ink-2">{hiddenFunctions[id].meaning}</p>
                 <p class="hidden-work__link">
                   <a href={`/idea/${id}`}>
@@ -236,8 +268,11 @@ const known = [
 
   .signs__number {
     grid-row: 1 / span 2;
-    font-family: var(--font-heading);
+
+    /* Inter, not Prata: Prata's 1 reads as a lowercase l. */
+    font-family: var(--font-body);
     font-size: var(--lead-size);
+    font-variant-numeric: lining-nums tabular-nums;
     line-height: 1;
     color: var(--ink-2);
   }
@@ -335,5 +370,43 @@ const known = [
     .idea-close__links {
       grid-column: 5 / span 8;
     }
+  }
+
+  /* How to see the whole job: numbered steps, each with its sources, then the illustration. */
+  .model-wide,
+  .after-wide {
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .model-steps {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .model-steps__item {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  .model-steps__body {
+    display: grid;
+    gap: var(--space-3);
+    max-inline-size: var(--measure);
+  }
+
+
+  .model-steps__sources {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .hidden-work__label {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
   }
 </style>
