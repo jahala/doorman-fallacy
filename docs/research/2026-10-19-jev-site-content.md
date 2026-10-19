@@ -48,3 +48,8 @@ Method: nine composite personas ([personas](2026-10-19-site-content/personas.md)
 ## Spend
 
 $0.006 for the full run and $0.0002 for the small batch, summed from the recordings.
+
+## What Jan decided (2026-10-19)
+
+The reader pages, the "Start here" grid and the two printable guides were cut as theater ([D-018](../decisions.md)). The lesson for this method: Jev rates most blocks as useful to most readers (0.6 to 0.8), so it measures appetite, not fit. Scope comes from what the site is for; Jev can only order what is inside that scope.
+

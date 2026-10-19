@@ -129,3 +129,12 @@ Context: the site-content research ([2026-10-19-jev-site-content.md](research/20
 Chosen: the share cards are drawn at build time with satori (layout to SVG) and @resvg/resvg-js (SVG to PNG), and the dataset is written by two build-time endpoints, `/ledger.csv` and `/ledger.json`. satori reads WOFF, TTF and OTF but not WOFF2, so the cards use the `.woff` files of `@fontsource/prata` and of the static `@fontsource/inter`; the pages keep using the WOFF2 files of the variable Inter. Both libraries and the extra font package are pinned to exact versions.
 
 Why: no browser, no server and no second build step, and the cards and the data come from the same case files as the pages, so they cannot disagree with them. The cost is two dependencies, one of them native, and a build that grows with the cases: 500 cases build in about 8 s instead of 3 s, because each case gets a card. The cards carry no photograph, to keep that cost low.
+
+## D-018 · 2026-10-19 · Cut what does not serve the idea or the ledger
+
+Context: a reader-research round (docs/research/2026-10-19-jev-site-content.md) rated nearly every content block as useful to nearly every reader, and the site grew pages for leaders, employees and builders of AI service, a "Start here" grid, and two printable guides. Jan judged these as theater: they turn the site into an advice platform.
+
+Chosen: the site does two things, explains the doorman fallacy and records what happened after organisations made that decision. The two printable guides ("Before the decision"), the reader pages and the "Start here" grid are removed. Kept, because they deepen the idea or make the ledger trustworthy: the definition, the six signs, what to watch after an announcement, a page per kind of hidden work, the ledger summary and data, what is known so far, when automation is right, the reading list, and the approach with its common questions.
+
+Why: everything on the site should serve one of its two jobs. Jev judges whether a reader would use a block, not whether the site should offer it, so it cannot set the site's scope.
+

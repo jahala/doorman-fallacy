@@ -6,7 +6,6 @@ TheDoormanFallacy.com explains Rory Sutherland's doorman fallacy and keeps a sou
 
 - The idea: one clear, citable explanation of the fallacy, with full credit to Sutherland (*Alchemy*, 2019).
 - The ledger: one case per company, kept by AI agents under fixed rules ([D-009](docs/decisions.md)). What was cut, the visible task that was automated, what it missed, what was reported afterwards, and a date to look again. Most coverage stops on the day of the cut; the follow-up is what this site adds.
-- Two printable checklists: one for a person whose role is being reviewed, one for a manager about to automate a role.
 - A form where readers suggest cases or report errors.
 - A sign-up for a letter, sent once there are subscribers.
 
@@ -48,7 +47,7 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 | `npm run check` | Types, lint, unit tests, Worker tests, copy, docs and case checks | Every change; the pre-push hook runs it | 17 s |
 | `npm run build` | The static site into `dist/` | Before site tests and release | 3 s |
 | `npm run test:worker` | The Worker's tests, part of `npm run check`; run alone while working on `src/worker/` | Every change to the Worker, `migrations/` or `wrangler.jsonc` | 1 s |
-| `npm run test:site` | Browser checks against `dist/`, including the print test | Every change to pages, styles or components | 14 s |
+| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 14 s |
 | `npm run test:size` | Builds 500 generated cases and holds the ledger page to its budget | Changes to the ledger page, the case schema or `src/lib/` | 8 s |
 | `npm run dev:worker` | The site and the form routes on http://localhost:8787, with a local database | Working on the forms ([operations](docs/operations.md#running-the-worker-locally)) | |
 

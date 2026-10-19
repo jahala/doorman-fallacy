@@ -5,7 +5,7 @@ import Photo from '../components/Photo.astro';
 import TextSection from '../components/TextSection.astro';
 import { citation, definition } from '../data/definition.ts';
 import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
-import { signs } from '../data/signs.ts';
+import { afterSigns, signs } from '../data/signs.ts';
 import Site from '../layouts/Site.astro';
 
 const known = [
@@ -94,6 +94,25 @@ const known = [
       </ol>
     </TextSection>
 
+    <TextSection id="after-title" anchor="after" title="After the announcement: what to watch">
+      <p>
+        When an organisation announces cuts linked to AI, these are the signs, months later, that the hidden work
+        went missing. They are what the ledger looks for each time it checks a case again. A case that holds up
+        shows the opposite.
+      </p>
+      <ol slot="wide" class="signs">
+        {
+          afterSigns.map(({ title, detail }, index) => (
+            <li class="signs__item">
+              <span class="signs__number">{index + 1}</span>
+              <p class="signs__title">{title}</p>
+              <p class="ink-2">{detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </TextSection>
+
     <section class="section grid hidden-work" aria-labelledby="hidden-title">
       <h2 id="hidden-title" class="hidden-work__head t-title">The hidden work</h2>
       <div class="hidden-work__body">
@@ -119,7 +138,7 @@ const known = [
       </div>
     </section>
 
-    <TextSection id="known-title" title="What is known so far">
+    <TextSection id="known-title" anchor="known" title="What is known so far">
       <p>
         The ledger records named cases with sources. Around it, a few facts and forecasts are widely quoted.
         Here is what they say, and where they come from.
@@ -188,7 +207,6 @@ const known = [
     <div class="idea-close grid">
       <ul class="idea-close__links t-lead">
         <li><a href="/ledger">See what happened in practice</a></li>
-        <li><a href="/checks/your-hidden-job">Before the decision: two printable guides</a></li>
       </ul>
     </div>
   </div>

@@ -19,53 +19,6 @@ const remains = [
   { title: 'Who takes it on', question: 'Another team, the customer, or nobody?' },
 ];
 
-const starts = [
-  {
-    who: 'If you manage a team',
-    text: 'Before automating a role, answer seven questions with the people who do it.',
-    href: '/checks/before-you-cut',
-    link: 'Before you cut',
-  },
-  {
-    who: 'If your role is changing',
-    text: 'Write down the work your job description leaves out, before the conversation.',
-    href: '/checks/your-hidden-job',
-    link: 'Your hidden job',
-  },
-  {
-    who: 'If you report or research',
-    text: 'Every case is sourced, archived and free to reuse, with the data to download.',
-    href: '/ledger',
-    link: 'The ledger and its data',
-  },
-];
-
-const checks = [
-  {
-    id: 'reviewed',
-    title: 'If your role is being reviewed',
-    lead: 'Write down the work that a job description leaves out.',
-    questions: [
-      'What do people come to you for?',
-      'What do you prevent or resolve without being asked?',
-      'What would colleagues or customers have to take on?',
-    ],
-    href: '/checks/your-hidden-job',
-    link: 'Open Your hidden job',
-  },
-  {
-    id: 'automating',
-    title: 'If you are automating a role',
-    lead: 'Account for the responsibilities that will remain.',
-    questions: [
-      'Which tasks can the system handle reliably?',
-      'Who takes responsibility for the exceptions?',
-      'What will you measure after the change?',
-    ],
-    href: '/checks/before-you-cut',
-    link: 'Open Before you cut',
-  },
-];
 ---
 
 <Site title="The Doorman Fallacy">
@@ -92,21 +45,6 @@ const checks = [
       <h2 id="definition-label" class="band__label t-caption ink-2">The doorman fallacy</h2>
       <p class="band__statement t-title">{definition}</p>
       <p class="band__cite t-small"><a href="/idea#cite">How to cite</a></p>
-    </section>
-
-    <section class="section" aria-labelledby="start-title">
-      <h2 id="start-title" class="t-title">Start here</h2>
-      <ul class="grid columns columns--3">
-        {
-          starts.map((start) => (
-            <li class="ruled">
-              <h3 class="start__who t-lead">{start.who}</h3>
-              <p class="ink-2">{start.text}</p>
-              <p class="start__link"><a href={start.href}>{start.link}</a></p>
-            </li>
-          ))
-        }
-      </ul>
     </section>
 
     <section class="section" aria-labelledby="remains-title">
@@ -168,26 +106,6 @@ const checks = [
       </div>
     </section>
 
-    <section class="section" aria-labelledby="checks-title">
-      <h2 id="checks-title" class="t-display">Before the decision.</h2>
-      <p class="t-lead ink-2 section__sub">Two printable guides for making the work visible.</p>
-      <div class="grid columns columns--2">
-        {
-          checks.map((check) => (
-            <div class="ruled check">
-              <h3 id={`check-${check.id}`} class="t-title">{check.title}</h3>
-              <p class="t-lead ink-2">{check.lead}</p>
-              <ul class="check__questions">
-                {check.questions.map((question) => <li>{question}</li>)}
-              </ul>
-              <p class="check__link"><a href={check.href}>{check.link}</a></p>
-            </div>
-          ))
-        }
-      </div>
-      <p class="t-small ink-3 section__note">Both guides are designed to print.</p>
-    </section>
-
     <section id="subscribe" class="section grid split" aria-labelledby="subscribe-title">
       <div class="split__head">
         <h2 id="subscribe-title" class="t-display">Get updates from the ledger.</h2>
@@ -220,17 +138,10 @@ const checks = [
     margin-block-start: var(--space-2);
   }
 
-  .start__who {
-    font-weight: 500;
-  }
 
-  .start__who + p {
-    margin-block-start: var(--space-3);
-  }
 
-  .start__link {
-    margin-block-start: var(--space-6);
-  }
+
+
 
   @media (width >= 56rem) {
     .band > .band__label {

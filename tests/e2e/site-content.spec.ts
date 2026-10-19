@@ -56,14 +56,12 @@ function style(locator: Locator): Promise<{ family: string; size: string; weight
 }
 
 test.describe('the home page', () => {
-  test('keeps its sections in order, with the definition band and Start here after the hero', async ({ page, siteUrl }) => {
+  test('keeps its sections in order, with the definition band after the hero', async ({ page, siteUrl }) => {
     await page.goto(new URL('/', siteUrl).href);
     expect(await headings(page)).toEqual([
       'The doorman fallacy',
-      'Start here',
       'What else was the person doing?',
       'The ledger',
-      'Before the decision.',
       'Get updates from the ledger.',
     ]);
     await expect(page.locator('h1')).toHaveText('What does a doorman actually do?');
@@ -97,27 +95,6 @@ test.describe('the home page', () => {
     expect(widths).toEqual({ bandRule: '1px', above: '1px' });
   });
 
-  test('offers three starting points on the grid, each with a hairline above and its own link', async ({ page, siteUrl }) => {
-    await page.goto(new URL('/', siteUrl).href);
-    const section = page.locator('section', { has: page.getByRole('heading', { name: 'Start here', level: 2 }) });
-    expect(await style(section.getByRole('heading', { name: 'Start here' }))).toMatchObject({ size: await sizeOf(page, 't-title') });
-    const items = section.locator('li');
-    await expect(items).toHaveCount(3);
-    const expected = [
-      ['If you manage a team', 'Before automating a role, answer seven questions with the people who do it.', 'Before you cut', '/checks/before-you-cut'],
-      ['If your role is changing', 'Write down the work your job description leaves out, before the conversation.', 'Your hidden job', '/checks/your-hidden-job'],
-      ['If you report or research', 'Every case is sourced, archived and free to reuse, with the data to download.', 'The ledger and its data', '/ledger'],
-    ] as const;
-    for (const [index, [who, text, link, href]] of expected.entries()) {
-      const item = items.nth(index);
-      await expect(item.getByRole('heading', { level: 3 })).toHaveText(who);
-      await expect(item).toContainText(text);
-      await expect(item.getByRole('link', { name: link })).toHaveAttribute('href', href);
-      expect((await style(item)).top).toBe('1px');
-    }
-    const columns = await items.evaluateAll((elements) => elements.map((element) => Math.round(element.getBoundingClientRect().left)));
-    expect(new Set(columns).size).toBe(3);
-  });
 
   test('links the six signs from the "What else" section, beside the link to the ledger', async ({ page, siteUrl }) => {
     await page.goto(new URL('/', siteUrl).href);
@@ -242,6 +219,7 @@ test.describe('/idea', () => {
       'The story',
       'Why it matters now',
       'Six signs of the mistake',
+      'After the announcement: what to watch',
       'The hidden work',
       'What is known so far',
       'When automation is the right call',
@@ -353,7 +331,6 @@ test.describe('/idea', () => {
   test('ends with the two closing links', async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
     await expect(page.locator('.idea-close').getByRole('link', { name: 'See what happened in practice' })).toHaveAttribute('href', '/ledger');
-    await expect(page.locator('.idea-close').getByRole('link', { name: 'Before the decision: two printable guides' })).toHaveAttribute('href', '/checks/your-hidden-job');
   });
 });
 
@@ -374,7 +351,6 @@ test.describe('the page for each hidden function', () => {
       await expect(section('When it goes missing')).toContainText(entry.whenMissing);
       const ask = section('The question to ask');
       await expect(ask).toContainText(entry.ask);
-      await expect(ask.getByRole('link', { name: 'Before you cut, the full set of questions' })).toHaveAttribute('href', '/checks/before-you-cut');
     });
 
     test(`/idea/${id}/ sets the question to ask larger than the running text, and the illustration note as a caption`, async ({ page, siteUrl }) => {

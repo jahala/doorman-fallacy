@@ -14,8 +14,6 @@ const contentPages = [
   { route: '/approach/', h1: 'How the ledger is kept', current: undefined },
   { route: '/privacy/', h1: 'Privacy', current: undefined },
   { route: '/about/', h1: 'About', current: 'About' },
-  { route: '/checks/your-hidden-job/', h1: 'Your hidden job', current: undefined },
-  { route: '/checks/before-you-cut/', h1: 'Before you cut', current: undefined },
 ] satisfies readonly { route: string; h1: string; current: string | undefined }[];
 
 test('every content page is built', () => {
@@ -46,10 +44,6 @@ test('/idea lists the six hidden functions from the data file, and the portrait 
   }
   await expect(page.locator('figure.photo')).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'See what happened in practice' })).toHaveAttribute('href', '/ledger');
-  await expect(page.getByRole('link', { name: 'Before the decision: two printable guides' })).toHaveAttribute(
-    'href',
-    '/checks/your-hidden-job',
-  );
   await expect(page.locator('main')).toContainText('The idea and the story are Rory Sutherland');
 });
 
@@ -60,50 +54,6 @@ test('/approach lists every status from the data file', async ({ page, siteUrl }
     await expect(table).toContainText(label);
     await expect(table).toContainText(meaning);
   }
-});
-
-test('/checks/before-you-cut has one table row per hidden function, with two empty columns to write in', async ({
-  page,
-  siteUrl,
-}) => {
-  await page.goto(new URL('/checks/before-you-cut/', siteUrl).href);
-  const rows = page.locator('table tbody tr');
-  expect(await rows.count()).toBe(Object.keys(hiddenFunctions).length);
-  for (const [index, { label, meaning }] of Object.values(hiddenFunctions).entries()) {
-    const row = rows.nth(index);
-    await expect(row).toContainText(label);
-    await expect(row).toContainText(meaning);
-    await expect(row.locator('td.checklist__cell')).toHaveCount(2);
-    await expect(row.locator('td.checklist__cell').first()).toHaveText('');
-  }
-});
-
-test('each guide links to its companion', async ({ page, siteUrl }) => {
-  await page.goto(new URL('/checks/your-hidden-job/', siteUrl).href);
-  await expect(page.getByRole('link', { name: 'Before you cut' })).toHaveAttribute('href', '/checks/before-you-cut');
-  await page.goto(new URL('/checks/before-you-cut/', siteUrl).href);
-  await expect(page.getByRole('link', { name: 'Your hidden job' })).toHaveAttribute('href', '/checks/your-hidden-job');
-});
-
-test('/checks/your-hidden-job tags only the six hidden functions, from the data file, in ink-2 and never colour-coded', async ({
-  page,
-  siteUrl,
-}) => {
-  await page.goto(new URL('/checks/your-hidden-job/', siteUrl).href);
-  const tags = page.locator('.checklist__tag');
-  expect(await tags.allTextContents()).toEqual(
-    Object.values(hiddenFunctions).map(({ label }) => `(${label})`),
-  );
-  const colours = await tags.evaluateAll((elements) => [...new Set(elements.map((e) => getComputedStyle(e).color))]);
-  const ink2 = await page.evaluate(() => {
-    const probe = document.createElement('span');
-    probe.className = 'ink-2';
-    document.body.append(probe);
-    const colour = getComputedStyle(probe).color;
-    probe.remove();
-    return colour;
-  });
-  expect(colours).toEqual([ink2]);
 });
 
 for (const { route } of contentPages) {
@@ -118,3 +68,11 @@ for (const { route } of contentPages) {
     expect(glued).toEqual([]);
   });
 }
+
+test('/idea lists what to watch after an announcement, from the data file', async ({ page, siteUrl }) => {
+  const { afterSigns } = await import('../../src/data/signs.ts');
+  await page.goto(new URL('/idea/', siteUrl).href);
+  const after = page.locator('#after');
+  for (const sign of afterSigns) await expect(after.getByText(sign.title)).toBeVisible();
+});
+

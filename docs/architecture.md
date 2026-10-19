@@ -18,7 +18,7 @@ src/
   lib/                  Pure functions shared by the site, the Worker and the desk, including the dataset rows and the share card layout
   og/                   The edge for share cards: reads the font files, runs satori and resvg
   components/           Astro components
-  layouts/              Page shells: Site; Notice for the pages that answer a form. Case pages and the printable guides are Site pages built from components (Reported, ChecklistPage)
+  layouts/              Page shells: Site; Notice for the pages that answer a form. Case pages are Site pages built from components (Reported)
   pages/                Routes (below)
   styles/               tokens.css, base.css, print.css
   worker/               The Worker: routes, D1 access, the rate limit, mail through cfmail, the daily job
@@ -61,8 +61,6 @@ scripts → lib, data
 | `/ledger.csv`, `/ledger.json` | The whole ledger as data, built from the cases ([data-model.md](data-model.md#the-dataset)) | |
 | `/og/default.png`, `/og/idea/<id>.png`, `/og/ledger/<slug>.png` | Share cards, 1200 by 630, drawn at build time. Every page names one in its head: its own where it has one, the site's otherwise | |
 | `/ledger/<slug>` | One case, slug = file name without `.md`: facts, reported body, the doorman reading, what they said, timeline, changelog, sources, report-an-error form | none yet |
-| `/checks/your-hidden-job` | Printable checklist for a person whose role is reviewed | 4 |
-| `/checks/before-you-cut` | Printable checklist for a manager automating a role | 4 |
 | `/suggest` | Suggest a case | none yet |
 | `/suggest/thanks`, `/suggest/problem` | What the suggestion form answers | none yet |
 | `/subscribe/check-email`, `/subscribe/confirmed`, `/subscribe/problem`, `/subscribe/failed`, `/subscribe/unsubscribed` | What the sign-up, confirm and unsubscribe routes answer | none yet |
@@ -103,4 +101,3 @@ The share cards have no browser behind them. `src/og/render.ts` reads the `.woff
 - A sender for the monthly letter, once there are subscribers and something to send ([D-008](decisions.md)).
 - Ledger filters by status or sector, once the ledger passes about 50 cases.
 - Notes: essays on patterns across cases, once there are about 20 cases.
-- Interactive checklists, if people use the printable ones.

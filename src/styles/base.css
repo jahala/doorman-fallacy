@@ -430,16 +430,7 @@ a {
   border-block-start: var(--hairline) solid var(--rule);
 }
 
-.check__questions {
-  display: grid;
-  gap: var(--space-4);
-  margin-block-start: var(--space-8);
-  color: var(--ink-2);
-}
 
-.check__link {
-  margin-block-start: var(--space-8);
-}
 
 .subscribe__row {
   display: flex;
