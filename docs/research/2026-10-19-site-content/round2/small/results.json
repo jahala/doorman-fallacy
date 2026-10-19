@@ -1,0 +1,211 @@
+{
+ "model": "jev-1.13.0",
+ "answered_by": [
+  "jev-1.13.0"
+ ],
+ "run": "2026-10-19T16:18:04.560Z-355b20ba",
+ "small": true,
+ "stability_every": null,
+ "answers": {
+  "laid_off": {
+   "content": {
+    "hero": {
+     "use": {
+      "type": "noul",
+      "noul": 0.73
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "useful",
+      "confidence": 0.63,
+      "probabilities": {
+       "essential": 0.16,
+       "useful": 0.72,
+       "minor": 0.06,
+       "irrelevant": 0.06
+      }
+     }
+    },
+    "story": {
+     "use": {
+      "type": "noul",
+      "noul": 0.71
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "useful",
+      "confidence": 0.44,
+      "probabilities": {
+       "essential": 0.02,
+       "useful": 0.58,
+       "minor": 0.34,
+       "irrelevant": 0.06
+      }
+     }
+    },
+    "six_functions": {
+     "use": {
+      "type": "noul",
+      "noul": 0.74
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "useful",
+      "confidence": 0.6,
+      "probabilities": {
+       "essential": 0.27,
+       "useful": 0.7,
+       "minor": 0.01,
+       "irrelevant": 0.02
+      }
+     }
+    }
+   },
+   "pages": {
+    "p_home": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.62
+     }
+    },
+    "p_idea": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.68
+     }
+    },
+    "p_ledger": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.8
+     }
+    }
+   },
+   "home": {
+    "_subject": {
+     "first": {
+      "type": "choice",
+      "choice": "question",
+      "confidence": 0.3,
+      "probabilities": {
+       "question": 0.39,
+       "definition": 0.34,
+       "latest_cases": 0.13,
+       "summary": 0.02,
+       "guides": 0.01,
+       "start_here": 0.11,
+       "signup": 0,
+       "none": 0
+      }
+     }
+    }
+   }
+  },
+  "at_risk": {
+   "content": {
+    "hero": {
+     "use": {
+      "type": "noul",
+      "noul": 0.79
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "useful",
+      "confidence": 0.55,
+      "probabilities": {
+       "essential": 0.31,
+       "useful": 0.66,
+       "minor": 0.01,
+       "irrelevant": 0.02
+      }
+     }
+    },
+    "story": {
+     "use": {
+      "type": "noul",
+      "noul": 0.78
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "useful",
+      "confidence": 0.4,
+      "probabilities": {
+       "essential": 0.01,
+       "useful": 0.55,
+       "minor": 0.37,
+       "irrelevant": 0.07
+      }
+     }
+    },
+    "six_functions": {
+     "use": {
+      "type": "noul",
+      "noul": 0.8
+     },
+     "weight": {
+      "type": "choice",
+      "choice": "essential",
+      "confidence": 0.44,
+      "probabilities": {
+       "essential": 0.58,
+       "useful": 0.4,
+       "minor": 0.01,
+       "irrelevant": 0.01
+      }
+     }
+    }
+   },
+   "pages": {
+    "p_home": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.76
+     }
+    },
+    "p_idea": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.75
+     }
+    },
+    "p_ledger": {
+     "visit": {
+      "type": "noul",
+      "noul": 0.84
+     }
+    }
+   },
+   "home": {
+    "_subject": {
+     "first": {
+      "type": "choice",
+      "choice": "question",
+      "confidence": 0.25,
+      "probabilities": {
+       "question": 0.34,
+       "definition": 0.21,
+       "latest_cases": 0.09,
+       "summary": 0.01,
+       "guides": 0.1,
+       "start_here": 0.25,
+       "signup": 0,
+       "none": 0
+      }
+     }
+    }
+   }
+  }
+ },
+ "stability": {
+  "wording_agreement": {
+   "agree": 0,
+   "of": 0
+  },
+  "repeat_agreement": {
+   "agree": 0,
+   "of": 0
+  },
+  "wording": [],
+  "repeat": []
+ }
+}
