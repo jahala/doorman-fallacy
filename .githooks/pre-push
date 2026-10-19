@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Fast checks before anything leaves this machine. CI runs the same once the repository is public.
+set -euo pipefail
+echo "pre-push: npm run check"
+npm run check

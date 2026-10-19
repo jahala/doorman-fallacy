@@ -7,19 +7,19 @@
  *   5. failures go back to the agent once; what still fails is removed;
  *   6. code renders the case file with each cited sentence copied in as the quote.
  *
- *   node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json
+ *   node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
  */
-import { execFile } from 'node:child_process';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { parseArgs, promisify } from 'node:util';
+import { parseArgs } from 'node:util';
 import { quoteFound } from '../src/lib/quotes.ts';
 import { articleSentences } from '../src/lib/sentences.ts';
 import { archive, fetchPage } from './archive.ts';
+import { createBudget } from './budget.ts';
+import { askClaude } from './claude.ts';
 import { allCites, citedSentence, loadedWords, renderCase, type Draft, type SourceMaterial, type Statement } from './case-render.ts';
 import { createJevDoor, type JevAnswer } from './jev.ts';
 
-const run = promisify(execFile);
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 const { values } = parseArgs({
@@ -27,7 +27,7 @@ const { values } = parseArgs({
     assessment: { type: 'string' },
     model: { type: 'string', default: 'sonnet' },
     'budget-each': { type: 'string', default: '0.60' },
-    'jev-budget': { type: 'string', default: '0.05' },
+    budget: { type: 'string', default: '1.50' },
     today: { type: 'string' },
     publish: { type: 'boolean', default: false },
   },
@@ -108,17 +108,22 @@ const material = {
     sentences: source.sentences.map((sentence, index) => `${String(index + 1)}. ${sentence}`),
   })),
 };
+const budget = createBudget(Number(values.budget));
 let claudeCost = 0;
 
 async function askAgent(text: string): Promise<Draft | null> {
-  const { stdout } = await run(
-    'claude',
-    ['-p', text, '--output-format', 'json', '--model', values.model, '--max-budget-usd', values['budget-each'], '--disallowedTools', 'WebSearch', 'WebFetch', 'Bash', 'Write', 'Edit'],
-    { timeout: 15 * 60_000, maxBuffer: 32 * 1024 * 1024 },
-  );
-  const envelope = JSON.parse(stdout) as { result?: string; total_cost_usd?: number };
-  claudeCost += envelope.total_cost_usd ?? 0;
-  const fence = [...(envelope.result ?? '').matchAll(/```json\s*([\s\S]*?)```/g)].at(-1)?.[1];
+  const result = await askClaude(text, {
+    budget,
+    capUsd: Number(values['budget-each']),
+    model: values.model,
+    disallowedTools: ['WebSearch', 'WebFetch', 'Bash', 'Write', 'Edit'],
+  });
+  claudeCost += result.costUsd;
+  if (!result.ok) {
+    note(`writer: ${result.reason}: ${result.message}`);
+    return null;
+  }
+  const fence = [...result.text.matchAll(/```json\s*([\s\S]*?)```/g)].at(-1)?.[1];
   if (fence === undefined) return null;
   try {
     return JSON.parse(fence) as Draft;
@@ -128,7 +133,7 @@ async function askAgent(text: string): Promise<Draft | null> {
 }
 
 // 4: checks on every cited statement.
-const door = createJevDoor({ budgetUsd: Number(values['jev-budget']), model: 'jev-latest', sleep });
+const door = createJevDoor({ budget, model: 'jev-latest', sleep });
 
 interface Failure {
   where: string;

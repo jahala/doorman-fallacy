@@ -19,9 +19,11 @@ Commands:
 
 ```sh
 node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
-node desk/assess.ts --top 4 --budget-each 0.35
-node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --publish
+node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
+node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
+
+Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
 
 Archiving uses Save Page Now with Jan's archive.org keys, read from the Keychain (service `archive.org`, accounts `s3-access` and `s3-secret`) at the moment of use. Without them, anonymous saving is tried, and it often fails.
 

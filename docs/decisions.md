@@ -97,3 +97,20 @@ Context: D-006 set one family, Inter, with the headline weight to be chosen. Jan
 Chosen: Prata for the display and title styles and the wordmark. Inter stays for body text, leads, tables, forms and captions. That is two families, the most the site allows. Prata has one weight, 400, so the headline weight question from D-006 is settled by the face. Display tracking is -0.01em.
 
 Why: Jan's choice. A high-contrast serif reads like the signage of the grand hotels where doormen work, and it separates headlines clearly from the Inter text below them.
+
+## D-014 · 2026-10-19 · MIT for code, CC BY 4.0 for the ledger and site text
+
+Context: the repository goes public before launch, and Jan asked for the licence to be chosen for him.
+
+Chosen: the code under MIT (`LICENSE`), as Jan's other published projects. The cases and the site's text under Creative Commons Attribution 4.0 (`LICENSE-CONTENT`). The photographs stay under the Unsplash licence and are credited.
+
+Why: MIT lets anyone reuse the desk and the site. CC BY lets journalists, researchers and teachers reuse a case as long as they credit it, which spreads the ledger and keeps its name attached. A licence that forbids commercial reuse would keep cases out of most newspapers.
+
+## D-015 · 2026-10-19 · The Worker redirects the other hostnames
+
+Context: both domains are active Cloudflare zones (2026-10-19). Wrangler's login cannot create redirect rules or DNS records, and a dashboard rule would be configuration that lives outside the repository.
+
+Chosen: at the first deploy, the Worker takes thedoormanfallacy.com, www.thedoormanfallacy.com, doormanfallacy.com and www.doormanfallacy.com as custom domains, and answers any host but the first with a 301 to https://thedoormanfallacy.com, keeping the path and query.
+
+Why: the redirect is then code: tested, versioned and deployed with the site. Custom domains create their own DNS records, so nothing is set by hand.
+

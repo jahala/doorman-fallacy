@@ -81,6 +81,12 @@ Every rule this project states is listed here once, with what fails when it brea
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
 | The ledger page builds and stays light at 500 cases | Size test; the page-weight budget is set from the first measurement. Not built yet: arrives with the ledger page |
 | No promises left unawaited, scripts included | ESLint `no-floating-promises` |
+| Every metered call (Jev and Claude) reserves against one budget per run, settles at its real cost, and is never resent when it may have been charged | `desk/budget.ts`, used by `desk/jev.ts` and `desk/claude.ts`. Unit test: two spenders reaching for the last of the budget, exactly one gets it |
+| A desk run leaves no child process behind, even when killed | `desk/processes.ts`. Unit test kills a runner holding a real `sleep` child and waits for the child to end |
+| What the drafter renders passes the case checks | Contract test in `tests/unit/case-render.test.ts` runs `checkCaseText` on a rendered case |
+| Tests run on the Node major version in `.nvmrc` | `tests/unit/runtime.test.ts`, which names the switch command |
+| The fast checks pass before code leaves the machine | `.githooks/pre-push`, installed by `npm ci`. CI runs the same once the repository is public |
+| Checks pass on a fresh clone | `npm run check` generates Astro's types first (`npm run sync`) |
 | Cases due for review are reviewed | Unit test of `lib/review.ts`. The desk's review step is not built yet |
 | Sources still resolve | Not built yet: the desk's report will list dead links. It does not block a build, since outside sites fail on their own |
 | Write what was reported, never motives | Publishing check 3 in `desk/draft.ts` (Jev, plus a loaded-word list tested in `tests/unit/case-render.test.ts`) |

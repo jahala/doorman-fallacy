@@ -43,7 +43,13 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 
 ## Commands
 
-Written by /test-setup once the scaffold runs, with measured times. Nothing is measured yet.
+| Command | What | When | Time (2026-10-19) |
+|---|---|---|---|
+| `npm run check` | Types, lint, unit tests, copy, docs and case checks | Every change; the pre-push hook runs it | 8 s, 23 s from a fresh clone |
+| `npm run build` | The static site into `dist/` | Before site tests and release | 3 s |
+| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 3 s |
+
+The whole suite runs in under 30 seconds, so every run is a full run; there is no changed-only selection. CI runs the same three once the repository is public. Node's major version comes from `.nvmrc`, and a test fails with the switch command when another is running.
 
 ## How cases are added
 

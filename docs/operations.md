@@ -2,7 +2,7 @@
 
 ## Domains
 
-Both domains are registered at GoDaddy. Jan is moving their name servers to Cloudflare (2026-10-19).
+Both domains are registered at GoDaddy and are active zones on Cloudflare's free plan, with Cloudflare's name servers (checked 2026-10-19).
 
 Target:
 
@@ -12,11 +12,7 @@ Target:
 | www.thedoormanfallacy.com | 301 to the apex, path kept |
 | doormanfallacy.com and www | 301 to https://thedoormanfallacy.com, path kept |
 
-Steps:
-1. Add both zones to Cloudflare.
-2. At GoDaddy, change both domains' name servers to the pair Cloudflare gives. Only Jan can do this.
-3. Add the redirect rules in Cloudflare.
-4. Attach thedoormanfallacy.com to the Worker as a custom domain.
+All four hostnames are custom domains of the Worker, which redirects every host but thedoormanfallacy.com ([D-015](decisions.md)). Custom domains create their DNS records at deploy, so no record or rule is set by hand.
 
 ## Release
 
