@@ -1,0 +1,88 @@
+---
+/**
+ * Wraps a case's rendered Markdown body. Astro cannot scope styles to Markdown output, so these
+ * rules are global and every selector starts with .reported.
+ */
+---
+
+<div class="reported"><slot /></div>
+
+<style is:global>
+  .reported > * {
+    max-inline-size: var(--measure);
+  }
+
+  .reported ul {
+    padding-inline-start: 1.25em;
+    list-style: disc;
+  }
+
+  .reported p + p,
+  .reported p + ul,
+  .reported ul + p {
+    margin-block-start: var(--space-4);
+  }
+
+  /* The Markdown body's own headings, in Prata at the lead size */
+  .reported h2 {
+    margin-block: var(--space-12) var(--space-4);
+    font-family: var(--font-heading);
+    font-size: var(--lead-size);
+    font-weight: var(--lead-weight);
+    line-height: var(--lead-leading);
+    letter-spacing: var(--lead-tracking);
+  }
+
+  .reported h2:first-child {
+    margin-block-start: 0;
+  }
+
+  .reported li + li {
+    margin-block-start: var(--space-2);
+  }
+
+  /* Footnote references in the text */
+  .reported sup {
+    margin-inline-start: 0.1em;
+    font-size: var(--caption-size);
+    font-weight: 500;
+    line-height: 0;
+  }
+
+  /* The list of quotes at the end: small, in the secondary ink */
+  .reported .footnotes {
+    margin-block-start: var(--space-12);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--hairline) solid var(--rule);
+    color: var(--ink-2);
+  }
+
+  .reported .footnotes > h2 {
+    margin-block: 0 var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--small-size);
+    font-weight: 500;
+    line-height: var(--small-leading);
+    letter-spacing: var(--small-tracking);
+  }
+
+  .reported .footnotes ol {
+    padding-inline-start: var(--space-6);
+    list-style: decimal;
+  }
+
+  .reported .footnotes li {
+    margin-block-start: var(--space-3);
+    padding-inline-start: var(--space-2);
+    font-size: var(--caption-size);
+    line-height: var(--caption-leading);
+  }
+
+  .reported .footnotes li:target {
+    color: var(--ink);
+  }
+
+  .reported .footnotes p {
+    margin: 0;
+  }
+</style>

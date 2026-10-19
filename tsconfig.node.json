@@ -29,8 +29,10 @@
     "eslint/**/*.ts",
     "eslint.config.ts",
     "vitest.config.ts",
+    "vitest.worker.config.ts",
     "playwright.config.ts",
     "astro.config.ts",
     "stylelint.config.mjs"
-  ]
+  ],
+  "exclude": ["tests/worker"]
 }

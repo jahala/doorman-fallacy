@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import LedgerEmpty from '../../components/LedgerEmpty.astro';
+import LedgerTable from '../../components/LedgerTable.astro';
+import Site from '../../layouts/Site.astro';
+import { countLabel, ledgerRow, newestFirst } from '../../lib/ledger.ts';
+
+const cases = newestFirst(await getCollection('cases'));
+const rows = cases.map(ledgerRow);
+---
+
+<Site
+  title="The ledger"
+  description="What happened after organisations cut roles for AI: every case, newest first, with sources and a date to look again."
+  current="ledger"
+>
+  <div class="page">
+    <section class="section" aria-labelledby="ledger-title">
+      <div class="section-head">
+        <div>
+          <h1 id="ledger-title" class="t-display">The ledger</h1>
+          <p class="t-lead ink-2 section__sub">What happened after organisations cut roles for AI.</p>
+        </div>
+      </div>
+      {
+        rows.length === 0 ? (
+          <LedgerEmpty heading="h2" />
+        ) : (
+          <>
+            <LedgerTable rows={rows} label="Cases, newest announcement first" />
+            <p class="ledger-count t-small ink-3">
+              {countLabel(rows.length)} in the ledger. <a href="/approach">How the ledger is kept</a>
+            </p>
+          </>
+        )
+      }
+    </section>
+  </div>
+</Site>
+
+<style>
+  .ledger-count {
+    margin-block-start: var(--space-4);
+  }
+</style>

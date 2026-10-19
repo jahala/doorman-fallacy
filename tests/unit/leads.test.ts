@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   companyCandidates,
+  sameOrganisation,
   dedupeLeads,
   headcountCandidates,
   headcountValue,
@@ -116,3 +117,29 @@ describe('sizeBucket', () => {
     expect(sizeBucket(14000)).toBe('10,000 or more');
   });
 });
+
+describe('sameOrganisation', () => {
+  it('matches a name and its longer form', () => {
+    expect(sameOrganisation('DNB', 'DNB Bank')).toBe(true);
+    expect(sameOrganisation('Citi', 'Citigroup')).toBe(true);
+    expect(sameOrganisation('Commonwealth Bank', 'Commonwealth Bank of Australia')).toBe(true);
+  });
+
+  it('treats a Scandinavian possessive on a short capitalised name as the name', () => {
+    expect(sameOrganisation('DNBs', 'DNB')).toBe(true);
+    expect(sameOrganisation('IKEAs', 'IKEA')).toBe(true);
+  });
+
+  it('ignores case and a trailing company form', () => {
+    expect(sameOrganisation('kroger', 'The Kroger Co.')).toBe(true);
+    expect(sameOrganisation('Klarna', 'Klarna AB')).toBe(true);
+  });
+
+  it('keeps different organisations apart', () => {
+    expect(sameOrganisation('Apple', 'Applebee’s')).toBe(false);
+    expect(sameOrganisation('Meta', 'Metallica')).toBe(false);
+    expect(sameOrganisation('Bank of America', 'Bank of Ireland')).toBe(false);
+    expect(sameOrganisation('AT', 'AT&T')).toBe(false);
+  });
+});
+

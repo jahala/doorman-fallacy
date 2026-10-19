@@ -1,0 +1,36 @@
+---
+import type { SourceRef } from '../lib/ledger.ts';
+
+/** Footnote-style links from a statement to the numbered entries of the case's Sources list. */
+interface Props {
+  sources: readonly SourceRef[];
+}
+
+const { sources } = Astro.props;
+---
+
+<sup class="source-links">
+  {
+    sources.map((source, index) => (
+      <>
+        {index > 0 && ' '}
+        <a href={`#source-${source.id}`} title={source.publisher}>
+          <span class="visually-hidden">Source </span>S{source.number}
+        </a>
+      </>
+    ))
+  }
+</sup>
+
+<style>
+  .source-links {
+    margin-inline-start: var(--space-1);
+    font-size: var(--caption-size);
+    font-weight: 500;
+    line-height: 0;
+  }
+
+  .source-links a {
+    text-decoration-thickness: var(--hairline);
+  }
+</style>

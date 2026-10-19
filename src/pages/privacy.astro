@@ -1,0 +1,56 @@
+---
+import PageHead from '../components/PageHead.astro';
+import TextSection from '../components/TextSection.astro';
+import Site from '../layouts/Site.astro';
+---
+
+<Site
+  title="Privacy"
+  description="What The Doorman Fallacy collects when you suggest a case, subscribe or visit, why, and when it is deleted."
+>
+  <div class="page">
+    <PageHead title="Privacy" lead="What this site collects, why, and when it is deleted." />
+
+    <TextSection id="suggest-title" title="If you suggest a case or report an error">
+      <p>
+        We store the links and note you send. Your name and email are optional. We use your email only to ask
+        you about that suggestion, and your name only to credit you if you asked us to. Name and email are
+        deleted 90 days after we have looked into the suggestion.
+      </p>
+    </TextSection>
+
+    <TextSection id="subscribe-title" title="If you subscribe">
+      <p>
+        We store your email address to send the letter. Until you confirm, the address is deleted after 7
+        days. Unsubscribing, from the link in every email, deletes it at once. We send the letter ourselves
+        and do not use a newsletter service.
+      </p>
+    </TextSection>
+
+    <TextSection id="visit-title" title="When you visit">
+      <p>
+        The site sets no cookies and uses no tracking scripts. Cloudflare, which hosts the site, counts
+        visits without cookies and without identifying you. Like any web host, it handles your
+        connection&rsquo;s address to deliver the pages. When you send a form, we keep a scrambled form
+        of that address (a one-way hash) for one day, only to limit how many forms one connection can
+        send in an hour.
+      </p>
+    </TextSection>
+
+    <TextSection id="where-title" title="Where the data is">
+      <p>
+        Suggestions and subscriber addresses are stored in a database on Cloudflare, and the emails we send
+        go through our own mail service on Cloudflare. Nothing is sold or shared.
+      </p>
+    </TextSection>
+
+    <TextSection id="rights-title" title="Your rights">
+      <p>
+        You can ask what we hold about you, and ask us to correct or delete it. Write to{' '}
+        <a href="mailto:privacy@thedoormanfallacy.com">privacy@thedoormanfallacy.com</a>. The site is run by
+        Jan Hallvard Larsen in Oslo, Norway.
+      </p>
+      <p class="t-caption ink-3">Last updated 19 October 2026.</p>
+    </TextSection>
+  </div>
+</Site>

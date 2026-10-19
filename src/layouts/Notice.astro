@@ -1,0 +1,43 @@
+---
+import Site from './Site.astro';
+
+/** The page that answers a form: a heading, one line, and what to do next. Search engines skip it. */
+interface Props {
+  title: string;
+  heading: string;
+  lead: string;
+}
+
+const { title, heading, lead } = Astro.props;
+---
+
+<Site title={title} noindex>
+  <div class="page">
+    <section class="section notice">
+      <h1 class="t-display">{heading}</h1>
+      <p class="t-lead ink-2 notice__lead">{lead}</p>
+      <div class="notice__more"><slot /></div>
+    </section>
+  </div>
+</Site>
+
+<style>
+  /* The page stretches to the footer, and the footer has its own rule, so this section has none. */
+  .notice {
+    border-block-end: none;
+  }
+
+  .notice__lead {
+    margin-block-start: var(--space-6);
+    max-inline-size: 30em;
+    text-wrap: balance;
+  }
+
+  .notice__more {
+    display: grid;
+    gap: var(--space-4);
+    max-inline-size: var(--measure);
+    margin-block-start: var(--space-12);
+    justify-items: start;
+  }
+</style>

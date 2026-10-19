@@ -92,4 +92,15 @@ describe('startInOwnGroup', () => {
     const run = startInOwnGroup(process.execPath, ['-e', 'process.exit(3)'], { cwd: os.tmpdir(), env: process.env });
     expect(await run.exited).toBe(3);
   });
+
+  it('keeps the child\'s output instead of printing it when asked to capture', async () => {
+    const run = startInOwnGroup(process.execPath, ['-e', "console.log('out line'); console.error('err line')"], {
+      cwd: os.tmpdir(),
+      env: process.env,
+      capture: true,
+    });
+    expect(await run.exited).toBe(0);
+    expect(run.output()).toContain('out line');
+    expect(run.output()).toContain('err line');
+  });
 });

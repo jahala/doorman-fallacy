@@ -1,0 +1,13 @@
+---
+import Notice from '../../layouts/Notice.astro';
+
+// The Worker serves this page at /unsubscribe?token=..., never at its own address. The form has
+// no action, so the browser posts it back to that address, token included, with no script.
+---
+
+<Notice title="Unsubscribe" heading="Unsubscribe" lead="One click and your address is deleted.">
+  <form method="post">
+    <button class="button" type="submit">Unsubscribe</button>
+  </form>
+  <p><a href="/">Keep my subscription</a></p>
+</Notice>

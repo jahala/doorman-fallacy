@@ -1,0 +1,54 @@
+---
+/**
+ * The form for reporting a mistake on a case. It is plain HTML that posts to the Worker's
+ * /api/suggest route; the Worker validates it and the desk checks the report against the sources.
+ */
+interface Props {
+  /** The case's slug: its file name without .md. */
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<form class="report stack" method="post" action="/api/suggest">
+  <input type="hidden" name="case" value={slug} />
+  <input type="hidden" name="kind" value="error" />
+  <div>
+    <label class="field-label" for="report-note">What is wrong, and where did you see the right information?</label>
+    <textarea class="field report__note" id="report-note" name="note" rows="6" maxlength="2000" required></textarea>
+  </div>
+  <div>
+    <label class="field-label" for="report-email">Your email, if you want a reply</label>
+    <input class="field report__email" id="report-email" name="email" type="email" autocomplete="email" />
+  </div>
+  <div class="visually-hidden">
+    <label for="report-website">Leave this empty</label>
+    <input id="report-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <div>
+    <button class="button" type="submit">Send</button>
+  </div>
+  <p class="t-small ink-3">
+    We read every report. The desk checks it against the sources and records any correction on this page.
+  </p>
+</form>
+
+<style>
+  .report {
+    --stack-gap: var(--space-6);
+  }
+
+  .report__note {
+    display: block;
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: var(--measure);
+    resize: vertical;
+    line-height: var(--body-leading);
+  }
+
+  .report__email {
+    inline-size: 32ch;
+  }
+</style>

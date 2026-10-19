@@ -1,0 +1,23 @@
+---
+import Honeypot from './Honeypot.astro';
+---
+
+<form class="subscribe" method="post" action="/api/subscribe">
+  <label class="field-label" for="subscribe-email">Email address</label>
+  <div class="subscribe__row">
+    <input
+      class="field"
+      id="subscribe-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      placeholder="you@example.com"
+      required
+      maxlength="254"
+      aria-describedby="subscribe-help"
+    />
+    <button class="button" type="submit">Subscribe</button>
+  </div>
+  <p class="field-help t-small" id="subscribe-help">Only updates from The Doorman Fallacy.</p>
+  <Honeypot />
+</form>

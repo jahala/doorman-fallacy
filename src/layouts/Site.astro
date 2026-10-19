@@ -42,6 +42,7 @@ const address = new URL(Astro.url.pathname, Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={address.href} />}
+    <link rel="alternate" type="application/rss+xml" title={`${siteName}: new cases and updates`} href="/rss.xml" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={headingLatin} as="font" type="font/woff2" crossorigin />
   </head>

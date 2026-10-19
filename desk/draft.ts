@@ -30,6 +30,7 @@ const { values } = parseArgs({
     budget: { type: 'string', default: '1.50' },
     today: { type: 'string' },
     publish: { type: 'boolean', default: false },
+    summary: { type: 'string' },
   },
 });
 if (values.assessment === undefined) {
@@ -277,10 +278,15 @@ const slug = `${final.short.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
 if (rendered.ok) await writeFile(path.join(outDir, `${slug}.md`), rendered.text);
 else problems.push(...rendered.problems);
 note(`problems: ${problems.length === 0 ? 'none' : problems.join('; ')}`);
-if (values.publish && rendered.ok && problems.length === 0) {
+const published = values.publish && rendered.ok && problems.length === 0;
+if (published) {
   const target = path.join('src', 'content', 'cases', `${slug}.md`);
   await copyFile(path.join(outDir, `${slug}.md`), target);
   note(`published to ${target}`);
+}
+if (values.summary !== undefined) {
+  const summary = { organisation: final.short, slug, published, problems, costUsd: claudeCost + door.spentUsd() };
+  await writeFile(values.summary, `${JSON.stringify(summary, null, 2)}\n`);
 }
 note(`cost: Claude $${claudeCost.toFixed(2)}, Jev $${door.spentUsd().toFixed(4)}`);
 await writeFile(path.join(outDir, `${slug}.log.txt`), `${log.join('\n')}\n`);

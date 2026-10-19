@@ -1,0 +1,24 @@
+---
+import SuggestForm from '../components/SuggestForm.astro';
+import Site from '../layouts/Site.astro';
+---
+
+<Site title="Suggest a case" description="Send a link to a report of an organisation that cut roles because AI was to do the work.">
+  <div class="page">
+    <section class="section grid split" aria-labelledby="suggest-title">
+      <div class="split__head">
+        <h1 id="suggest-title" class="t-display">Suggest a case</h1>
+        <p class="t-lead section__sub">
+          Seen a report of an organisation cutting roles because AI was to do the work? Send us the link.
+        </p>
+        <p class="ink-2">
+          The desk checks every suggestion against <a href="/approach">what counts as a case</a>, and against its
+          sources.
+        </p>
+      </div>
+      <div class="split__side">
+        <SuggestForm />
+      </div>
+    </section>
+  </div>
+</Site>

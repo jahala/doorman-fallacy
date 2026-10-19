@@ -1,0 +1,105 @@
+---
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import TextSection from '../components/TextSection.astro';
+import { hiddenFunctions } from '../data/hidden-functions.ts';
+import Site from '../layouts/Site.astro';
+
+const functions = Object.values(hiddenFunctions);
+---
+
+<Site
+  title="The doorman fallacy"
+  current="idea"
+  description="Rory Sutherland's doorman fallacy: judging a job by its most visible task, and replacing the task, can remove the work nobody wrote down."
+>
+  <div class="page">
+    <PageHead
+      title="The doorman fallacy"
+      lead="Judging a job by its most visible task, and replacing the task, can remove the work nobody wrote down."
+    />
+
+    <TextSection id="story-title" title="The story">
+      <p>
+        Rory Sutherland tells it in his book <i>Alchemy</i> (2019). A hotel hires consultants to cut costs.
+        They describe the doorman&rsquo;s job as opening the door, and an automatic door does that for less.
+        So the doorman goes.
+      </p>
+      <p>
+        The door still opens. But the doorman also greeted regular guests by name, found taxis in the rain,
+        kept an eye on who came in, and told every arriving guest that this was a hotel that looked after
+        people. None of that was in the job description, so none of it was counted when the decision was
+        made. Its cost turns up later, somewhere else.
+      </p>
+      <p class="t-small ink-2">
+        The idea and the story are Rory Sutherland&rsquo;s. <i>Alchemy: The Surprising Power of Ideas That
+        Don&rsquo;t Make Sense</i>, 2019.
+      </p>
+    </TextSection>
+
+    <TextSection id="now-title" title="Why it matters now">
+      <p>
+        AI can now do many visible tasks well: answer the customer&rsquo;s question, write the product text,
+        screen the application. When a role is described by its visible task, the case for replacing it looks
+        simple. The savings are counted on the task. The hidden work is not counted, because nobody listed
+        it.
+      </p>
+      <p>
+        The site&rsquo;s view is practical. Use AI where it does the job. Before deciding, count everything
+        the person did.
+      </p>
+    </TextSection>
+
+    <TextSection id="hidden-title" title="The hidden work">
+      <p>Six kinds of work that disappear without being missed at first.</p>
+      <ul slot="wide" class="grid columns columns--3">
+        {
+          functions.map(({ label, meaning }) => (
+            <li class="ruled">
+              <h3 class="t-title">{label}</h3>
+              <p class="t-lead ink-2">{meaning}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </TextSection>
+
+    <div class="idea-close grid">
+      <div class="idea-close__photo">
+        <Photo id="portrait" sizes="(min-width: 56rem) 33vw, 100vw" />
+      </div>
+      <ul class="idea-close__links t-lead">
+        <li><a href="/ledger">See what happened in practice</a></li>
+        <li><a href="/checks/your-hidden-job">Before the decision: two printable guides</a></li>
+      </ul>
+    </div>
+  </div>
+</Site>
+
+<style>
+  .idea-close {
+    row-gap: var(--space-12);
+    align-items: end;
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  .idea-close__photo,
+  .idea-close__links {
+    grid-column: 1 / -1;
+  }
+
+  .idea-close__links {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (width >= 56rem) {
+    .idea-close__photo {
+      grid-column: 1 / span 4;
+    }
+
+    .idea-close__links {
+      grid-column: 6 / span 7;
+    }
+  }
+</style>

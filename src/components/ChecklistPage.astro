@@ -1,0 +1,180 @@
+---
+import Site from '../layouts/Site.astro';
+
+/**
+ * A printable guide: a title, one grey line, a short intro, numbered questions with
+ * ruled writing space, and a link to its companion. Designed for print first.
+ * On paper it fits one A4 or US Letter page (tests/e2e/print.spec.ts holds that).
+ */
+interface Props {
+  title: string;
+  lead: string;
+  intro: string;
+  description: string;
+  companion: { label: string; href: string };
+  /** On paper, `paired` sets the short questions two to a row, each with three writing lines, to fit a long guide on one page. */
+  layout?: 'single' | 'paired';
+}
+
+const { title, lead, intro, description, companion, layout = 'single' } = Astro.props;
+---
+
+<Site title={title} description={description}>
+  <div class={`page checklist checklist--${layout}`}>
+    <header class="checklist__head section">
+      <h1 class="t-display">{title}</h1>
+      <p class="t-lead ink-2">{lead}</p>
+      <p class="checklist__intro">{intro}</p>
+    </header>
+    <ol class="checklist__questions">
+      <slot />
+    </ol>
+    <div class="checklist__foot">
+      <p>Companion guide: <a href={companion.href}>{companion.label}</a>.</p>
+      <p class="print-only t-caption">thedoormanfallacy.com &middot; CC BY 4.0</p>
+    </div>
+  </div>
+</Site>
+
+<style is:global>
+  .checklist__head {
+    display: grid;
+    row-gap: var(--space-6);
+  }
+
+  .checklist__head p {
+    max-inline-size: var(--measure);
+  }
+
+  .checklist__head .t-lead {
+    max-inline-size: 28em;
+  }
+
+  .checklist__questions {
+    max-inline-size: 48rem;
+    padding-block: var(--space-12);
+    padding-inline-start: 2.25rem;
+    list-style: decimal;
+  }
+
+  .checklist__questions > li + li {
+    margin-block-start: var(--space-12);
+  }
+
+  .checklist__questions > li::marker {
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+
+  .checklist__foot {
+    padding-block: var(--space-8) var(--space-24);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+
+  @media print {
+    @page {
+      margin: 11mm 14mm;
+    }
+
+    .checklist {
+      inline-size: auto;
+      margin: 0;
+      font-size: 10pt;
+      line-height: 1.35;
+    }
+
+    .checklist__head {
+      row-gap: 1.5mm;
+      padding-block: 0 3mm;
+    }
+
+    .checklist__head h1 {
+      font-size: 22pt;
+    }
+
+    .checklist__head .t-lead {
+      max-inline-size: none;
+      font-size: 12pt;
+      line-height: 1.3;
+    }
+
+    .checklist__head p {
+      max-inline-size: none;
+    }
+
+    .checklist__questions {
+      max-inline-size: none;
+      padding-block: 3mm 0;
+      padding-inline-start: 6mm;
+    }
+
+    .checklist__questions > li + li {
+      margin-block-start: 2mm;
+    }
+
+    .checklist__foot {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-block: 2mm 0;
+      margin-block-start: 2mm;
+    }
+
+    .checklist--paired {
+      --print-line: 6.5mm;
+    }
+
+    .checklist--paired .checklist__questions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 8mm;
+      counter-reset: question;
+    }
+
+    /*
+     * Paired questions share a row: their writing lines sit at the bottom so the rows line up.
+     * A flex item has no list marker, so the number is drawn from a counter; the list keeps its semantics.
+     */
+    .checklist--paired .checklist__questions > li {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      counter-increment: question;
+    }
+
+    .checklist--paired .checklist__questions > li::before {
+      content: counter(question) ".";
+      position: absolute;
+      inset-inline-start: -5mm;
+      color: var(--ink-2);
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .checklist--paired .checklist__questions > li + li {
+      margin-block-start: 0;
+    }
+
+    .checklist--paired .checklist__questions .checklist__lines {
+      margin-block-start: auto;
+    }
+
+    .checklist--paired .checklist__questions > .checklist__question--wide {
+      grid-column: 1 / -1;
+    }
+
+    /* The site footer shrinks to the page address, which closes the sheet under the companion and licence line. */
+    .site-footer__top,
+    .site-footer__credit {
+      display: none;
+    }
+
+    .site-footer .page {
+      inline-size: auto;
+      margin: 0;
+      padding-block: 0;
+      border-block-start: 0;
+    }
+  }
+</style>

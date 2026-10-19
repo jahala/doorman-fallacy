@@ -1,0 +1,61 @@
+---
+/** One section of a text page: a hairline, the heading on the left, running text in a 65 character column on the right. */
+interface Props {
+  title: string;
+  id: string;
+}
+
+const { title, id } = Astro.props;
+---
+
+<section class="text-section section grid" aria-labelledby={id}>
+  <h2 id={id} class="t-title">{title}</h2>
+  <div class="text-section__body stack">
+    <slot />
+  </div>
+  {Astro.slots.has('wide') && <div class="text-section__wide"><slot name="wide" /></div>}
+</section>
+
+<style is:global>
+  .text-section {
+    row-gap: var(--space-8);
+  }
+
+  .text-section:last-child {
+    border-block-end: 0;
+  }
+
+  .text-section > h2,
+  .text-section__body,
+  .text-section__wide {
+    grid-column: 1 / -1;
+  }
+
+  .text-section__body {
+    max-inline-size: var(--measure);
+  }
+
+  .text-section__body ol {
+    padding-inline-start: 1.5em;
+    list-style: decimal;
+  }
+
+  .text-section__body ol li + li {
+    margin-block-start: var(--space-3);
+  }
+
+  .text-section__body li::marker {
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (width >= 56rem) {
+    .text-section > h2 {
+      grid-column: 1 / span 4;
+    }
+
+    .text-section__body {
+      grid-column: 5 / span 8;
+    }
+  }
+</style>

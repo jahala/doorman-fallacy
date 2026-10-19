@@ -59,17 +59,17 @@ async function fetchAll(): Promise<{ leads: RawLead[]; failures: Extract<Fetched
   const leads: RawLead[] = [];
   const failures: Extract<Fetched, { ok: false }>[] = [];
   const nowSeconds = Math.floor(Date.now() / 1000);
-  for (const query of queries) {
+  for (const { query, edition } of queries) {
     const batch: Promise<Fetched>[] = [];
-    if (sources.includes('gnews')) batch.push(googleNews(query, days));
-    if (sources.includes('hn')) batch.push(hackerNews(query, days, nowSeconds));
+    if (sources.includes('gnews')) batch.push(googleNews(query, days, edition));
+    if (sources.includes('hn') && edition === 'en') batch.push(hackerNews(query, days, nowSeconds));
     for (const result of await Promise.all(batch)) {
       if (result.ok) leads.push(...result.leads);
       else failures.push(result);
     }
     if (sources.includes('gdelt')) {
       // GDELT asks for at most one request every five seconds.
-      const result = await gdelt(query, days);
+      const result = await gdelt(query, days, edition, sleep);
       if (result.ok) leads.push(...result.leads);
       else failures.push(result);
       await sleep(5500);

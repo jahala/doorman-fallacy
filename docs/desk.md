@@ -23,7 +23,7 @@ node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
 
-Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
+`node desk/weekly.ts --budget 3` runs every stage in order ([operations.md](operations.md#the-desks-weekly-run)). Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
 
 Archiving uses Save Page Now with Jan's archive.org keys, read from the Keychain (service `archive.org`, accounts `s3-access` and `s3-secret`) at the moment of use. Without them, anonymous saving is tried, and it often fails.
 
@@ -63,4 +63,12 @@ The DNB case went from assessment to a published case file in under a minute, fo
 | One revision round fixed every remaining failure in two of three runs; in the third, the update could not be supported and the case was not published | The pipeline fails closed: a case without a supported update or doorman reading is never written to `src/content/cases/` |
 | All quotes in the published case were found on the archived copy | Publishing check 2 holds when quotes are copied by code |
 | The only readable source was DNB's own release; Norwegian coverage was blocked or never searched | Add Norwegian and other Scandinavian searches to the sweep, and use Wayback copies for blocked publishers |
+
+## Nordic searches and name merging (2026-10-19)
+
+The sweep now runs Norwegian, Swedish and Danish searches in each language's own Google News edition (`desk/queries.ts`). In the first run they found about a dozen Norwegian reports on DNB that the English searches missed, including the finance union Finansforbundet criticising the cut. Jev's headline triage handled Norwegian and Swedish headlines as well as English ones.
+
+Name variants now merge into one group (`sameOrganisation` in `src/lib/leads.ts`): "DNB", "DNB Bank" and the Scandinavian possessive "DNBs" became one group of 21 reports. Headlines that name no organisation but report a reversal or its aftermath now go to the assessor too.
+
+Much Norwegian business coverage is behind paywalls (marked "(+)" in headlines). The assessor does not rely on a headline it could not open, so paywalled follow-ups appear as things to watch for rather than as reported facts. GDELT refusals are now retried after 10, 20 and 40 seconds.
 

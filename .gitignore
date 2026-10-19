@@ -9,3 +9,5 @@ playwright-report
 *.log
 # Desk runs hold unconfirmed leads about named companies; never committed
 .desk-runs
+# Local secrets for wrangler dev; never committed
+.dev.vars*

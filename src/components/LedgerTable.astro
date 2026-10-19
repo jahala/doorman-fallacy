@@ -1,9 +1,10 @@
 ---
-import type { LedgerRow } from '../data/example-rows.ts';
+import type { LedgerRow } from '../data/ledger-row.ts';
 
 interface Props {
   rows: readonly LedgerRow[];
-  caption: string;
+  /** A line under the table. Left out when the page puts its own line there. */
+  caption?: string;
   label: string;
 }
 
@@ -12,7 +13,7 @@ const { rows, caption, label } = Astro.props;
 
 <div class="ledger-wrap" role="region" aria-label={label} tabindex="0">
   <table class="ledger" role="table">
-    <caption class="t-small ink-3">{caption}</caption>
+    {caption !== undefined && <caption class="t-small ink-3">{caption}</caption>}
     <thead>
       <tr class="t-small ink-2" role="row">
         <th scope="col" role="columnheader">Company</th>
@@ -30,7 +31,10 @@ const { rows, caption, label } = Astro.props;
               <span class="ledger__meta t-small ink-2">{row.meta}</span>
             </th>
             <td role="cell" data-label="Change">{row.change}</td>
-            <td role="cell" data-label="Reported outcome">{row.outcome}</td>
+            <td role="cell" data-label="Reported outcome">
+              <span class="ledger__status">{row.status}</span>
+              {row.outcome}
+            </td>
             <td role="cell" class="ledger__case">
               <a href={row.href}>
                 Read case<span class="visually-hidden"> on {row.company}</span>
@@ -78,6 +82,13 @@ const { rows, caption, label } = Astro.props;
   .ledger__company {
     display: block;
     font-size: var(--lead-size);
+  }
+
+  .ledger__status {
+    display: block;
+    margin-block-end: var(--space-1);
+    font-size: var(--small-size);
+    font-weight: 500;
   }
 
   .ledger__meta {
