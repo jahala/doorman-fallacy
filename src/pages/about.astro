@@ -1,0 +1,47 @@
+---
+import ExternalLink from '../components/ExternalLink.astro';
+import PageHead from '../components/PageHead.astro';
+import Site from '../layouts/Site.astro';
+---
+
+<Site
+  title="About"
+  current="about"
+  description="The Doorman Fallacy is curated by Jan Hallvard Larsen."
+>
+  <div class="page">
+    <PageHead title="About" lead="The Doorman Fallacy is curated by Jan Hallvard Larsen." />
+
+    <section class="about section grid" aria-label="The curator">
+      <div class="about__body stack">
+        <p>
+
+
+
+        </p>
+        <p>
+
+
+
+        </p>
+        <p>
+          He started this site because the question at its centre keeps coming back in every field he has
+          worked in: before replacing a person with a system, what else was the person doing?
+        </p>
+        <p>Write to <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.</p>
+      </div>
+    </section>
+  </div>
+</Site>
+
+<style>
+  .about {
+    border-block-end: 0;
+  }
+
+  .about__body {
+    grid-column: 1 / -1;
+    max-inline-size: var(--measure);
+  }
+
+</style>

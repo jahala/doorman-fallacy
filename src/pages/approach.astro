@@ -1,0 +1,157 @@
+---
+import ExternalLink from '../components/ExternalLink.astro';
+import PageHead from '../components/PageHead.astro';
+import TextSection from '../components/TextSection.astro';
+import { statuses } from '../data/statuses.ts';
+import Site from '../layouts/Site.astro';
+
+const statusRows = Object.values(statuses);
+---
+
+<Site
+  title="How the ledger is kept"
+  description="AI agents find, write and check every case under fixed rules. What counts as a case, how it is written, the checks it passes, and how it is kept up to date."
+>
+  <div class="page">
+    <PageHead
+      title="How the ledger is kept"
+      lead="AI agents find, write and check every case, under fixed rules. No person reviews a case before it goes live, so the rules do that work. This page lists them."
+    />
+
+    <TextSection id="counts-title" title="What counts as a case">
+      <p>A case needs all three:</p>
+      <ol>
+        <li>A named organisation.</li>
+        <li>Roles reduced: layoffs, contracts ended, or posts left unfilled on purpose.</li>
+        <li>
+          The organisation, or credible reporting, linking the reduction to AI or automation, backed by one
+          primary source or two independent reports.
+        </li>
+      </ol>
+      <p>
+        Rumours, forecasts and cuts with no named organisation are left out. When reporting questions an
+        organisation&rsquo;s link to AI, the case records both, and draws no conclusion about motives.
+      </p>
+    </TextSection>
+
+    <TextSection id="written-title" title="How a case is written">
+      <p>
+        A news sweep runs every week. A small, fast model reads each headline and sets aside the ones that
+        cannot be cases. A larger model researches the rest and judges how well each one shows the question
+        at the centre of the site: what else was the person doing?
+      </p>
+      <p>
+        For each case worth writing, the sources are fetched, archived on the Wayback Machine, and split
+        into numbered sentences. The writing agent writes statements and cites sentences by number. It never
+        types a quote. Code copies each cited sentence into the case, word for word.
+      </p>
+    </TextSection>
+
+    <TextSection id="checks-title" title="The checks every case passes">
+      <ol>
+        <li>Every quote is found word for word on the archived copy of its source. No model is involved in this check.</li>
+        <li>
+          Every statement is checked against its quote by a separate model. A statement that says more than
+          its quote, or suggests a motive, goes back to the writer once, and is removed if it still fails.
+        </li>
+        <li>Loaded words are not allowed.</li>
+        <li>
+          Every case has one primary source, such as the organisation&rsquo;s own statement, or two
+          independent reports.
+        </li>
+        <li>The case keeps a fixed shape: the role, the change, what happened next, and open questions.</li>
+      </ol>
+      <p>A case that fails is not published.</p>
+    </TextSection>
+
+    <TextSection id="layers-title" title="Reported facts and the doorman reading">
+      <p>
+        Each case keeps two layers apart. What sources report is marked as reported. Which hidden work the
+        change may have missed is the site&rsquo;s own reading, marked as analysis, and each point names the
+        reported evidence it rests on.
+      </p>
+    </TextSection>
+
+    <TextSection id="following-title" title="Following up">
+      <p>
+        A case is a record that keeps changing. Each one is checked again on a schedule set by its status,
+        and the page says when it was last checked, even when nothing new was found.
+      </p>
+      <table class="statuses">
+        <thead>
+          <tr class="t-small ink-2">
+            <th scope="col">Status</th>
+            <th scope="col">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            statusRows.map(({ label, meaning }) => (
+              <tr>
+                <th scope="row">{label}</th>
+                <td class="ink-2">{meaning}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p>
+        Too early to tell and strained cases are checked after three months. Holding cases after six months,
+        then every year. Reversed cases once more after a year.
+      </p>
+    </TextSection>
+
+    <TextSection id="corrections-title" title="Corrections">
+      <p>
+        If something in a case is wrong, use Report an error on its page, or <a href="/suggest">suggest a case</a>.
+        The desk checks the report against the sources. Corrections are listed on the case page, and every
+        change to a case is public in its history on{' '}
+        <ExternalLink href="https://github.com/jahala/doorman-fallacy">GitHub</ExternalLink>.
+      </p>
+    </TextSection>
+
+    <TextSection id="keeper-title" title="Who keeps it">
+      <p>
+        The ledger is curated by <a href="/about">Jan Hallvard Larsen</a>. The desk uses Claude, by
+        Anthropic, for research and writing, and Jev, by TypeSafe, for the fast checks. The code is open
+        source under the{' '}
+        <ExternalLink href="https://github.com/jahala/doorman-fallacy/blob/master/LICENSE">MIT licence</ExternalLink>;
+        the cases and the text of this site are published under{' '}
+        <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>, so you can
+        reuse them with credit.
+      </p>
+    </TextSection>
+  </div>
+</Site>
+
+<style>
+  .statuses {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .statuses th,
+  .statuses td {
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    border-block-end: var(--hairline) solid var(--rule);
+    font-weight: inherit;
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  .statuses thead th {
+    border-block-start: var(--hairline) solid var(--rule);
+    font-weight: 500;
+  }
+
+  .statuses tbody th {
+    inline-size: 11rem;
+    font-weight: 500;
+  }
+
+  @media (width < 40rem) {
+    .statuses tbody th {
+      inline-size: 7rem;
+    }
+  }
+</style>

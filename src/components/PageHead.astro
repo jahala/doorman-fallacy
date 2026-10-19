@@ -1,0 +1,25 @@
+---
+/** The top of a text page: the title, then one grey line that says what the page is for. */
+interface Props {
+  title: string;
+  lead: string;
+}
+
+const { title, lead } = Astro.props;
+---
+
+<header class="page-head section">
+  <h1 class="t-display">{title}</h1>
+  <p class="t-lead ink-2">{lead}</p>
+</header>
+
+<style>
+  .page-head {
+    display: grid;
+    row-gap: var(--space-8);
+  }
+
+  .page-head p {
+    max-inline-size: 28em;
+  }
+</style>

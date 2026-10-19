@@ -4,14 +4,8 @@
  * fails while a listed route already exists.
  */
 export const notYetBuiltRoutes: readonly string[] = [
-  '/idea', // The idea page
   '/ledger', // The ledger
-  '/about', // About the curator
-  '/approach', // Sources and approach
   '/suggest', // Suggest a case
-  '/privacy', // Privacy
-  '/checks/your-hidden-job', // Printable checklist
-  '/checks/before-you-cut', // Printable checklist
 ];
 
 /** In-page anchors the site links to whose target section is not built yet. */

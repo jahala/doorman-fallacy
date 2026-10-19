@@ -75,7 +75,7 @@ Every rule this project states is listed here once, with what fails when it brea
 | Colours come only from tokens | Stylelint bans colour values outside `tokens.css`. A fixture must be flagged |
 | Text tokens meet WCAG AA in light and dark mode | Unit test computes contrast from `tokens.css` |
 | Pages pass an accessibility scan | Site test runs axe on every route |
-| Each checklist prints on one page, A4 and US Letter | Site test prints to PDF and counts pages. Not built yet: arrives with the checklist pages |
+| Each checklist prints on one page, A4 and US Letter, with no text under 10pt and at least two ruled writing lines per question | `tests/e2e/print.spec.ts` prints each guide to PDF in both sizes and counts the PDF's page objects (`tests/e2e/pdf.ts`), after first checking the counter on a page that prints on several. It also reads every printed font size and each question's writing lines. A guide with three questions added fails it |
 | Internal links resolve | Site test crawls `dist/` |
 | No em dashes in site copy | `scripts/check-copy` scans `src/content/`, `src/pages/`, `src/layouts/`, `src/components/` and `src/data/`. A fixture must be flagged |
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
