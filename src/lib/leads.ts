@@ -151,3 +151,38 @@ export function sizeBucket(count: number | null): SizeBucket {
   if (count < 10000) return '1,000 to 9,999';
   return '10,000 or more';
 }
+
+const companyForms = new Set(['co', 'inc', 'ltd', 'llc', 'plc', 'ab', 'asa', 'as', 'a/s', 'ag', 'sa', 'nv', 'bv', 'gmbh', 'corp', 'corporation', 'limited']);
+const joinedSuffixes = ['group', 'corp', 'bank', 'co'];
+
+function orgWords(name: string): string[] {
+  const words = name
+    // Norwegian, Swedish and Danish write the possessive without an apostrophe: "DNBs".
+    .replace(/\b(\p{Lu}[\p{Lu}\p{N}]+)s\b/gu, '$1')
+    .toLowerCase()
+    .replace(/[’']s\b/g, '')
+    .replace(/[^\p{L}\p{N}&/ ]+/gu, ' ')
+    .split(/\s+/)
+    .filter((word) => word !== '');
+  if (words[0] === 'the') words.shift();
+  while (words.length > 1 && companyForms.has(words.at(-1) ?? '')) words.pop();
+  return words;
+}
+
+/**
+ * Whether two names found in headlines are the same organisation: equal once case, "the" and
+ * company forms are set aside; one a word-by-word start of the other ("DNB", "DNB Bank"); or a
+ * one-word name joined to a common suffix ("Citi", "Citigroup").
+ */
+export function sameOrganisation(a: string, b: string): boolean {
+  const [short, long] = [orgWords(a), orgWords(b)].sort((x, y) => x.length - y.length || x.join(' ').length - y.join(' ').length);
+  if (short === undefined || long === undefined || short.length === 0) return false;
+  if (short.every((word, index) => long[index] === word)) return true;
+  if (short.length === 1 && long.length === 1) {
+    const [s] = short;
+    const [l] = long;
+    if (s === undefined || l === undefined || s.length < 4 || !l.startsWith(s)) return false;
+    return joinedSuffixes.includes(l.slice(s.length));
+  }
+  return false;
+}

@@ -64,3 +64,11 @@ The DNB case went from assessment to a published case file in under a minute, fo
 | All quotes in the published case were found on the archived copy | Publishing check 2 holds when quotes are copied by code |
 | The only readable source was DNB's own release; Norwegian coverage was blocked or never searched | Add Norwegian and other Scandinavian searches to the sweep, and use Wayback copies for blocked publishers |
 
+## Nordic searches and name merging (2026-10-19)
+
+The sweep now runs Norwegian, Swedish and Danish searches in each language's own Google News edition (`desk/queries.ts`). In the first run they found about a dozen Norwegian reports on DNB that the English searches missed, including the finance union Finansforbundet criticising the cut. Jev's headline triage handled Norwegian and Swedish headlines as well as English ones.
+
+Name variants now merge into one group (`sameOrganisation` in `src/lib/leads.ts`): "DNB", "DNB Bank" and the Scandinavian possessive "DNBs" became one group of 21 reports. Headlines that name no organisation but report a reversal or its aftermath now go to the assessor too.
+
+Much Norwegian business coverage is behind paywalls (marked "(+)" in headlines). The assessor does not rely on a headline it could not open, so paywalled follow-ups appear as things to watch for rather than as reported facts. GDELT refusals are now retried after 10, 20 and 40 seconds.
+

@@ -3,6 +3,7 @@
  * returns the leads it found or a failure message, never throws.
  */
 import { splitPublisher, type RawLead } from '../src/lib/leads.ts';
+import type { Edition } from './queries.ts';
 
 export type Fetched = { ok: true; leads: RawLead[] } | { ok: false; source: string; query: string; message: string };
 
@@ -52,9 +53,16 @@ async function get(url: string): Promise<{ ok: true; body: string } | { ok: fals
   }
 }
 
-export async function googleNews(query: string, days: number): Promise<Fetched> {
+const editions: Record<Edition, string> = {
+  en: 'hl=en-US&gl=US&ceid=US:en',
+  no: 'hl=no&gl=NO&ceid=NO:no',
+  sv: 'hl=sv&gl=SE&ceid=SE:sv',
+  da: 'hl=da&gl=DK&ceid=DK:da',
+};
+
+export async function googleNews(query: string, days: number, edition: Edition = 'en'): Promise<Fetched> {
   const q = encodeURIComponent(`${query} when:${String(days)}d`);
-  const result = await get(`https://news.google.com/rss/search?q=${q}&hl=en-US&gl=US&ceid=US:en`);
+  const result = await get(`https://news.google.com/rss/search?q=${q}&${editions[edition]}`);
   if (!result.ok) return { ok: false, source: 'gnews', query, message: result.message };
   const leads: RawLead[] = [];
   for (const match of result.body.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
@@ -81,11 +89,17 @@ interface GdeltArticle {
   language?: string;
 }
 
-export async function gdelt(query: string, days: number): Promise<Fetched> {
-  const q = encodeURIComponent(`${query} sourcelang:english`);
-  const result = await get(
-    `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=artlist&format=json&maxrecords=75&timespan=${String(days)}d&sort=datedesc`,
-  );
+const gdeltLanguages: Record<Edition, string> = { en: 'english', no: 'norwegian', sv: 'swedish', da: 'danish' };
+
+/** GDELT refuses bursts (HTTP 429) even at one request every five seconds, so a refusal is retried after 10, 20 and 40 seconds. */
+export async function gdelt(query: string, days: number, edition: Edition, sleep: (ms: number) => Promise<void>): Promise<Fetched> {
+  const q = encodeURIComponent(`${query} sourcelang:${gdeltLanguages[edition]}`);
+  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=artlist&format=json&maxrecords=75&timespan=${String(days)}d&sort=datedesc`;
+  let result = await get(url);
+  for (let attempt = 0; !result.ok && result.message === 'HTTP 429' && attempt < 3; attempt += 1) {
+    await sleep(10_000 * 2 ** attempt);
+    result = await get(url);
+  }
   if (!result.ok) return { ok: false, source: 'gdelt', query, message: result.message };
   let parsed: { articles?: GdeltArticle[] };
   try {
