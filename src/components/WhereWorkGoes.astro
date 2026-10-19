@@ -14,7 +14,14 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
 ];
 ---
 
-<figure class="where" aria-labelledby="where-caption">
+<figure class="where respite" aria-labelledby="where-title">
+  <figcaption class="respite__head grid">
+    <h3 id="where-title" class="t-subhead">Where the hidden work goes</h3>
+    <p class="ink-2">
+      One possible outcome, for illustration. The system takes the visible task; the hidden work goes to another
+      team, to the customer, or to nobody. Those who take it on get the hardest cases (Bainbridge, 1983).
+    </p>
+  </figcaption>
   <div class="where__grid">
     <div class="where__panel">
       <p class="t-caption ink-2">Before the change</p>
@@ -62,10 +69,6 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
       </ul>
     </div>
   </div>
-  <figcaption id="where-caption" class="t-caption ink-3">
-    One possible outcome, for illustration. The system takes the visible task; the hidden work goes to another team,
-    to the customer, or to nobody. Those who take it on get the hardest cases (Bainbridge, 1983).
-  </figcaption>
 </figure>
 
 <style>
@@ -133,10 +136,6 @@ const destinations: readonly { name: string; note: string; ids: readonly HiddenF
     transform: rotate(90deg);
   }
 
-  .where figcaption {
-    margin-block-start: var(--space-3);
-    max-inline-size: var(--measure);
-  }
 
   @media (width >= 56rem) {
     .where__grid {

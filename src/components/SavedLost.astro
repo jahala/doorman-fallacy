@@ -12,7 +12,14 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
 ];
 ---
 
-<figure class="saved-lost" aria-labelledby="saved-lost-caption">
+<figure class="saved-lost respite" aria-labelledby="saved-lost-title">
+  <figcaption class="respite__head grid">
+    <h3 id="saved-lost-title" class="t-subhead">Saved now, lost later</h3>
+    <p class="ink-2">
+      An illustration of the pattern, not data. The saving is counted at once. The costs arrive later and are booked
+      somewhere else, so they are rarely set against it.
+    </p>
+  </figcaption>
   <div class="saved-lost__table" role="table" aria-label="What is counted, and when costs arrive">
     <div class="saved-lost__row saved-lost__row--head" role="row">
       <span role="columnheader"><span class="visually-hidden">What</span></span>
@@ -39,10 +46,6 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
       }
     </div>
   </div>
-  <figcaption id="saved-lost-caption" class="t-caption ink-3">
-    An illustration of the pattern, not data. The saving is counted at once. The costs arrive later and are booked
-    somewhere else, so they are rarely set against it.
-  </figcaption>
 </figure>
 
 <style>
@@ -102,10 +105,6 @@ const columns: readonly { when: string; counted: readonly string[]; uncounted: r
     color: var(--ink-2);
   }
 
-  .saved-lost figcaption {
-    margin-block-start: var(--space-3);
-    max-inline-size: var(--measure);
-  }
 
   @media (width >= 56rem) {
     .saved-lost__row {
