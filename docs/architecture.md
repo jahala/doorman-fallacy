@@ -17,7 +17,7 @@ src/
   data/                 Vocabularies and the case schema
   lib/                  Pure functions shared by the site, the Worker and the desk
   components/           Astro components
-  layouts/              Page shells: Site now; Print arrives with its page
+  layouts/              Page shells: Site only. Case pages and the printable guides are Site pages built from components (Reported, ChecklistPage)
   pages/                Routes (below)
   styles/               tokens.css, base.css, print.css
   worker/               The Worker: form routes, D1 access, mail through cfmail

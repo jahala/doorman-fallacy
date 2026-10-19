@@ -79,7 +79,9 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 ## Print
 
-The two checklists print on one page each, on A4 and US Letter. Print hides the header, the nav and the sign-up, and shows the page address at the foot.
+The two checklists print on one page each, on A4 and US Letter, with no text under 10pt and at least two ruled writing lines under every question. Print hides the header, the nav and the sign-up. The foot holds the companion link, "thedoormanfallacy.com · CC BY 4.0" and the page address. Writing lines are borders in `field`, never images.
+
+Your hidden job sets its nine questions in one column. Before you cut has a six-row table, so on paper its short questions sit two to a row with three lines each; that is the only way its content fits Letter at 10pt. On screen both guides are one column. A hidden-function tag is a small label in `ink-2` after its question, never colour-coded.
 
 ## Motion
 
