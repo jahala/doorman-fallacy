@@ -23,6 +23,15 @@ node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
 
+A backfill looks further back for named organisations. Each `--query` replaces the standard searches; Google News accepts windows of years:
+
+```sh
+node desk/sweep.ts --days 1100 --sources gnews --budget 0.30 --query 'Klarna AI assistant customer service staff' --query '...'
+node desk/assess.ts --only 'klarna,salesforce' --top 2 --budget 1.00
+```
+
+The first backfill (2026-10-21) searched ten organisations. The assessor rated four for drafting. Three passed every check: CBA, Klarna and Salesforce. Duolingo stopped at the quote check, because one cited sentence was not on the archived copy of its source. IBM was rated watch, and Atlassian and Lufthansa were rejected, because no source names the tasks AI took over.
+
 `node desk/weekly.ts --budget 3` runs every stage in order ([operations.md](operations.md#the-desks-weekly-run)). Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
 
 Archiving uses Save Page Now with Jan's archive.org keys, read from the Keychain (service `archive.org`, accounts `s3-access` and `s3-secret`) at the moment of use. Without them, anonymous saving is tried, and it often fails.

@@ -96,6 +96,11 @@ const { rows, caption, label, compact = false } = Astro.props;
     display: block;
   }
 
+  /* "Read case" is one action, so it never breaks across lines. */
+  .ledger__case {
+    white-space: nowrap;
+  }
+
   .ledger__status {
     display: block;
     margin-block-end: var(--space-1);
