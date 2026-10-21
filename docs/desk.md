@@ -23,7 +23,7 @@ node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
 
-A backfill looks further back for named organisations. Each `--query` replaces the standard searches; Google News accepts windows of years:
+A backfill looks further back for named organisations. Each `--query` replaces the standard searches; Google News accepts windows of years. A prefix picks the edition: `no:`, `sv:` or `da:`, and English without one:
 
 ```sh
 node desk/sweep.ts --days 1100 --sources gnews --budget 0.30 --query 'Klarna AI assistant customer service staff' --query '...'
@@ -31,6 +31,8 @@ node desk/assess.ts --only 'klarna,salesforce' --top 2 --budget 1.00
 ```
 
 The first backfill (2026-10-21) searched ten organisations. The assessor rated four for drafting. Three passed every check: CBA, Klarna and Salesforce. Duolingo stopped at the quote check, because one cited sentence was not on the archived copy of its source. IBM was rated watch, and Atlassian and Lufthansa were rejected, because no source names the tasks AI took over.
+
+The second backfill (2026-10-21) added Nordic searches and European banks. ING (anti-money-laundering checks) and Duolingo were published. Duolingo had stopped at the quote check twice because of a bug, not the source: a tag between a link and the full stop left a space behind ("filings ."), so the quote did not match. The match now drops spaces next to punctuation on both sides (`src/lib/quotes.ts`). Allianz Partners was rated watch. Telenor was rejected only because its Norwegian stories could not be opened through Google News' redirect links; it is worth a search by hand. Göteborgs-Posten, Commerzbank, Danske Bank and Paf were rejected, because no source names the work AI took over.
 
 `node desk/weekly.ts --budget 3` runs every stage in order ([operations.md](operations.md#the-desks-weekly-run)). Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
 

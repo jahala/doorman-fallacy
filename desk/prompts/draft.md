@@ -20,6 +20,7 @@ Cite a sentence as `source-id#number`, for example `dnb-release#4`. Cite only se
 - The reported facts and the doorman reading stay apart. The reading belongs only in `missed`, where it is analysis: each point names the hidden function and the reported evidence it rests on, and cites that evidence.
 - Open questions are questions, not facts, and need no citation. Ask what the ledger will look for at the next review.
 - Do not overstate. If the sources say "parts of the work", do not write "the work".
+- The first time the body names a person, say who they are ("Duolingo's chief executive, Luis von Ahn"), citing a sentence that gives their role. If no sentence does, refer to them by role alone.
 
 ## Hidden functions
 
