@@ -33,7 +33,8 @@ export type CaseRule =
   | 'footnote-duplicate'
   | 'footnote-no-quote'
   | 'paragraph-no-footnote'
-  | 'source-uncited';
+  | 'source-uncited'
+  | 'archive-other-site';
 
 export interface CaseFinding {
   readonly file: string;
@@ -309,7 +310,25 @@ export function checkCaseText(file: string, text: string): CaseFinding[] {
       }
     }
   }
+  // An archived copy must be of the source's own site: Save Page Now can report a frame loaded with
+  // the page, such as an analytics tag, as the page it saved (Dukaan, 2026-10-21).
+  if (parsed.success) {
+    for (const source of parsed.data.sources) {
+      const saved = source.archive.replace(/^https:\/\/web\.archive\.org\/web\/[^/]+\//, '');
+      if (siteOf(saved) !== siteOf(source.url)) {
+        findings.push({ file, line: 0, rule: 'archive-other-site', message: `Source ${source.id} is archived from ${siteOf(saved) ?? saved}, not ${siteOf(source.url) ?? source.url}` });
+      }
+    }
+  }
   return findings;
+}
+
+function siteOf(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return null;
+  }
 }
 
 /** Checks every .md file directly inside a cases folder. No files is a pass; no folder is a finding. */

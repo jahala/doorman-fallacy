@@ -62,6 +62,7 @@ Every rule this project states is listed here once, with what fails when it brea
 |---|---|
 | Every case matches the format in [data-model.md](data-model.md) | Content schema; the build fails. A fixture case must fail it |
 | Every update cites at least one source, each with an archive link | Content schema |
+| Each source's archived copy is of the source's own site | `archive-other-site` in `scripts/check-cases.ts`, and `captureAddress` in `desk/archive.ts` refuses a Save Page Now capture of another site. Unit tests for both |
 | Every cited source id exists and source ids are unique | Content schema. A fixture for each citing field must fail it |
 | Every source is cited, in the front matter or in a body footnote | `scripts/check-cases`, because only it sees both. A fixture with an uncited source must fail it |
 | Body headings present and in order, no other `##` heading | `scripts/check-cases`. A fixture each for a missing, a misplaced and an extra heading must fail it |
@@ -84,7 +85,7 @@ Every rule this project states is listed here once, with what fails when it brea
 | The dataset has the fixed columns, RFC 4180 quoting and the same cases as the pages | Unit tests of `lib/dataset.ts`, including a value with a comma, a quote and a line break; `tests/e2e/dataset.spec.ts` reads `/ledger.csv` and `/ledger.json` as served and compares them with the case pages |
 | The ledger summary's counts and each hidden-work entry's case list on `/idea` come from one rule | `casesMissing` in `lib/hidden-work.ts` serves both, and a unit test holds that every count equals the list's length. Site tests compare the pages with the published dataset |
 | Links sit apart from the word before them, and external links, and only those, carry the arrow | Site tests on every page, new ones included |
-| No em dashes in site copy | `scripts/check-copy` scans `src/content/`, `src/pages/`, `src/layouts/`, `src/components/` and `src/data/`. A fixture must be flagged |
+| No em dashes in site copy; verbatim quotes from sources keep their punctuation | `scripts/check-copy` scans `src/content/`, `src/pages/`, `src/layouts/`, `src/components/` and `src/data/`, skipping a case's footnotes and quote fields. A fixture must be flagged, and a unit test holds that the site's own words on a case page are still flagged. The site test reads each page without its footnotes, blockquotes and `[data-quote]` lines |
 | Docs name only paths that exist; the brief stays under 150 lines | `scripts/check-docs` |
 | The ledger page builds and stays light at 500 cases | `scripts/size-test.ts` builds 500 generated cases (`scripts/size-cases.ts`) and fails if `/ledger/index.html` passes 659,874 bytes, which is 1.5 times the 439,916 bytes first measured on 2026-10-19. The build takes about 8 s from a cold cache, 500 share cards included; the page measured 450,057 bytes (11 KB gzipped) after the summary and the larger company names were added. Unit test: a killed run leaves no folder or process behind |
 | The ledger and the home preview have a designed state with no cases | `tests/unit/empty-ledger.test.ts` builds the site with an empty cases folder and reads both pages and the feed |

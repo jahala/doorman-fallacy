@@ -99,3 +99,18 @@ The assessor reads "roles reduced" as existing roles. The inclusion rule also co
 
 Two fixes came from these runs. The assessor now puts reports with a direct publisher address ahead of Google News redirect links (`readableFirst` in `desk/clusters.ts`). An assessment whose answer is malformed, such as a source with no quote, now fails for that organisation alone, keeping what it cost, instead of stopping the run.
 
+## Wider languages and outsourcing hubs (2026-10-21)
+
+The desk searches in 16 languages (`editionIds` in `desk/queries.ts`): English, Norwegian, Swedish, Danish, German, French, Spanish, Dutch, Italian, Portuguese, Japanese, Korean, Chinese (mainland and Taiwan), Hindi and Polish. A prefix picks one: `--query 'fr:…'`. Taiwan's Google News edition is its own; DeepSeek has one code for Chinese, so `tw` searches DeepSeek as `zh`. Cases are written in English whatever the source's language. The Philippines and India, where much of the world's call-centre work is done, publish their business news in English, so they are reached by English searches aimed at them, not by a language.
+
+One sweep in the eight European and Asian languages (1,494 leads) put twelve organisations forward; Flash rated ten for drafting. Konecta, Mercado Libre, TikTok and Nielsen Italy were published. The Chinese, Hindi and Polish sweep (945 leads) mostly found stories already in the ledger, retold; of seven new organisations only Visa was rated watch.
+
+## Archiving and what the checks cannot see (2026-10-21)
+
+- **archive.org rate-limits.** Drafts run in parallel archive many pages at once and get HTTP 429, so every source fails to archive. Draft one case at a time, a minute apart. Some sites refuse archiving outright (MarketScreener; some investor-results pages), and a case that needs them cannot publish until another source carries the same facts.
+- **A capture of another page.** Save Page Now once reported an analytics frame inside a Yahoo article as the page it saved. The archiver now accepts only a capture of the source's own site, and the case check `archive-other-site` holds every published source to it.
+- **A page that changed.** A France 3 article was edited after the draft read it, and the quoted sentence vanished from both the page and its archive. The quote check is right to stop such a case; it needs a fresh draft from the current text.
+- **A real quote about something else.** The checks prove that each quote exists and supports its statement. They cannot tell whether the quote is about this case. Drafts used a union's general remark about voice bots (Atlassian), a supplier that lost Telenor as a client (Telenor), a contract that moved to Deloitte (Konecta), and a fatal crash with no stated link to the cuts (TikTok). Each was removed by hand before publishing, and the drafting prompt now says to cite only sentences about this organisation's change. Every case is read before it is published.
+
+Waiting for a retry, one at a time: Dukaan (wrong capture, now fixed), Le Progrès (edited source), ABN AMRO and CCF (an archived copy that cannot be read), Teleperformance and Izzi (investor pages that refuse archiving), Sparebanken Norge (a MarketScreener source), and IBM, which passed every statement and quote but has a source with no publication date (IBM's own case study), which the case schema does not allow. Drafting now runs the case checks before publishing, so such a case stays a draft instead of breaking the build.
+

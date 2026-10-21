@@ -3,7 +3,9 @@
  * weekly run. Nordic searches run in each language's own Google News edition, because local
  * coverage often comes first and reaches English sources late or never (DNB, 2026-10).
  */
-export type Edition = 'en' | 'no' | 'sv' | 'da';
+/** The languages the desk searches in. Cases are always written in English. */
+export const editionIds = ['en', 'no', 'sv', 'da', 'de', 'fr', 'es', 'nl', 'it', 'pt', 'ja', 'ko', 'zh', 'tw', 'hi', 'pl'] as const;
+export type Edition = (typeof editionIds)[number];
 
 export interface Search {
   readonly query: string;

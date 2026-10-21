@@ -1,7 +1,7 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
-/** Site copy has no em dashes. Written as an escape so this file passes its own check. */
+/** Site copy has no em dashes; verbatim quotes keep their source's punctuation. Written as an escape so this file passes its own check. */
 const EM_DASH = '\u2014';
 
 export const copyTargets = [
@@ -20,11 +20,19 @@ export interface CopyFinding {
   readonly message: string;
 }
 
-/** The 1-based line numbers that hold an em dash. */
+/**
+ * A verbatim quote from a source keeps the source's punctuation, so it is not site copy: a case's
+ * footnote ([^id]: "…") or a quote field in its front matter. Quotes are single lines in case files.
+ */
+function isVerbatimQuote(line: string): boolean {
+  return /^\[\^[^\]]+\]: /.test(line) || /^\s*quote: /.test(line);
+}
+
+/** The 1-based line numbers that hold an em dash, outside verbatim quotes. */
 export function findEmDashLines(text: string): number[] {
   const lines: number[] = [];
   text.split('\n').forEach((line, index) => {
-    if (line.includes(EM_DASH)) lines.push(index + 1);
+    if (line.includes(EM_DASH) && !isVerbatimQuote(line)) lines.push(index + 1);
   });
   return lines;
 }
