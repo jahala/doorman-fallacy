@@ -62,10 +62,13 @@ for (const route of casePages) {
 
     test('every footnote reference reaches a footnote that shows a quote, and each source has an archived copy', async ({ page, siteUrl }) => {
       await page.goto(new URL(route, siteUrl).href);
-      const references = page.locator('a[data-footnote-ref]');
+      // A sentence cited twice has two references and one footnote, so compare targets, not counts.
+      const targets = await page.locator('a[data-footnote-ref]').evaluateAll((anchors) => anchors.map((anchor) => (anchor.getAttribute('href') ?? '').replace(/^#/, '')));
       const footnotes = page.locator('.footnotes li');
-      expect(await references.count()).toBeGreaterThan(0);
-      expect(await footnotes.count()).toBe(await references.count());
+      const ids = await footnotes.evaluateAll((items) => items.map((item) => item.id));
+      expect(targets.length).toBeGreaterThan(0);
+      expect(targets.filter((target) => !ids.includes(target))).toEqual([]);
+      expect(ids.filter((id) => !targets.includes(id))).toEqual([]);
       for (const text of await footnotes.allInnerTexts()) expect(text).toMatch(/^[“"].+[”"]/);
       const sources = page.locator('.sources__item');
       for (const source of await sources.all()) {

@@ -5,6 +5,7 @@
  *
  *   node desk/sweep.ts --size small --days 7 --budget 0.25
  *   node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 1
+ *   node desk/sweep.ts --days 1100 --query 'Klarna AI customer service' --query '...' --budget 0.30
  */
 import { execFile } from 'node:child_process';
 import { mkdir, readdir, writeFile } from 'node:fs/promises';
@@ -31,6 +32,8 @@ const { values } = parseArgs({
     limit: { type: 'string', default: '2000' },
     today: { type: 'string' },
     model: { type: 'string', default: 'jev-latest' },
+    // Searches of your own, in place of the standard set: a backfill of named organisations, over a long window.
+    query: { type: 'string', multiple: true },
   },
 });
 
@@ -39,9 +42,15 @@ const days = Number(values.days);
 const budget = Number(values.budget);
 const limit = Number(values.limit);
 const sources = values.sources.split(',');
-const queries = values.size === 'full' ? fullQueries : smallQueries;
+const queries =
+  values.query === undefined
+    ? values.size === 'full'
+      ? fullQueries
+      : smallQueries
+    : values.query.map((query) => ({ query, edition: 'en' as const }));
+const label = values.query === undefined ? values.size : 'backfill';
 const runBudget = createBudget(budget);
-const outDir = path.join(runRoot, `${today}-${values.size}-${String(days)}d-${Date.now().toString(36)}`);
+const outDir = path.join(runRoot, `${today}-${label}-${String(days)}d-${Date.now().toString(36)}`);
 
 /** Runs older than the retention window are moved to the Trash, so .desk-runs/ cannot grow without end. */
 async function pruneOldRuns(): Promise<string[]> {
@@ -159,7 +168,7 @@ const groups = clusters(triaged);
 
 const meta = {
   today,
-  size: values.size,
+  size: label,
   days,
   sources,
   queries: queries.length,

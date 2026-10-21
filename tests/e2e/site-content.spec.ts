@@ -184,11 +184,9 @@ test.describe('/ledger', () => {
     await page.goto(new URL('/ledger/', siteUrl).href);
     const section = page.locator('#known');
     await expect(section).toContainText(
-      'The ledger records named cases with sources. Around it, a few facts and forecasts are widely quoted. Here is what they say, and where they come from.',
+      'The ledger records named cases with sources. Around it, a survey and a forecast are widely quoted. Here is what they say, and where they come from.',
     );
     const sources = [
-      ['Commonwealth Bank of Australia cut 45 customer-service roles in July 2025', 'ACS Information Age, 21 August 2025', 'https://ia.acs.org.au/article/2025/cba-reverses-ai-driven-job-cuts--admits--error-.html'],
-      ['In 2024 Klarna reported', 'Tech.co, 20 May 2025', 'https://tech.co/news/klarna-reverses-ai-overhaul'],
       ['Forrester’s Predictions 2026: The Future of Work', 'Resultsense, 30 October 2025', 'https://www.resultsense.com/news/2025-10-30-forrester-predicts-ai-layoff-reversals-lower-pay/'],
       ['A 2025 survey by Orgvue', 'HR Dive, 29 April 2025', 'https://www.hrdive.com/news/leaders-who-laid-off-workers-due-to-ai-regretted-it/746643/'],
     ] as const;
