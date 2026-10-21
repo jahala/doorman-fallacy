@@ -50,7 +50,7 @@ The suggest and subscribe routes hold their rate limit in D1, as a hash of the v
 
 ## The desk's weekly run
 
-`desk/weekly.ts` runs every Monday at 07:00 on Jan's Mac, using Claude Code on Jan's subscription ([D-012](decisions.md)). How the desk narrows the news, and what each stage costs: [desk.md](desk.md). Each run:
+`desk/weekly.ts` runs every Monday at 07:00 on Jan's Mac ([D-012](decisions.md)). Its agents run in Claude Code on DeepSeek Flash ([D-021](decisions.md)); the key is `DEEPSEEK_API_KEY`, read from the environment or, under launchd, from the Keychain item Conductor keeps it in. How the desk narrows the news, and what each stage costs: [desk.md](desk.md). Each run:
 
 1. **Sweep** the last eight days of news.
 2. **Set aside** organisations already in the ledger, and those assessed in the last 30 days (`.desk-runs/assessed.json`, entries kept 180 days).

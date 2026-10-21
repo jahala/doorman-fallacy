@@ -154,3 +154,11 @@ Chosen: Jan's name is removed from every page but one. About describes the site.
 
 Why: a site that argues for seeing the whole job should not lead with its owner. A shorter landing page reaches the ledger sooner.
 
+## D-021 · 2026-10-21 · The desk's agents run on DeepSeek Flash
+
+Context: the desk's assessment and drafting agents ran on Claude Sonnet through Jan's Claude subscription (D-012). That subscription is nearly used up, and Jan asked for DeepSeek Flash instead.
+
+Chosen: `deepseek-flash` is the default model for `desk/assess.ts` and `desk/draft.ts`, run by Claude Code against DeepSeek's Anthropic-compatible API with the key `DEEPSEEK_API_KEY`. Claude Sonnet stays available with `--model sonnet`. The checks are unchanged: Jev still checks every statement and code still checks every quote.
+
+Why: on six organisations with known answers, Flash agreed with Sonnet on four and found more sources on the other two, and its drafts passed every check, at about an eighth of the cost ([2026-10-21-deepseek-flash-desk.md](research/2026-10-21-deepseek-flash-desk.md)). The checks, not the writer, are what make a case trustworthy, so a cheaper writer with the same checks keeps the ledger as safe.
+

@@ -11,8 +11,8 @@ Most AI layoff news is not a doorman case. Many large cuts fund AI investment or
 | 1. Sweep | Code, and DeepSeek search | $0.00075 per DeepSeek search; the rest free | Fetches news searches (`desk/queries.ts`) from Google News, GDELT, Hacker News and DeepSeek; merges duplicates |
 | 2. Triage | Jev | Fractions of a cent per lead | Judges each headline: is it a named organisation's AI-linked reduction, what kind of news, how AI relates to the roles, which roles, which organisation, how many |
 | 3. Priority | Code | Free | Weighs Jev's answers into a doorman priority (`doormanPriority` in `desk/triage.ts`) and groups leads by organisation |
-| 4. Assessment | Claude agent | About $0.20 per organisation | Researches the lead and rates its doorman fit from 0 to 3, using `desk/prompts/assess.md` |
-| 5. Drafting | Claude agent | About $0.20 per case | Writes the case from the sources' numbered sentences (`desk/prompts/draft.md`), citing sentences by number; code copies each cited sentence in as the quote |
+| 4. Assessment | Agent (DeepSeek Flash, D-021) | About $0.03 per organisation | Researches the lead and rates its doorman fit from 0 to 3, using `desk/prompts/assess.md` |
+| 5. Drafting | Agent (DeepSeek Flash) | About $0.07 per case | Writes the case from the sources' numbered sentences (`desk/prompts/draft.md`), citing sentences by number; code copies each cited sentence in as the quote |
 | 6. Checks | Jev and code | Under $0.001 per case | The [publishing checks](engineering.md#publishing-checks); failures go back to the writer once, then are removed |
 
 Commands:

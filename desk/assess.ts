@@ -10,7 +10,8 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { quoteFound } from '../src/lib/quotes.ts';
 import { createBudget } from './budget.ts';
-import { askClaude } from './claude.ts';
+import { askClaude, isDeepseekModel } from './claude.ts';
+import { deepseekKey } from './deepseek.ts';
 import { sameOrganisation } from '../src/lib/leads.ts';
 import { assessable, clusters, readableFirst, type Cluster, type Triaged } from './clusters.ts';
 
@@ -20,7 +21,7 @@ const { values } = parseArgs({
     top: { type: 'string', default: '3' },
     'budget-each': { type: 'string', default: '0.40' },
     budget: { type: 'string', default: '1.50' },
-    model: { type: 'string', default: 'sonnet' },
+    model: { type: 'string', default: 'deepseek-flash' },
     concurrency: { type: 'string', default: '3' },
     only: { type: 'string' },
     exclude: { type: 'string' },
@@ -105,6 +106,8 @@ async function pageText(url: string): Promise<string | null> {
 }
 
 const budget = createBudget(Number(values.budget));
+// A DeepSeek model needs its key, read once here at the edge.
+const agentKey = isDeepseekModel(values.model) ? await deepseekKey() : null;
 
 async function assess(cluster: Cluster, prompt: string): Promise<Outcome> {
   const started = Date.now();
@@ -112,6 +115,7 @@ async function assess(cluster: Cluster, prompt: string): Promise<Outcome> {
     budget,
     capUsd: Number(values['budget-each']),
     model: values.model,
+    deepseekKey: agentKey,
     allowedTools: ['WebSearch', 'WebFetch'],
   });
   const seconds = Math.round((Date.now() - started) / 1000);

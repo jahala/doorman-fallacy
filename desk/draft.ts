@@ -16,7 +16,8 @@ import { quoteFound } from '../src/lib/quotes.ts';
 import { articleSentences } from '../src/lib/sentences.ts';
 import { archive, fetchPage } from './archive.ts';
 import { createBudget } from './budget.ts';
-import { askClaude } from './claude.ts';
+import { askClaude, isDeepseekModel } from './claude.ts';
+import { deepseekKey } from './deepseek.ts';
 import { allCites, citedSentence, loadedWords, renderCase, type Draft, type SourceMaterial, type Statement } from './case-render.ts';
 import { createJevDoor, type JevAnswer } from './jev.ts';
 import { statementQuestions, supportedThreshold } from './statement-check.ts';
@@ -26,7 +27,7 @@ const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 const { values } = parseArgs({
   options: {
     assessment: { type: 'string' },
-    model: { type: 'string', default: 'sonnet' },
+    model: { type: 'string', default: 'deepseek-flash' },
     'budget-each': { type: 'string', default: '0.60' },
     budget: { type: 'string', default: '1.50' },
     today: { type: 'string' },
@@ -118,6 +119,7 @@ async function askAgent(text: string): Promise<Draft | null> {
     budget,
     capUsd: Number(values['budget-each']),
     model: values.model,
+    deepseekKey: agentKey,
     disallowedTools: ['WebSearch', 'WebFetch', 'Bash', 'Write', 'Edit'],
   });
   claudeCost += result.costUsd;
@@ -136,6 +138,8 @@ async function askAgent(text: string): Promise<Draft | null> {
 
 // 4: checks on every cited statement.
 const door = createJevDoor({ budget, model: 'jev-latest', sleep });
+// A DeepSeek model needs its key, read once here at the edge.
+const agentKey = isDeepseekModel(values.model) ? await deepseekKey() : null;
 
 interface Failure {
   where: string;
