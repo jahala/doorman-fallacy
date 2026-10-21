@@ -1,0 +1,278 @@
+[
+  {
+    "id": "no-1-true",
+    "language": "no",
+    "want": true,
+    "p": 0.73
+  },
+  {
+    "id": "no-1-false",
+    "language": "no",
+    "want": false,
+    "p": 0.13
+  },
+  {
+    "id": "no-2-true",
+    "language": "no",
+    "want": true,
+    "p": 0.86
+  },
+  {
+    "id": "no-2-false",
+    "language": "no",
+    "want": false,
+    "p": 0.03
+  },
+  {
+    "id": "no-3-true",
+    "language": "no",
+    "want": true,
+    "p": 0.93
+  },
+  {
+    "id": "no-3-false",
+    "language": "no",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "no-4-true",
+    "language": "no",
+    "want": true,
+    "p": 0.81
+  },
+  {
+    "id": "no-4-false",
+    "language": "no",
+    "want": false,
+    "p": 0.03
+  },
+  {
+    "id": "no-5-true",
+    "language": "no",
+    "want": true,
+    "p": 0.93
+  },
+  {
+    "id": "no-5-false",
+    "language": "no",
+    "want": false,
+    "p": 0.12
+  },
+  {
+    "id": "no-6-true",
+    "language": "no",
+    "want": true,
+    "p": 0.83
+  },
+  {
+    "id": "no-6-false",
+    "language": "no",
+    "want": false,
+    "p": 0.04
+  },
+  {
+    "id": "no-7-true",
+    "language": "no",
+    "want": true,
+    "p": 0.89
+  },
+  {
+    "id": "no-7-false",
+    "language": "no",
+    "want": false,
+    "p": 0.03
+  },
+  {
+    "id": "no-8-true",
+    "language": "no",
+    "want": true,
+    "p": 0.89
+  },
+  {
+    "id": "no-8-false",
+    "language": "no",
+    "want": false,
+    "p": 0.03
+  },
+  {
+    "id": "no-9-true",
+    "language": "no",
+    "want": true,
+    "p": 0.85
+  },
+  {
+    "id": "no-9-false",
+    "language": "no",
+    "want": false,
+    "p": 0.04
+  },
+  {
+    "id": "no-10-true",
+    "language": "no",
+    "want": true,
+    "p": 0.9
+  },
+  {
+    "id": "no-10-false",
+    "language": "no",
+    "want": false,
+    "p": 0.04
+  },
+  {
+    "id": "no-11-true",
+    "language": "no",
+    "want": true,
+    "p": 0.91
+  },
+  {
+    "id": "no-11-false",
+    "language": "no",
+    "want": false,
+    "p": 0.04
+  },
+  {
+    "id": "no-12-true",
+    "language": "no",
+    "want": true,
+    "p": 0.69
+  },
+  {
+    "id": "no-12-false",
+    "language": "no",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "no-13-true",
+    "language": "no",
+    "want": true,
+    "p": 0.81
+  },
+  {
+    "id": "no-13-false",
+    "language": "no",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "da-14-true",
+    "language": "da",
+    "want": true,
+    "p": 0.78
+  },
+  {
+    "id": "da-14-false",
+    "language": "da",
+    "want": false,
+    "p": 0.03
+  },
+  {
+    "id": "da-15-true",
+    "language": "da",
+    "want": true,
+    "p": 0.89
+  },
+  {
+    "id": "da-15-false",
+    "language": "da",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "da-16-true",
+    "language": "da",
+    "want": true,
+    "p": 0.88
+  },
+  {
+    "id": "da-16-false",
+    "language": "da",
+    "want": false,
+    "p": 0.08
+  },
+  {
+    "id": "da-17-true",
+    "language": "da",
+    "want": true,
+    "p": 0.76
+  },
+  {
+    "id": "da-17-false",
+    "language": "da",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "da-18-true",
+    "language": "da",
+    "want": true,
+    "p": 0.5
+  },
+  {
+    "id": "da-18-false",
+    "language": "da",
+    "want": false,
+    "p": 0.05
+  },
+  {
+    "id": "da-19-true",
+    "language": "da",
+    "want": true,
+    "p": 0.76
+  },
+  {
+    "id": "da-19-false",
+    "language": "da",
+    "want": false,
+    "p": 0.08
+  },
+  {
+    "id": "en-20-true",
+    "language": "en",
+    "want": true,
+    "p": 0.92
+  },
+  {
+    "id": "en-20-false",
+    "language": "en",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "en-21-true",
+    "language": "en",
+    "want": true,
+    "p": 0.6
+  },
+  {
+    "id": "en-21-false",
+    "language": "en",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "en-22-true",
+    "language": "en",
+    "want": true,
+    "p": 0.95
+  },
+  {
+    "id": "en-22-false",
+    "language": "en",
+    "want": false,
+    "p": 0.02
+  },
+  {
+    "id": "en-23-true",
+    "language": "en",
+    "want": true,
+    "p": 0.94
+  },
+  {
+    "id": "en-23-false",
+    "language": "en",
+    "want": false,
+    "p": 0.04
+  }
+]
