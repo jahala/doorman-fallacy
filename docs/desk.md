@@ -91,3 +91,11 @@ Name variants now merge into one group (`sameOrganisation` in `src/lib/leads.ts`
 
 Much Norwegian business coverage is behind paywalls (marked "(+)" in headlines). The assessor does not rely on a headline it could not open, so paywalled follow-ups appear as things to watch for rather than as reported facts. GDELT refusals are now retried after 10, 20 and 40 seconds.
 
+## Junior intake (2026-10-21)
+
+A sweep for organisations hiring fewer juniors, graduates or interns because of AI (15 searches in English, Norwegian, Swedish and Danish, two years) gave 738 leads. Of eight assessed, MinterEllison, an Australian law firm that cut its graduate intake by a third as AI took over junior document review, was rated watch: no firm statement was found. The rest were rejected. For PwC UK, KPMG UK, Deloitte UK and Wipro the reasons given were the economy, low attrition or weak demand, and the AI link was commentary. Anthropic's reported fall in junior posts is described as correlation, with redeployment first. Most coverage of junior hiring and AI is trend reporting rather than a named organisation linking its own intake to AI.
+
+The assessor reads "roles reduced" as existing roles. The inclusion rule also counts posts left unfilled on purpose, which covers junior intake; if junior cases become a category, the assessment prompt should say so.
+
+Two fixes came from these runs. The assessor now puts reports with a direct publisher address ahead of Google News redirect links (`readableFirst` in `desk/clusters.ts`). An assessment whose answer is malformed, such as a source with no quote, now fails for that organisation alone, keeping what it cost, instead of stopping the run.
+
