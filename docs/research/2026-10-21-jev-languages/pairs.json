@@ -1,0 +1,623 @@
+[
+  {
+    "id": "no-1-true",
+    "language": "no",
+    "want": true,
+    "statement": "DNB said in a stock exchange notice that it will cut about 400 full-time positions in its technology and services area.",
+    "quote": "Norges største bank, DNB, vil kutte rundt 400 årsverk i teknologi- og tjenesteområdet, opplyser banken i en børsmelding.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-1-false",
+    "language": "no",
+    "want": false,
+    "statement": "DNB said in a stock exchange notice that it will cut about 400 full-time positions in its customer service area.",
+    "quote": "Norges største bank, DNB, vil kutte rundt 400 årsverk i teknologi- og tjenesteområdet, opplyser banken i en børsmelding.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "wrong area"
+  },
+  {
+    "id": "no-2-true",
+    "language": "no",
+    "want": true,
+    "statement": "The bank pointed to its investment in artificial intelligence and said a number of internal routines and processes had been simplified.",
+    "quote": "Banken viser til satsing på kunstig intelligens (AI) og skriver at en rekke interne rutiner og prosesser har blitt forenklet.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-2-false",
+    "language": "no",
+    "want": false,
+    "statement": "The bank said artificial intelligence had replaced all of its internal routines and processes.",
+    "quote": "Banken viser til satsing på kunstig intelligens (AI) og skriver at en rekke interne rutiner og prosesser har blitt forenklet.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "overstated"
+  },
+  {
+    "id": "no-3-true",
+    "language": "no",
+    "want": true,
+    "statement": "DNB did not say which countries the cuts would affect, and said the division has 2,000 employees in different locations.",
+    "quote": "DNB svarer ikke på hvilke land kuttene vil ramme i, og sier at avdelingen har 2000 ansatte på ulike lokasjoner.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-3-false",
+    "language": "no",
+    "want": false,
+    "statement": "DNB said the cuts would fall in Norway, and that the division has 2,000 employees.",
+    "quote": "DNB svarer ikke på hvilke land kuttene vil ramme i, og sier at avdelingen har 2000 ansatte på ulike lokasjoner.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "added fact"
+  },
+  {
+    "id": "no-4-true",
+    "language": "no",
+    "want": true,
+    "statement": "Chief executive Kjersti Braathen said artificial intelligence is changing how the bank works and delivers services to its customers.",
+    "quote": "– Kunstig intelligens endrer hvordan vi jobber og hvordan vi leverer tjenester til kundene våre, sier konsernsjef Kjersti Braathen.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-4-false",
+    "language": "no",
+    "want": false,
+    "statement": "Chief executive Kjersti Braathen said artificial intelligence would let the bank close its branches.",
+    "quote": "– Kunstig intelligens endrer hvordan vi jobber og hvordan vi leverer tjenester til kundene våre, sier konsernsjef Kjersti Braathen.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "added claim"
+  },
+  {
+    "id": "no-5-true",
+    "language": "no",
+    "want": true,
+    "statement": "The bank said the reduction would take place in close dialogue with employee representatives.",
+    "quote": "Ifølge banken vil nedbemanningen skje i «tett dialog med de tillitsvalgte».",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-5-false",
+    "language": "no",
+    "want": false,
+    "statement": "The bank said the reduction had been agreed with the unions.",
+    "quote": "Ifølge banken vil nedbemanningen skje i «tett dialog med de tillitsvalgte».",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "changed meaning"
+  },
+  {
+    "id": "no-6-true",
+    "language": "no",
+    "want": true,
+    "statement": "Arne Fredrik Håstein, deputy leader of Finansforbundet, said AI must not be treated as a law of nature that automatically means fewer employees.",
+    "quote": "– Vi må passe oss for å gjøre AI til en naturlov som automatisk betyr færre ansatte, sier nestleder i Finansforbundet, Arne Fredrik Håstein.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-6-false",
+    "language": "no",
+    "want": false,
+    "statement": "Kjersti Braathen said AI must not be treated as a law of nature that automatically means fewer employees.",
+    "quote": "– Vi må passe oss for å gjøre AI til en naturlov som automatisk betyr færre ansatte, sier nestleder i Finansforbundet, Arne Fredrik Håstein.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "wrong speaker"
+  },
+  {
+    "id": "no-7-true",
+    "language": "no",
+    "want": true,
+    "statement": "The bank had 11,649 employees in total at the end of 2025, according to its annual report.",
+    "quote": "Totalt hadde banken 11.649 ansatte ved utgangen av 2025, ifølge selskapets årsrapport.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    }
+  },
+  {
+    "id": "no-7-false",
+    "language": "no",
+    "want": false,
+    "statement": "The bank had 11,649 employees in total at the end of 2024, according to its annual report.",
+    "quote": "Totalt hadde banken 11.649 ansatte ved utgangen av 2025, ifølge selskapets årsrapport.",
+    "source": {
+      "publisher": "E24",
+      "published": "2026-10-06",
+      "kind": "a news report",
+      "title": "DNB kutter ansatte – satser på AI"
+    },
+    "wrong": "wrong year"
+  },
+  {
+    "id": "no-8-true",
+    "language": "no",
+    "want": true,
+    "statement": "The changes, taking effect from 1 May, mean a reduction of just over 100 employees.",
+    "quote": "Endringene, som innføres fra 1. mai, vil innebære nedbemanning av rett i overkant av 100 ansatte i selskapet.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    }
+  },
+  {
+    "id": "no-8-false",
+    "language": "no",
+    "want": false,
+    "statement": "The changes, taking effect from 1 March, mean a reduction of just over 100 employees.",
+    "quote": "Endringene, som innføres fra 1. mai, vil innebære nedbemanning av rett i overkant av 100 ansatte i selskapet.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    },
+    "wrong": "wrong date"
+  },
+  {
+    "id": "no-9-true",
+    "language": "no",
+    "want": true,
+    "statement": "Telenor Norge said it is adopting new technology that enables digitalisation and automation of important work processes.",
+    "quote": "Selskapet skal skape mer verdi for kundene, og tar i bruk ny teknologi som muliggjør digitalisering og automatisering av viktige arbeidsprosesser – samtidig utforskes nye arbeidsmåter.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    }
+  },
+  {
+    "id": "no-9-false",
+    "language": "no",
+    "want": false,
+    "statement": "Telenor Norge said it is adopting an AI chatbot to replace its customer service staff.",
+    "quote": "Selskapet skal skape mer verdi for kundene, og tar i bruk ny teknologi som muliggjør digitalisering og automatisering av viktige arbeidsprosesser – samtidig utforskes nye arbeidsmåter.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    },
+    "wrong": "added AI and chatbot"
+  },
+  {
+    "id": "no-10-true",
+    "language": "no",
+    "want": true,
+    "statement": "As part of this, it has been decided that the customer centre in Rørvik will close.",
+    "quote": "Som en del av dette er det bestemt at kundesenteret i Rørvik avvikles.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    }
+  },
+  {
+    "id": "no-10-false",
+    "language": "no",
+    "want": false,
+    "statement": "As part of this, it has been decided that the customer centre in Rørvik will move to Oslo.",
+    "quote": "Som en del av dette er det bestemt at kundesenteret i Rørvik avvikles.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    },
+    "wrong": "changed outcome"
+  },
+  {
+    "id": "no-11-true",
+    "language": "no",
+    "want": true,
+    "statement": "Telenor has two departments in Rørvik: a customer centre with 35 staff, and other operations with 37 employees working mainly on invoicing and payment.",
+    "quote": "Telenor har to avdelinger i Rørvik; et kundesenter med 35 medarbeidere, og øvrig virksomhet med 37 ansatte som primært arbeider med fakturering og betaling for Telenor Norge.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    }
+  },
+  {
+    "id": "no-11-false",
+    "language": "no",
+    "want": false,
+    "statement": "Telenor has two departments in Rørvik: a customer centre with 37 staff, and other operations with 35 employees working mainly on invoicing and payment.",
+    "quote": "Telenor har to avdelinger i Rørvik; et kundesenter med 35 medarbeidere, og øvrig virksomhet med 37 ansatte som primært arbeider med fakturering og betaling for Telenor Norge.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    },
+    "wrong": "swapped numbers"
+  },
+  {
+    "id": "no-12-true",
+    "language": "no",
+    "want": true,
+    "statement": "Engebretsen said permanent employees affected by the reduction will be offered a severance agreement with transition support.",
+    "quote": "Fast ansatte som blir berørt av bemanningsreduksjon vil få tilbud om sluttavtale med omstillingsbistand, sier Engebretsen.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    }
+  },
+  {
+    "id": "no-12-false",
+    "language": "no",
+    "want": false,
+    "statement": "Engebretsen said all employees affected by the reduction will be offered other jobs in Telenor.",
+    "quote": "Fast ansatte som blir berørt av bemanningsreduksjon vil få tilbud om sluttavtale med omstillingsbistand, sier Engebretsen.",
+    "source": {
+      "publisher": "Telenor Norge",
+      "published": "2024-04-03",
+      "kind": "the organisation’s own statement or an official record",
+      "title": "Endringer i Telenor Norge"
+    },
+    "wrong": "changed offer"
+  },
+  {
+    "id": "no-13-true",
+    "language": "no",
+    "want": true,
+    "statement": "Telenor's customer service has a very high number of hired-in staff.",
+    "quote": "For i kundeservice i Telenor har man et veldig høyt antall innleide.",
+    "source": {
+      "publisher": "NRK",
+      "published": "2024-04-02",
+      "kind": "a news report",
+      "title": "Ansatte ved Telenor i Rørvik reagerer på nedleggelsen av kundesenteret"
+    }
+  },
+  {
+    "id": "no-13-false",
+    "language": "no",
+    "want": false,
+    "statement": "Telenor's customer service has very few hired-in staff.",
+    "quote": "For i kundeservice i Telenor har man et veldig høyt antall innleide.",
+    "source": {
+      "publisher": "NRK",
+      "published": "2024-04-02",
+      "kind": "a news report",
+      "title": "Ansatte ved Telenor i Rørvik reagerer på nedleggelsen av kundesenteret"
+    },
+    "wrong": "negated"
+  },
+  {
+    "id": "da-14-true",
+    "language": "da",
+    "want": true,
+    "statement": "He said it is only in customer support, where the company has worked intensively for three years to solve support tasks with AI.",
+    "quote": "- Det er faktisk kun i vores kundesupport, hvor vi i tre år har arbejdet intensivt på at få løst kundesupportopgaverne med AI.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-14-false",
+    "language": "da",
+    "want": false,
+    "statement": "He said the company has worked for three years to replace its sales staff with AI.",
+    "quote": "- Det er faktisk kun i vores kundesupport, hvor vi i tre år har arbejdet intensivt på at få løst kundesupportopgaverne med AI.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "wrong function"
+  },
+  {
+    "id": "da-15-true",
+    "language": "da",
+    "want": true,
+    "statement": "He told P1 Morgen that over the last six months the AI has become good enough to handle just over 71 percent of all customer enquiries.",
+    "quote": "Her over de sidste seks måneder er AI blevet så god, at den kan tage lige over 71 procent af alle kundehenvendelser, siger han til P1 Morgen.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-15-false",
+    "language": "da",
+    "want": false,
+    "statement": "He told P1 Morgen that over the last six months the AI has become good enough to handle just over 81 percent of all customer enquiries.",
+    "quote": "Her over de sidste seks måneder er AI blevet så god, at den kan tage lige over 71 procent af alle kundehenvendelser, siger han til P1 Morgen.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "wrong number"
+  },
+  {
+    "id": "da-16-true",
+    "language": "da",
+    "want": true,
+    "statement": "Martin Thorborg said customers are almost as satisfied with AI support as with a human member of staff.",
+    "quote": "Martin Thorborg forklarer, at kunder i hans virksomhed nærmest er lige så tilfredse med at få en AI-support på linjen som en medarbejder af kød og blod.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-16-false",
+    "language": "da",
+    "want": false,
+    "statement": "Martin Thorborg said customers are more satisfied with AI support than with human staff.",
+    "quote": "Martin Thorborg forklarer, at kunder i hans virksomhed nærmest er lige så tilfredse med at få en AI-support på linjen som en medarbejder af kød og blod.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "reversed comparison"
+  },
+  {
+    "id": "da-17-true",
+    "language": "da",
+    "want": true,
+    "statement": "On a scale from 0 to 100, the company's own figures give the AI 90 points for satisfaction and a person one point more.",
+    "quote": "På en skala mellem 0 og 100 får førstnævnte 90 point, mens den dødelige person scorer et enkelt point mere på tilfredsheden, viser deres egne tal.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-17-false",
+    "language": "da",
+    "want": false,
+    "statement": "On a scale from 0 to 100, the company's own figures give the AI 95 points and a person 90.",
+    "quote": "På en skala mellem 0 og 100 får førstnævnte 90 point, mens den dødelige person scorer et enkelt point mere på tilfredsheden, viser deres egne tal.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "wrong numbers"
+  },
+  {
+    "id": "da-18-true",
+    "language": "da",
+    "want": true,
+    "statement": "This year and in the two previous years, the company would have had to hire about 30 new employees if it had not been for AI.",
+    "quote": "I år og de to seneste år har virksomheden potentielt skulle besætte 30 nye medarbejder - menneskelige om man vil - hvis det ikke havde været for AI.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-18-false",
+    "language": "da",
+    "want": false,
+    "statement": "This year, the company laid off 30 employees because of AI.",
+    "quote": "I år og de to seneste år har virksomheden potentielt skulle besætte 30 nye medarbejder - menneskelige om man vil - hvis det ikke havde været for AI.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "changed event"
+  },
+  {
+    "id": "da-19-true",
+    "language": "da",
+    "want": true,
+    "statement": "In addition, Martin Thorborg is not refilling a further 10 positions this year.",
+    "quote": "Og oveni undlader Martin Thorborg at genbesætte yderligere 10 stillinger i år.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    }
+  },
+  {
+    "id": "da-19-false",
+    "language": "da",
+    "want": false,
+    "statement": "In addition, Martin Thorborg is creating 10 new positions this year.",
+    "quote": "Og oveni undlader Martin Thorborg at genbesætte yderligere 10 stillinger i år.",
+    "source": {
+      "publisher": "DR",
+      "published": "2026-02-22",
+      "kind": "a news report",
+      "title": "Han har set, hvordan AI kan gøre medarbejdere overflødige"
+    },
+    "wrong": "reversed"
+  },
+  {
+    "id": "en-20-true",
+    "language": "en",
+    "want": true,
+    "statement": "CBA said it would make at least 45 roles redundant after its push to use AI.",
+    "quote": "The country’s largest bank said it would be making at least 45 roles redundant in the wake of its push to use AI, and only a month after it announced that it had launched a new customer assistance AI voice bot system.",
+    "source": {
+      "publisher": "Cyber Daily",
+      "published": "2025-07-29",
+      "kind": "a news report",
+      "title": "CBA cuts at least 45 jobs to make room for AI, unions furious"
+    }
+  },
+  {
+    "id": "en-20-false",
+    "language": "en",
+    "want": false,
+    "statement": "CBA said it would make at least 450 roles redundant after its push to use AI.",
+    "quote": "The country’s largest bank said it would be making at least 45 roles redundant in the wake of its push to use AI, and only a month after it announced that it had launched a new customer assistance AI voice bot system.",
+    "source": {
+      "publisher": "Cyber Daily",
+      "published": "2025-07-29",
+      "kind": "a news report",
+      "title": "CBA cuts at least 45 jobs to make room for AI, unions furious"
+    },
+    "wrong": "wrong number"
+  },
+  {
+    "id": "en-21-true",
+    "language": "en",
+    "want": true,
+    "statement": "The chief executive said Klarna was planning a recruitment drive so customers could speak to a real person rather than a chatbot.",
+    "quote": "Siemiatkowski also revealed that the business is planning a recruitment drive so that people using its customer services have the option of speaking to a real person rather than a chatbot.",
+    "source": {
+      "publisher": "Retail Systems",
+      "published": "2025-05-09",
+      "kind": "a news report",
+      "title": "Klarna CEO 'to hire new staff' for customer service arm"
+    }
+  },
+  {
+    "id": "en-21-false",
+    "language": "en",
+    "want": false,
+    "statement": "The chief executive said Klarna had finished hiring 700 new customer service staff.",
+    "quote": "Siemiatkowski also revealed that the business is planning a recruitment drive so that people using its customer services have the option of speaking to a real person rather than a chatbot.",
+    "source": {
+      "publisher": "Retail Systems",
+      "published": "2025-05-09",
+      "kind": "a news report",
+      "title": "Klarna CEO 'to hire new staff' for customer service arm"
+    },
+    "wrong": "changed event"
+  },
+  {
+    "id": "en-22-true",
+    "language": "en",
+    "want": true,
+    "statement": "Benioff said AI was now handling up to half of customer conversations.",
+    "quote": "Speaking on The Logan Bartlett Show recently, Benioff said AI was now handling up to half of customer conversations.",
+    "source": {
+      "publisher": "ChannelNews",
+      "published": "2025-09-04",
+      "kind": "a news report",
+      "title": "Salesforce Cuts 4,000 Jobs As AI Agents Take Centre Stage"
+    }
+  },
+  {
+    "id": "en-22-false",
+    "language": "en",
+    "want": false,
+    "statement": "Benioff said AI was now handling three quarters of customer conversations.",
+    "quote": "Speaking on The Logan Bartlett Show recently, Benioff said AI was now handling up to half of customer conversations.",
+    "source": {
+      "publisher": "ChannelNews",
+      "published": "2025-09-04",
+      "kind": "a news report",
+      "title": "Salesforce Cuts 4,000 Jobs As AI Agents Take Centre Stage"
+    },
+    "wrong": "wrong share"
+  },
+  {
+    "id": "en-23-true",
+    "language": "en",
+    "want": true,
+    "statement": "CBA confirmed that its decision that the 45 customer service jobs were no longer needed was incorrect.",
+    "quote": "CBA confirmed to Information Age on Thursday the decision that the 45 customer service jobs were no longer needed was incorrect.",
+    "source": {
+      "publisher": "Information Age (ACS)",
+      "published": "2025-08-21",
+      "kind": "a news report",
+      "title": "CBA reverses AI-driven job cuts, admits 'error'"
+    }
+  },
+  {
+    "id": "en-23-false",
+    "language": "en",
+    "want": false,
+    "statement": "CBA confirmed that the 45 customer service jobs were no longer needed.",
+    "quote": "CBA confirmed to Information Age on Thursday the decision that the 45 customer service jobs were no longer needed was incorrect.",
+    "source": {
+      "publisher": "Information Age (ACS)",
+      "published": "2025-08-21",
+      "kind": "a news report",
+      "title": "CBA reverses AI-driven job cuts, admits 'error'"
+    },
+    "wrong": "reversed"
+  }
+]

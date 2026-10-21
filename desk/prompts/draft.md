@@ -21,6 +21,7 @@ Cite a sentence as `source-id#number`, for example `dnb-release#4`. Cite only se
 - Evidence for the reading is any reported fact about what the system does not do, or what is still left to people: the share of cases it cannot handle, who takes the hard cases, what customers or staff say is missing, what had to be restored. Leave `missed` empty only when the sources report nothing of the kind.
 - Open questions are questions, not facts, and need no citation. Ask what the ledger will look for at the next review.
 - Do not overstate. If the sources say "parts of the work", do not write "the work".
+- A statement names only the people, organisations, numbers and dates its own cited sentence names. When the sentence says "he", "our customers" or "his company", keep to those words, and let an earlier statement, citing a sentence that names them, say who that is. Do not add a date the sentence or its source does not give.
 - The first time the body names a person, say who they are ("Duolingo's chief executive, Luis von Ahn"), citing a sentence that gives their role. If no sentence does, refer to them by role alone.
 
 ## Hidden functions
