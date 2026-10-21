@@ -162,3 +162,11 @@ Chosen: `deepseek-flash` is the default model for `desk/assess.ts` and `desk/dra
 
 Why: on six organisations with known answers, Flash agreed with Sonnet on four and found more sources on the other two, and its drafts passed every check, at about an eighth of the cost ([2026-10-21-deepseek-flash-desk.md](research/2026-10-21-deepseek-flash-desk.md)). The checks, not the writer, are what make a case trustworthy, so a cheaper writer with the same checks keeps the ledger as safe.
 
+## D-022 · 2026-10-21 · Mental Audio AS is named as responsible for the data
+
+Context: D-020 kept one line on the privacy page naming Jan, because a privacy notice must identify who is responsible for the data (GDPR article 13). Jan asked to name his company instead, as surraura.com does.
+
+Chosen: the privacy page says the site is run by Mental Audio AS in Oslo, Norway, which is responsible for the data it describes. No person is named on the site. The MIT licence keeps its copyright line.
+
+Why: the company meets the requirement and keeps the owner's name off the site, as D-020 intended.
+
