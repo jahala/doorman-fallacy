@@ -8,7 +8,7 @@ Most AI layoff news is not a doorman case. Many large cuts fund AI investment or
 
 | Stage | Who | Cost | Does |
 |---|---|---|---|
-| 1. Sweep | Code | Free | Fetches news searches (`desk/queries.ts`) from Google News, GDELT and Hacker News; merges duplicates |
+| 1. Sweep | Code, and DeepSeek search | $0.00075 per DeepSeek search; the rest free | Fetches news searches (`desk/queries.ts`) from Google News, GDELT, Hacker News and DeepSeek; merges duplicates |
 | 2. Triage | Jev | Fractions of a cent per lead | Judges each headline: is it a named organisation's AI-linked reduction, what kind of news, how AI relates to the roles, which roles, which organisation, how many |
 | 3. Priority | Code | Free | Weighs Jev's answers into a doorman priority (`doormanPriority` in `desk/triage.ts`) and groups leads by organisation |
 | 4. Assessment | Claude agent | About $0.20 per organisation | Researches the lead and rates its doorman fit from 0 to 3, using `desk/prompts/assess.md` |
@@ -18,7 +18,7 @@ Most AI layoff news is not a doorman case. Many large cuts fund AI investment or
 Commands:
 
 ```sh
-node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
+node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn,deepseek --budget 0.30
 node desk/assess.ts --top 4 --budget-each 0.35 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --budget 1.50 --publish
 ```
@@ -33,6 +33,14 @@ node desk/assess.ts --only 'klarna,salesforce' --top 2 --budget 1.00
 The first backfill (2026-10-21) searched ten organisations. The assessor rated four for drafting. Three passed every check: CBA, Klarna and Salesforce. Duolingo stopped at the quote check, because one cited sentence was not on the archived copy of its source. IBM was rated watch, and Atlassian and Lufthansa were rejected, because no source names the tasks AI took over.
 
 The second backfill (2026-10-21) added Nordic searches and European banks. ING (anti-money-laundering checks) and Duolingo were published. Duolingo had stopped at the quote check twice because of a bug, not the source: a tag between a link and the full stop left a space behind ("filings ."), so the quote did not match. The match now drops spaces next to punctuation on both sides (`src/lib/quotes.ts`). Allianz Partners was rated watch. Telenor was rejected only because its Norwegian stories could not be opened through Google News' redirect links; it is worth a search by hand. Göteborgs-Posten, Commerzbank, Danske Bank and Paf were rejected, because no source names the work AI took over.
+
+## DeepSeek search (2026-10-21)
+
+Google News gives each story as a redirect link. Fetching one returns a page of script with no publisher address, so the assessor could not open Telenor's Norwegian coverage. DeepSeek's Search API returns each result's real address, publisher and date, takes `lang:` and `after:` operators, and costs $0.00075 per search that finds something. `desk/deepseek.ts` is its door: each request reserves its price against the run's budget, an empty or refused request is settled at nothing, and a request with no answer is counted as possibly charged and not resent. The key is `DEEPSEEK_API_KEY`, from the environment or the Keychain item Conductor keeps it in.
+
+The same seven Nordic searches through DeepSeek alone gave 135 leads with publisher addresses, and four new organisations the Google News round had not surfaced: Telenor Norge with 16 reports, Dinero, Intrum and Uber. Telenor's own press release, a primary source, was among them. The assessor rated Telenor, Dinero and Intrum watch and rejected Uber. Results include low-quality machine-translated aggregators, so the assessor still filters.
+
+`node desk/search.ts 'query lang:no after:2024-01-01'` searches by hand; `--fetch <url>` returns a page as Markdown, with its punctuation escaped (`\.`), so text from it is not yet used for quote checks.
 
 `node desk/weekly.ts --budget 3` runs every stage in order ([operations.md](operations.md#the-desks-weekly-run)). Each command takes a `--budget` in dollars for the whole run. Every Jev and Claude call reserves its most possible cost against it before it starts, and a call that would pass it is refused (`desk/budget.ts`). Stopping a command with Ctrl-C stops the Claude processes it started.
 

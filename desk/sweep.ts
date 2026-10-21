@@ -6,6 +6,7 @@
  *   node desk/sweep.ts --size small --days 7 --budget 0.25
  *   node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 1
  *   node desk/sweep.ts --days 1100 --query 'Klarna AI customer service' --query 'no:KI kundeservice' --budget 0.30
+ *   node desk/sweep.ts --sources gnews,deepseek ...   (DeepSeek search: real addresses, $0.00075 a search)
  */
 import { execFile } from 'node:child_process';
 import { mkdir, readdir, writeFile } from 'node:fs/promises';
@@ -13,6 +14,7 @@ import path from 'node:path';
 import { parseArgs, promisify } from 'node:util';
 import { dedupeLeads, type Lead, type RawLead } from '../src/lib/leads.ts';
 import { createBudget } from './budget.ts';
+import { createDeepseekDoor, deepseekKey, deepseekQuery } from './deepseek.ts';
 import { createJevDoor } from './jev.ts';
 import { fullQueries, smallQueries, type Edition, type Search } from './queries.ts';
 import { gdelt, googleNews, hackerNews, type Fetched } from './sources.ts';
@@ -74,9 +76,20 @@ async function fetchAll(): Promise<{ leads: RawLead[]; failures: Extract<Fetched
   const leads: RawLead[] = [];
   const failures: Extract<Fetched, { ok: false }>[] = [];
   const nowSeconds = Math.floor(Date.now() / 1000);
+  // DeepSeek search is metered, so it shares the run's budget with Jev.
+  const key = sources.includes('deepseek') ? await deepseekKey() : null;
+  if (sources.includes('deepseek') && key === null) failures.push({ ok: false, source: 'deepseek', query: '', message: 'no DEEPSEEK_API_KEY in the environment or the Keychain' });
+  const deepseek = key === null ? null : createDeepseekDoor({ budget: runBudget, key });
   for (const { query, edition } of queries) {
     const batch: Promise<Fetched>[] = [];
     if (sources.includes('gnews')) batch.push(googleNews(query, days, edition));
+    if (deepseek !== null) {
+      batch.push(
+        deepseek.search(deepseekQuery(query, edition, days, today), { count: 20, content: false }).then((result): Fetched =>
+          result.ok ? { ok: true, leads: result.leads.map((lead) => ({ ...lead, query })) } : { ok: false, source: 'deepseek', query, message: result.message },
+        ),
+      );
+    }
     if (sources.includes('hn') && edition === 'en') batch.push(hackerNews(query, days, nowSeconds));
     for (const result of await Promise.all(batch)) {
       if (result.ok) leads.push(...result.leads);

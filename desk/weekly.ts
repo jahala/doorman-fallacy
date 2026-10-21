@@ -113,7 +113,7 @@ const late = state.lastRun !== undefined && daysBetween(state.lastRun, today) > 
 const cases = await knownCases();
 
 // 1. Sweep.
-const sweepOut = await stage('sweep', ['desk/sweep.ts', '--size', 'full', '--days', '8', '--sources', 'gnews,gdelt,hn', '--budget', String(sweepBudget), '--today', today]);
+const sweepOut = await stage('sweep', ['desk/sweep.ts', '--size', 'full', '--days', '8', '--sources', 'gnews,gdelt,hn,deepseek', '--budget', String(sweepBudget), '--today', today]);
 const sweepMeta = sweepOut === null ? null : (JSON.parse(sweepOut.slice(sweepOut.indexOf('{'))) as { out: string; unique: number; costUsd: number });
 const runDir = sweepMeta?.out ?? path.join('.desk-runs', `${today}-weekly-failed`);
 await mkdir(runDir, { recursive: true });
