@@ -58,6 +58,18 @@ const editions: Record<Edition, string> = {
   no: 'hl=no&gl=NO&ceid=NO:no',
   sv: 'hl=sv&gl=SE&ceid=SE:sv',
   da: 'hl=da&gl=DK&ceid=DK:da',
+  de: 'hl=de&gl=DE&ceid=DE:de',
+  fr: 'hl=fr&gl=FR&ceid=FR:fr',
+  es: 'hl=es&gl=ES&ceid=ES:es',
+  nl: 'hl=nl&gl=NL&ceid=NL:nl',
+  it: 'hl=it&gl=IT&ceid=IT:it',
+  pt: 'hl=pt-BR&gl=BR&ceid=BR:pt-419',
+  ja: 'hl=ja&gl=JP&ceid=JP:ja',
+  ko: 'hl=ko&gl=KR&ceid=KR:ko',
+  zh: 'hl=zh-CN&gl=CN&ceid=CN:zh-Hans',
+  tw: 'hl=zh-TW&gl=TW&ceid=TW:zh-Hant',
+  hi: 'hl=hi&gl=IN&ceid=IN:hi',
+  pl: 'hl=pl&gl=PL&ceid=PL:pl',
 };
 
 export async function googleNews(query: string, days: number, edition: Edition = 'en'): Promise<Fetched> {
@@ -89,7 +101,24 @@ interface GdeltArticle {
   language?: string;
 }
 
-const gdeltLanguages: Record<Edition, string> = { en: 'english', no: 'norwegian', sv: 'swedish', da: 'danish' };
+const gdeltLanguages: Record<Edition, string> = {
+  en: 'english',
+  no: 'norwegian',
+  sv: 'swedish',
+  da: 'danish',
+  de: 'german',
+  fr: 'french',
+  es: 'spanish',
+  nl: 'dutch',
+  it: 'italian',
+  pt: 'portuguese',
+  ja: 'japanese',
+  ko: 'korean',
+  zh: 'chinese',
+  tw: 'chinese',
+  hi: 'hindi',
+  pl: 'polish',
+};
 
 /** GDELT refuses bursts (HTTP 429) even at one request every five seconds, so a refusal is retried after 10, 20 and 40 seconds. */
 export async function gdelt(query: string, days: number, edition: Edition, sleep: (ms: number) => Promise<void>): Promise<Fetched> {

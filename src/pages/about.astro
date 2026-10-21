@@ -1,5 +1,7 @@
 ---
+import ExternalLink from '../components/ExternalLink.astro';
 import PageHead from '../components/PageHead.astro';
+import { repository } from '../data/repository.ts';
 import Site from '../layouts/Site.astro';
 ---
 
@@ -24,6 +26,10 @@ import Site from '../layouts/Site.astro';
         <p>
           It is independent, with no advertising and no sponsors. How the cases are found, written and checked is
           set out in <a href="/approach">How the ledger is kept</a>.
+        </p>
+        <p>
+          The code is open source, and every change to every case is public, on{' '}
+          <ExternalLink href={repository.url}>GitHub</ExternalLink>.
         </p>
         <p>Write to <a href="mailto:hello@thedoormanfallacy.com">hello@thedoormanfallacy.com</a>.</p>
       </div>

@@ -17,6 +17,19 @@ describe('findEmDashLines', () => {
   });
 });
 
+describe('verbatim quotes', () => {
+  const dash = '\u2014';
+  it('leaves an em dash inside a quoted source sentence alone: a footnote, or a quote field in front matter', () => {
+    const text = [`[^itpro]: "Atlassian is slashing 150 jobs ${dash} and denying it."`, `    quote: The systems removed 178 million ${dash} before review.`].join('\n');
+    expect(findEmDashLines(text)).toEqual([]);
+  });
+
+  it('still flags one in the site’s own words, even on a case page', () => {
+    expect(findEmDashLines(`Atlassian cut 150 roles ${dash} and denied it.[^itpro]`)).toEqual([1]);
+    expect(findEmDashLines(`    summary: Cuts ${dash} more cuts.`)).toEqual([1]);
+  });
+});
+
 describe('checkCopy', () => {
   it('flags the fixture, naming its file and line', async () => {
     const findings = await checkCopy(root, ['tests/fixtures/copy/em-dash.md']);

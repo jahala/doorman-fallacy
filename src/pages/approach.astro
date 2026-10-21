@@ -3,6 +3,7 @@ import ExternalLink from '../components/ExternalLink.astro';
 import PageHead from '../components/PageHead.astro';
 import Pager from '../components/Pager.astro';
 import TextSection from '../components/TextSection.astro';
+import { repository } from '../data/repository.ts';
 import Site from '../layouts/Site.astro';
 
 const questions = [
@@ -123,7 +124,7 @@ const contents = [
         If something in a case is wrong, use Report an error on its page, or <a href="/suggest">suggest a case</a>.
         The desk checks the report against the sources. Corrections are listed on the case page, and every
         change to a case is public in its history on{' '}
-        <ExternalLink href="https://github.com/jahala/doorman-fallacy">GitHub</ExternalLink>.
+        <ExternalLink href={repository.url}>GitHub</ExternalLink>.
       </p>
     </TextSection>
 
@@ -131,7 +132,7 @@ const contents = [
       <p>
         The desk uses Claude, by Anthropic, for research and writing, and Jev, by TypeSafe, for the fast checks. The code is open
         source under the{' '}
-        <ExternalLink href="https://github.com/jahala/doorman-fallacy/blob/master/LICENSE">MIT licence</ExternalLink>;
+        <ExternalLink href={repository.licence}>MIT licence</ExternalLink>;
         the cases and the text of this site are published under{' '}
         <ExternalLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExternalLink>, so you can
         reuse them with credit.

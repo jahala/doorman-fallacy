@@ -16,7 +16,7 @@ import { dedupeLeads, type Lead, type RawLead } from '../src/lib/leads.ts';
 import { createBudget } from './budget.ts';
 import { createDeepseekDoor, deepseekKey, deepseekQuery } from './deepseek.ts';
 import { createJevDoor } from './jev.ts';
-import { fullQueries, smallQueries, type Edition, type Search } from './queries.ts';
+import { editionIds, fullQueries, smallQueries, type Search } from './queries.ts';
 import { gdelt, googleNews, hackerNews, type Fetched } from './sources.ts';
 import { clusters, type Cluster, type Triaged } from './clusters.ts';
 import { kinds, leadState, readTriage, triageQuestions } from './triage.ts';
@@ -46,8 +46,9 @@ const limit = Number(values.limit);
 const sources = values.sources.split(',');
 /** A search of your own: "no:KI kundeservice" runs in the Norwegian edition, plain text in English. */
 function searchOf(text: string): Search {
-  const match = /^(no|sv|da|en):(.+)$/.exec(text);
-  return match === null ? { query: text, edition: 'en' } : { query: match[2] ?? '', edition: match[1] as Edition };
+  const match = /^([a-z]{2}):(.+)$/.exec(text);
+  const edition = editionIds.find((id) => id === match?.[1]);
+  return match === null || edition === undefined ? { query: text, edition: 'en' } : { query: match[2] ?? '', edition };
 }
 
 const queries =

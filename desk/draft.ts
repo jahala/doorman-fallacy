@@ -12,6 +12,7 @@
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
+import { checkCaseText } from '../scripts/check-cases.ts';
 import { quoteFound } from '../src/lib/quotes.ts';
 import { articleSentences } from '../src/lib/sentences.ts';
 import { archive, fetchPage } from './archive.ts';
@@ -267,8 +268,12 @@ for (const source of sources.filter((candidate) => candidate.archive !== '')) {
 const rendered = renderCase(final, sources, today);
 await mkdir(outDir, { recursive: true });
 const slug = `${final.short.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${final.announced.slice(0, 4)}`;
-if (rendered.ok) await writeFile(path.join(outDir, `${slug}.md`), rendered.text);
-else problems.push(...rendered.problems);
+if (rendered.ok) {
+  await writeFile(path.join(outDir, `${slug}.md`), rendered.text);
+  // The same checks the build and CI run, so a draft cannot publish a case that would break the site
+  // (an undated source once did: IBM, 2026-10-21).
+  for (const finding of checkCaseText(`${slug}.md`, rendered.text)) problems.push(`case check ${finding.rule}: ${finding.message}`);
+} else problems.push(...rendered.problems);
 note(`problems: ${problems.length === 0 ? 'none' : problems.join('; ')}`);
 const published = values.publish && rendered.ok && problems.length === 0;
 if (published) {

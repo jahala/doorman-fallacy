@@ -7,6 +7,11 @@ describe('deepseekQuery', () => {
     expect(deepseekQuery('Telenor kunstig intelligens', 'no', 30, '2026-10-21')).toBe('Telenor kunstig intelligens lang:no after:2026-09-21');
     expect(deepseekQuery('Klarna AI', 'en', 1100, '2026-10-21')).toBe('Klarna AI lang:en after:2023-10-17');
   });
+
+  it('searches the Taiwanese edition as Chinese, the one Chinese code DeepSeek knows', () => {
+    expect(deepseekQuery('人工智慧 裁員', 'tw', 30, '2026-10-21')).toBe('人工智慧 裁員 lang:zh after:2026-09-21');
+    expect(deepseekQuery('人工智能 裁员', 'zh', 30, '2026-10-21')).toBe('人工智能 裁员 lang:zh after:2026-09-21');
+  });
 });
 
 describe('deepseekLeads', () => {

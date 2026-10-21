@@ -55,6 +55,28 @@ export async function latestCapture(url: string): Promise<string | null> {
   }
 }
 
+function siteOf(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The archived address of a finished Save Page Now job. Save Page Now reports the page it saved,
+ * and that can be another page loaded with the source, such as an analytics frame (Dukaan's Yahoo
+ * source, 2026-10-21). A capture counts only when it is of the same site as the page asked for.
+ */
+export function captureAddress(url: string, status: { timestamp: string; original_url?: string }): Archived {
+  const saved = status.original_url ?? url;
+  const host = siteOf(saved);
+  if (host === null || host !== siteOf(url)) {
+    return { ok: false, message: `Save Page Now captured another page (${host ?? saved}), not the source` };
+  }
+  return { ok: true, archive: `https://web.archive.org/web/${status.timestamp}/${saved}` };
+}
+
 /** An archived copy of the URL: the newest capture if there is one, otherwise a new one. */
 export async function archive(url: string, sleep: (ms: number) => Promise<void>): Promise<Archived> {
   const existing = await latestCapture(url);
@@ -87,7 +109,7 @@ export async function archive(url: string, sleep: (ms: number) => Promise<void>)
     if (!status.ok) continue;
     const parsed = JSON.parse(status.body) as { status?: string; timestamp?: string; original_url?: string; message?: string };
     if (parsed.status === 'success' && parsed.timestamp !== undefined) {
-      return { ok: true, archive: `https://web.archive.org/web/${parsed.timestamp}/${parsed.original_url ?? url}` };
+      return captureAddress(url, { timestamp: parsed.timestamp, ...(parsed.original_url === undefined ? {} : { original_url: parsed.original_url }) });
     }
     if (parsed.status === 'error') return { ok: false, message: parsed.message ?? 'Save Page Now failed' };
   }

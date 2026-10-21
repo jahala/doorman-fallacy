@@ -23,6 +23,15 @@ function valid(change: (text: string) => string): ReturnType<typeof checkCaseTex
   return checkCaseText('edited.md', change(readCaseFixtureText('valid')));
 }
 
+describe('archived copies', () => {
+  it('flags a source whose archived copy is of another site, such as an analytics frame', () => {
+    const findings = valid((text) =>
+      text.replace(/archive: https:\/\/web\.archive\.org\/web\/(\d+)\/https?:\/\/[^\s]+/, 'archive: https://web.archive.org/web/$1/https://opus.analytics.yahoo.com/tag/opus-frame.html'),
+    );
+    expect(findings.map((finding) => finding.rule)).toContain('archive-other-site');
+  });
+});
+
 describe('a valid case', () => {
   it('passes with no findings', () => {
     expect(check('valid')).toEqual([]);

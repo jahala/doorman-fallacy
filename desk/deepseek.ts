@@ -23,7 +23,9 @@ const baseUrl = 'https://api.deepseek.com/v1/tools';
 /** The query with the edition's language and the start of the window, in DeepSeek's operators. */
 export function deepseekQuery(query: string, edition: Edition, days: number, today: string): string {
   const start = new Date(Date.parse(today) - days * 86_400_000).toISOString().slice(0, 10);
-  return `${query} lang:${edition} after:${start}`;
+  // Taiwan's edition is its own in Google News; DeepSeek has one code for Chinese.
+  const language = edition === 'tw' ? 'zh' : edition;
+  return `${query} lang:${language} after:${start}`;
 }
 
 interface Result {

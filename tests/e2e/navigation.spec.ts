@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { repository } from '../../src/data/repository.ts';
 import { expect, readBuilt, test } from './site.ts';
 
 const firstCase = (JSON.parse(readBuilt('ledger.json')) as { cases: { slug: string; short: string }[] }).cases[0];
@@ -123,7 +124,7 @@ test('the footer is a site map in three groups: the idea, the ledger and the sit
   await page.goto(siteUrl);
   const map = page.getByRole('navigation', { name: 'Site map' });
   expect(await map.locator(':scope > div > p').allInnerTexts()).toEqual(['The idea', 'The ledger', 'The site']);
-  for (const href of ['/idea#questions', '/ledger', '/approach', '/suggest', '/about', '/privacy', '/rss.xml']) {
+  for (const href of ['/idea#questions', '/ledger', '/approach', '/suggest', '/about', '/privacy', '/rss.xml', repository.url]) {
     await expect(map.locator(`a[href="${href}"]`)).toHaveCount(1);
   }
 });
