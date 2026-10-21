@@ -10,6 +10,19 @@ describe('quoteFound', () => {
     expect(quoteFound('the roles were not redundant', page)).toBe(true);
   });
 
+  it('finds a quote whose sentence ends in a link, or has a link before a comma', () => {
+    // TechCrunch, 2024: the tag between the link text and the full stop must not leave a space behind.
+    const page =
+      '<p>Duolingo had 600 full-time employees in 2022, per <a href="https://example.com">company filings</a>.</p>' +
+      '<p>In a comment to <a href="https://example.com">Bloomberg</a>, the company also confirmed it.</p>';
+    expect(quoteFound('Duolingo had 600 full-time employees in 2022, per company filings.', page)).toBe(true);
+    expect(quoteFound('In a comment to Bloomberg, the company also confirmed it.', page)).toBe(true);
+  });
+
+  it('keeps words in separate paragraphs apart, so a quote cannot run across them', () => {
+    expect(quoteFound('the end of one paragraphthe start of the next', '<p>the end of one paragraph</p><p>the start of the next</p>')).toBe(false);
+  });
+
   it('does not find a quote with one word changed', () => {
     expect(quoteFound('did not properly consider all relevant business considerations', page)).toBe(false);
   });

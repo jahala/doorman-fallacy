@@ -5,7 +5,7 @@
  *
  *   node desk/sweep.ts --size small --days 7 --budget 0.25
  *   node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 1
- *   node desk/sweep.ts --days 1100 --query 'Klarna AI customer service' --query '...' --budget 0.30
+ *   node desk/sweep.ts --days 1100 --query 'Klarna AI customer service' --query 'no:KI kundeservice' --budget 0.30
  */
 import { execFile } from 'node:child_process';
 import { mkdir, readdir, writeFile } from 'node:fs/promises';
@@ -14,7 +14,7 @@ import { parseArgs, promisify } from 'node:util';
 import { dedupeLeads, type Lead, type RawLead } from '../src/lib/leads.ts';
 import { createBudget } from './budget.ts';
 import { createJevDoor } from './jev.ts';
-import { fullQueries, smallQueries } from './queries.ts';
+import { fullQueries, smallQueries, type Edition, type Search } from './queries.ts';
 import { gdelt, googleNews, hackerNews, type Fetched } from './sources.ts';
 import { clusters, type Cluster, type Triaged } from './clusters.ts';
 import { kinds, leadState, readTriage, triageQuestions } from './triage.ts';
@@ -42,12 +42,18 @@ const days = Number(values.days);
 const budget = Number(values.budget);
 const limit = Number(values.limit);
 const sources = values.sources.split(',');
+/** A search of your own: "no:KI kundeservice" runs in the Norwegian edition, plain text in English. */
+function searchOf(text: string): Search {
+  const match = /^(no|sv|da|en):(.+)$/.exec(text);
+  return match === null ? { query: text, edition: 'en' } : { query: match[2] ?? '', edition: match[1] as Edition };
+}
+
 const queries =
   values.query === undefined
     ? values.size === 'full'
       ? fullQueries
       : smallQueries
-    : values.query.map((query) => ({ query, edition: 'en' as const }));
+    : values.query.map(searchOf);
 const label = values.query === undefined ? values.size : 'backfill';
 const runBudget = createBudget(budget);
 const outDir = path.join(runRoot, `${today}-${label}-${String(days)}d-${Date.now().toString(36)}`);

@@ -1,7 +1,7 @@
 /**
  * Whether a quote appears word for word in a page. This is a plain text match with no model
- * involved: markup, entities, case, whitespace and typographic quotes and dashes are
- * normalised, and nothing else. Publishing check 2 in docs/engineering.md.
+ * involved: markup, entities, case, whitespace (including the space a tag leaves next to
+ * punctuation) and typographic quotes and dashes are normalised, and nothing else. Publishing check 2 in docs/engineering.md.
  */
 
 const entities: Record<string, string> = {
@@ -23,6 +23,12 @@ export function normaliseText(text: string): string {
     .replace(/[‐-―−]/g, '-')
     .replace(/…/g, '...')
     .replace(/\s+/g, ' ')
+    // A tag is replaced by a space, so a link just before a full stop leaves "filings ." behind. Spaces
+    // next to punctuation are dropped on both sides of the match, the page and the quote alike.
+    .replace(/ ?([.,;:!?)\]]) ?/g, (_, mark: string) => `${mark} `)
+    .replace(/([([]) /g, '$1')
+    .replace(/ ?(["']) ?/g, '$1')
+    .replace(/ $/, '')
     .toLowerCase()
     .trim();
 }
