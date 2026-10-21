@@ -52,3 +52,12 @@ export function assessable(group: Cluster): boolean {
   return (kind === 'reversal' || kind === 'aftermath') && (group.items[0]?.triage?.isCase ?? 0) >= 0.3;
 }
 
+/**
+ * Reports the assessor can open come first. A Google News link is a redirect that returns a page of
+ * script with no publisher address, so a lead whose first reports are such links is assessed
+ * without being read (British Gas, Standard Chartered, 2026-10-21).
+ */
+export function readableFirst<Item extends { readonly url: string }>(items: readonly Item[]): Item[] {
+  const redirect = (entry: Item): boolean => entry.url.startsWith('https://news.google.com/');
+  return [...items.filter((entry) => !redirect(entry)), ...items.filter(redirect)];
+}

@@ -12,7 +12,7 @@ import { quoteFound } from '../src/lib/quotes.ts';
 import { createBudget } from './budget.ts';
 import { askClaude } from './claude.ts';
 import { sameOrganisation } from '../src/lib/leads.ts';
-import { assessable, clusters, type Cluster, type Triaged } from './clusters.ts';
+import { assessable, clusters, readableFirst, type Cluster, type Triaged } from './clusters.ts';
 
 const { values } = parseArgs({
   options: {
@@ -42,7 +42,8 @@ interface Source {
   publisher: string;
   title: string;
   published: string | null;
-  quote: string;
+  /** Model output, so it may be missing or null. */
+  quote: string | null;
 }
 
 interface Assessment {
@@ -52,7 +53,8 @@ interface Assessment {
   mechanism: string;
   status: string;
   hidden_work: { function: string; basis: string }[];
-  sources: Source[];
+  /** Model output, so it may be missing. */
+  sources?: Source[];
   doorman_fit: number;
   fit_reason: string;
   recommendation: string;
@@ -69,7 +71,7 @@ interface Outcome {
 }
 
 function leadText(cluster: Cluster): string {
-  const items = cluster.items.slice(0, 8).map((item: Triaged) => ({
+  const items = readableFirst(cluster.items).slice(0, 8).map((item: Triaged) => ({
     headline: item.title,
     outlet: item.outlet,
     published: item.published,
@@ -117,13 +119,19 @@ async function assess(cluster: Cluster, prompt: string): Promise<Outcome> {
   const costUsd = result.costUsd;
   const assessment = lastJsonFence(result.text) as Assessment | null;
   if (assessment === null) return { cluster: cluster.name, ok: false, costUsd, seconds, error: result.text.slice(-400) };
-  const quoteChecks = await Promise.all(
-    assessment.sources.map(async (source) => {
-      const html = await pageText(source.url);
-      return { id: source.id, url: source.url, fetched: html !== null, found: html !== null && quoteFound(source.quote, html) };
-    }),
-  );
-  return { cluster: cluster.name, ok: true, costUsd, seconds, assessment, quoteChecks };
+  // The answer is model output: a malformed one fails this organisation only, keeping what it cost.
+  try {
+    const quoteChecks = await Promise.all(
+      (assessment.sources ?? []).map(async (source) => {
+        const html = await pageText(source.url);
+        const quote = typeof source.quote === 'string' ? source.quote : '';
+        return { id: source.id, url: source.url, fetched: html !== null, found: html !== null && quoteFound(quote, html) };
+      }),
+    );
+    return { cluster: cluster.name, ok: true, costUsd, seconds, assessment, quoteChecks };
+  } catch (error) {
+    return { cluster: cluster.name, ok: false, costUsd, seconds, error: `malformed assessment: ${error instanceof Error ? error.message : String(error)}` };
+  }
 }
 
 const runDir = values.run ?? (await latestRun());
