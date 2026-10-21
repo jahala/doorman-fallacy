@@ -4,6 +4,15 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+# Wrangler's login reaches two accounts. `d1 migrations` ignores account_id in wrangler.jsonc
+# (wrangler 4.151) and stops in a non-interactive run, so the id is read from there and exported.
+CLOUDFLARE_ACCOUNT_ID="$(sed -nE 's/^[[:space:]]*"account_id":[[:space:]]*"([0-9a-f]+)".*/\1/p' wrangler.jsonc)"
+if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+  echo "release: no account_id in wrangler.jsonc" >&2
+  exit 1
+fi
+export CLOUDFLARE_ACCOUNT_ID
+
 npm run check
 npm run build
 npm run test:site

@@ -1,6 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "doorman-fallacy",
+  // Jan's account, the one cfmail uses. Wrangler's login reaches two accounts, so this is pinned.
+  "account_id": "182eabb0af4271873836467f7f46d268",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-10-19",
   // The four hostnames are the only way in. The Worker redirects all but the first (D-015).
@@ -22,12 +24,12 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/*", "!/_astro/*"]
   },
-  // No database_id here: wrangler provisions the database at the first deploy and local
-  // runs create their own. docs/operations.md has the steps.
+  // Created 2026-10-21 in the EU jurisdiction, which cannot be changed (docs/operations.md).
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "doorman-fallacy",
+      "database_id": "1af2d251-91be-4869-8929-0d93a0b111df",
       "migrations_dir": "migrations"
     }
   ],
