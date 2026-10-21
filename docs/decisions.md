@@ -170,3 +170,11 @@ Chosen: the privacy page says the site is run by Mental Audio AS in Oslo, Norway
 
 Why: the company meets the requirement and keeps the owner's name off the site, as D-020 intended.
 
+## D-023 · 2026-10-21 · The six kinds of hidden work live on /idea, not on pages of their own
+
+Context: each kind of hidden work had its own page (`/idea/<id>`) with five short sections, a share card and previous and next links. Jan judged six thin pages to be more than the idea needs.
+
+Chosen: the pages and their cards are removed. Each kind is an anchored entry in "The hidden work" on `/idea`, with its meaning, its two examples, how its loss shows, the question to ask, and the cases in the ledger that record it missing. The home page, the ledger summary and the doorman reading on case pages link to `/idea#<id>`. The site had not been deployed, so no address needs a redirect.
+
+Why: the content of all six fits on one screen, and a reader no longer leaves the idea six times to read it. The link from each kind to its cases, the one thing the pages did that /idea did not, is kept.
+

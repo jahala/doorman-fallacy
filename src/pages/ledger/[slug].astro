@@ -91,7 +91,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
         {
           reading.map((point) => (
             <li class="reading__item">
-              <h3 class="t-subhead">{point.label}</h3>
+              <h3 class="t-subhead"><a class="reading__name" href={point.href}>{point.label}</a></h3>
               <p class="t-small ink-2">{point.meaning}</p>
               <p class="reading__evidence">
                 {point.evidence}
@@ -310,6 +310,14 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
   .reading__item:first-child {
     padding-block-start: 0;
     border-block-start: 0;
+  }
+
+  .reading__name {
+    text-decoration-color: var(--rule);
+  }
+
+  .reading__name:hover {
+    text-decoration-color: currentcolor;
   }
 
   .reading__evidence {

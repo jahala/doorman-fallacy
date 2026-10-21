@@ -145,7 +145,7 @@ Statuses:
 | `partly-reversed` | Partly reversed | Some roles or human options restored |
 | `reversed` | Reversed | The company undid the cut |
 
-Hidden functions (the work an automated task leaves behind). Each entry in `src/data/hidden-functions.ts` also holds the text of its page, `/idea/<id>`: `atTheHotel`, `today` (an illustration, not a reported case), `whenMissing` and `ask`. The definition and its citation are in `src/data/definition.ts`; the six signs of the mistake, and the six signs to watch after an announcement, are in `src/data/signs.ts`; the three questions, with the research behind each, are in `src/data/questions.ts`.
+Hidden functions (the work an automated task leaves behind). Each entry in `src/data/hidden-functions.ts` also holds the text of its entry on `/idea` (anchored `/idea#<id>`): `atTheHotel`, `today` (an illustration, not a reported case), `whenMissing` and `ask`. The definition and its citation are in `src/data/definition.ts`; the six signs of the mistake, and the six signs to watch after an announcement, are in `src/data/signs.ts`; the three questions, with the research behind each, are in `src/data/questions.ts`.
 
 | id | Label | Meaning |
 |---|---|---|

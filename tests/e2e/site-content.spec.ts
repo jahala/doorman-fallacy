@@ -68,7 +68,7 @@ test.describe('the home page', () => {
     await expect(items).toHaveCount(hiddenFunctionIds.length);
     for (const [index, id] of hiddenFunctionIds.entries()) {
       const item = items.nth(index);
-      await expect(item.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea/${id}`);
+      await expect(item.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea#${id}`);
       await expect(item).toContainText(hiddenFunctions[id].meaning);
     }
     await expect(page.locator('section.beyond').getByRole('link', { name: 'Before automating a role' })).toHaveAttribute('href', '/idea#questions');
@@ -112,7 +112,7 @@ test.describe('the ledger summary', () => {
       await expect(items).toHaveCount(wanted.length);
       for (const [index, { id, count }] of wanted.entries()) {
         const item = items.nth(index);
-        await expect(item.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea/${id}`);
+        await expect(item.getByRole('link', { name: hiddenFunctions[id].label })).toHaveAttribute('href', `/idea#${id}`);
         await expect(item).toContainText(String(count));
       }
     });
@@ -268,22 +268,24 @@ test.describe('/idea', () => {
     });
   }
 
-  test('links each hidden function to its own page, and keeps the portrait beside that section', async ({ page, siteUrl }) => {
-    await page.goto(new URL(route, siteUrl).href);
-    const section = page.locator('section', { has: page.getByRole('heading', { name: 'The hidden work', level: 2 }) });
-    for (const id of hiddenFunctionIds) {
-      const link = section.locator(`a[href="/idea/${id}"]`);
-      await expect(link).toHaveCount(1);
-      await expect(link).toContainText('At the hotel, today, and in the ledger');
-      await expect(link).toContainText(hiddenFunctions[id].label);
-    }
-    await expect(section.locator('figure.photo')).toHaveCount(1);
-  });
+  for (const id of hiddenFunctionIds) {
+    test(`gives ${id} its own entry, anchored for links: the meaning, the four facts from the data file, and its cases in the ledger`, async ({ page, siteUrl }) => {
+      await page.goto(new URL(route, siteUrl).href);
+      const entry = hiddenFunctions[id];
+      const item = page.locator(`#hidden li#${id}`);
+      await expect(item.getByRole('heading', { level: 3 })).toHaveText(entry.label);
+      for (const text of [entry.meaning, entry.atTheHotel, entry.today, entry.whenMissing, entry.ask]) await expect(item).toContainText(text);
+      expect(await item.locator('dt').allInnerTexts()).toEqual(['At the hotel', 'Today, for example', 'When it goes missing', 'The question to ask']);
+      const wanted = dataset.cases.filter((item) => item.missed.includes(id)).map((item) => `/ledger/${item.slug}`).sort();
+      const linked = (await item.locator('.hidden-kind__ledger a').evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href') ?? ''))).sort();
+      expect(linked).toEqual(wanted);
+      if (wanted.length === 0) await expect(item).toContainText('No case in the ledger records this missing yet.');
+    });
+  }
 
-  test('gives every link its own accessible name, so six "At the hotel" links are told apart', async ({ page, siteUrl }) => {
+  test('keeps the portrait beside the hidden work', async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
-    const names = await page.locator('.hidden-cards__link a').evaluateAll((anchors) => anchors.map((anchor) => anchor.textContent.trim()));
-    expect(new Set(names).size).toBe(hiddenFunctionIds.length);
+    await expect(page.locator('#hidden figure.photo')).toHaveCount(1);
   });
 
   test('says when automation is the right call, and links the cuts that held up to the ledger', async ({ page, siteUrl }) => {
@@ -319,71 +321,12 @@ test.describe('/idea', () => {
   });
 });
 
-test.describe('the page for each hidden function', () => {
-  for (const [at, id] of hiddenFunctionIds.entries()) {
-    const entry = hiddenFunctions[id];
-
-    test(`/idea/${id}/ shows the label, its sections in order and the text from the data file`, async ({ page, siteUrl }) => {
-      await page.goto(new URL(`/idea/${id}/`, siteUrl).href);
-      const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
-      await expect(crumbs.getByRole('link', { name: 'The idea', exact: true })).toHaveAttribute('href', '/idea');
-      await expect(crumbs.getByRole('link', { name: 'The hidden work', exact: true })).toHaveAttribute('href', '/idea#hidden');
-      await expect(crumbs.locator('[aria-current="page"]')).toHaveText(entry.label);
-      await expect(page.locator('h1')).toHaveText(entry.label);
-      await expect(page.locator('h1 + p')).toHaveText(entry.meaning);
-      expect(await headings(page)).toEqual(['At the hotel', 'Today', 'When it goes missing', 'The question to ask', 'In the ledger']);
-      const section = (name: string): Locator => page.locator('section', { has: page.getByRole('heading', { name, level: 2 }) });
-      await expect(section('At the hotel')).toContainText(entry.atTheHotel);
-      await expect(section('Today')).toContainText(entry.today);
-      await expect(section('Today')).toContainText('An illustration, not a reported case.');
-      await expect(section('When it goes missing')).toContainText(entry.whenMissing);
-      const ask = section('The question to ask');
-      await expect(ask).toContainText(entry.ask);
-    });
-
-    test(`/idea/${id}/ sets the question to ask larger than the running text, and the illustration note as a caption`, async ({ page, siteUrl }) => {
-      await page.goto(new URL(`/idea/${id}/`, siteUrl).href);
-      const ask = await style(page.locator('.fn-ask'));
-      expect(Number.parseFloat(ask.size)).toBeGreaterThan(Number.parseFloat(await sizeOf(page, 't-body')));
-      expect(ask.size).toBe(await sizeOf(page, 't-subhead'));
-      expect((await style(page.getByText('An illustration, not a reported case.'))).size).toBe(await sizeOf(page, 't-caption'));
-    });
-
-    test(`/idea/${id}/ lists the cases that recorded this work missing, or says that none has`, async ({ page, siteUrl }) => {
-      await page.goto(new URL(`/idea/${id}/`, siteUrl).href);
-      const section = page.locator('section', { has: page.getByRole('heading', { name: 'In the ledger', level: 2 }) });
-      const wanted = dataset.cases.filter((item) => item.missed.includes(id));
-      if (wanted.length === 0) {
-        await expect(section).toContainText('No case in the ledger records this kind of work going missing yet.');
-        await expect(section.locator('li')).toHaveCount(0);
-        return;
-      }
-      await expect(section).not.toContainText('No case in the ledger records');
-      const items = section.locator('li');
-      await expect(items).toHaveCount(wanted.length);
-      for (const item of wanted) {
-        await expect(section.getByRole('link', { name: /./ }).and(section.locator(`a[href="/ledger/${item.slug}"]`))).toHaveCount(1);
-      }
-    });
-
-    test(`/idea/${id}/ links to the kinds either side of it, and past the ends back to the list and on to the questions`, async ({ page, siteUrl }) => {
-      await page.goto(new URL(`/idea/${id}/`, siteUrl).href);
-      const pager = page.getByRole('navigation', { name: 'More pages' });
-      const previous = hiddenFunctionIds[at - 1];
-      const next = hiddenFunctionIds[at + 1];
-      const hrefs = await pager.locator('a').evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href')));
-      expect(hrefs).toEqual([
-        previous === undefined ? '/idea#hidden' : `/idea/${previous}`,
-        next === undefined ? '/idea#questions' : `/idea/${next}`,
-      ]);
-    });
-  }
-
-  test('the case pages the "In the ledger" list links to exist', async ({ page, siteUrl }) => {
-    const slugs = dataset.cases.map((item) => item.slug);
-    for (const slug of slugs) {
-      const response = await page.goto(new URL(`/ledger/${slug}/`, siteUrl).href);
-      expect(response?.status()).toBe(200);
+test.describe('the case pages', () => {
+  test('link each point of the doorman reading to its kind of hidden work on /idea', async ({ page, siteUrl }) => {
+    for (const item of dataset.cases) {
+      await page.goto(new URL(`/ledger/${item.slug}/`, siteUrl).href);
+      const hrefs = await page.locator('#reading').locator('xpath=../..').locator('h3 a').evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href')));
+      expect(hrefs, item.slug).toEqual(item.missed.map((id) => `/idea#${id}`));
     }
   });
 });

@@ -1,16 +1,9 @@
-import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
+import { hiddenFunctions } from '../../src/data/hidden-functions.ts';
 import { statuses } from '../../src/data/statuses.ts';
 import { builtRoutes, expect, test } from './site.ts';
 
-const hiddenWorkPages = hiddenFunctionIds.map((id) => ({
-  route: `/idea/${id}/`,
-  h1: hiddenFunctions[id].label,
-  current: 'The idea',
-}));
-
 const contentPages = [
   { route: '/idea/', h1: 'The doorman fallacy', current: 'The idea' },
-  ...hiddenWorkPages,
   { route: '/ledger/', h1: 'The ledger', current: 'The ledger' },
   { route: '/approach/', h1: 'How the ledger is kept', current: 'The ledger' },
   { route: '/suggest/', h1: 'Suggest a case', current: 'The ledger' },

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { hiddenFunctionIds } from '../../src/data/hidden-functions.ts';
-import { casesMissing, missingCounts, neighbours } from '../../src/lib/hidden-work.ts';
+import { casesMissing, missingCounts } from '../../src/lib/hidden-work.ts';
 import { caseEntry } from './fixture-case.ts';
 
 const entries = [
@@ -65,24 +64,3 @@ describe('missingCounts', () => {
   });
 });
 
-describe('neighbours', () => {
-  it('gives the previous and the next function in the vocabulary order', () => {
-    expect(neighbours('judgment')).toEqual({ previous: 'deterrence', next: 'memory' });
-  });
-
-  it('has no previous before the first and no next after the last, so the six never loop', () => {
-    expect(neighbours('signal')).toEqual({ previous: null, next: 'deterrence' });
-    expect(neighbours('slack')).toEqual({ previous: 'absorption', next: null });
-  });
-
-  it('links all six functions in one chain', () => {
-    const walked: string[] = [];
-    let at = neighbours(hiddenFunctionIds[0]);
-    walked.push(hiddenFunctionIds[0]);
-    while (at.next !== null) {
-      walked.push(at.next);
-      at = neighbours(at.next);
-    }
-    expect(walked).toEqual([...hiddenFunctionIds]);
-  });
-});

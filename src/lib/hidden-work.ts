@@ -1,7 +1,7 @@
 import { hiddenFunctionIds, type HiddenFunctionId } from '../data/hidden-functions.ts';
 import { newestFirst, type CaseEntry } from './ledger.ts';
 
-/** One case that records a kind of hidden work as missing, as the hidden function's page lists it. */
+/** One case that records a kind of hidden work as missing, as /idea lists it under that kind. */
 export interface MissingCase {
   readonly slug: string;
   readonly short: string;
@@ -31,13 +31,3 @@ export function missingCounts(entries: readonly CaseEntry[]): MissingCount[] {
   return hiddenFunctionIds.map((id) => ({ id, count: casesMissing(entries, id).length }));
 }
 
-export interface Neighbours {
-  readonly previous: HiddenFunctionId | null;
-  readonly next: HiddenFunctionId | null;
-}
-
-/** The functions either side of this one in the vocabulary order. The six do not loop. */
-export function neighbours(id: HiddenFunctionId): Neighbours {
-  const at = hiddenFunctionIds.indexOf(id);
-  return { previous: hiddenFunctionIds[at - 1] ?? null, next: hiddenFunctionIds[at + 1] ?? null };
-}
