@@ -18,6 +18,7 @@ Cite a sentence as `source-id#number`, for example `dnb-release#4`. Cite only se
 - Write what the sources report. Never state or suggest the organisation's motives unless a cited sentence states them.
 - Plain, neutral words, short sentences, British spelling. No "slashed", "axed", "gutted", "sweeping", "brutal", "greedy", "botched" or similar.
 - The reported facts and the doorman reading stay apart. The reading belongs only in `missed`, where it is analysis: each point names the hidden function and the reported evidence it rests on, and cites that evidence.
+- Evidence for the reading is any reported fact about what the system does not do, or what is still left to people: the share of cases it cannot handle, who takes the hard cases, what customers or staff say is missing, what had to be restored. Leave `missed` empty only when the sources report nothing of the kind.
 - Open questions are questions, not facts, and need no citation. Ask what the ledger will look for at the next review.
 - Do not overstate. If the sources say "parts of the work", do not write "the work".
 - The first time the body names a person, say who they are ("Duolingo's chief executive, Luis von Ahn"), citing a sentence that gives their role. If no sentence does, refer to them by role alone.

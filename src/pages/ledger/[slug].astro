@@ -113,7 +113,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
           <div class="case__body said">
             {claims.map((claim) => (
               <figure>
-                <blockquote class="t-lead">
+                <blockquote>
                   <p>&ldquo;{claim.quote}&rdquo;</p>
                 </blockquote>
                 <figcaption class="t-small ink-2">
@@ -317,23 +317,22 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
     margin-block-start: var(--space-3);
   }
 
-  /* What they said: pull quotes */
+  /* What they said: each quote at the body size, set off by a hairline on its left */
   .said {
     display: grid;
-    gap: var(--space-12);
+    gap: var(--space-8);
   }
 
   .said blockquote {
+    max-inline-size: var(--measure);
     margin: 0;
-    font-family: var(--font-heading);
-    font-size: var(--title-size);
-    line-height: var(--title-leading);
-    letter-spacing: var(--title-tracking);
-    text-wrap: balance;
+    padding-inline-start: var(--space-6);
+    border-inline-start: var(--hairline) solid var(--rule);
   }
 
   .said figcaption {
-    margin-block-start: var(--space-4);
+    margin-block-start: var(--space-2);
+    padding-inline-start: var(--space-6);
   }
 
   /* Timeline, changelog and sources share one ruled-row pattern */
