@@ -6,6 +6,7 @@ import Pager from '../../components/Pager.astro';
 import Reported from '../../components/Reported.astro';
 import ReportError from '../../components/ReportError.astro';
 import SourceLinks from '../../components/SourceLinks.astro';
+import { repository } from '../../data/repository.ts';
 import Site from '../../layouts/Site.astro';
 import {
   caseChangelog,
@@ -37,7 +38,7 @@ const claims = claimEntries(data);
 const timeline = timelineEntries(data);
 const changelog = caseChangelog(data);
 const sources = sourceEntries(data);
-const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/content/cases/${entry.id}.md`;
+const history = repository.caseHistory(entry.id);
 ---
 
 <Site
@@ -145,7 +146,7 @@ const history = `https://github.com/jahala/doorman-fallacy/commits/master/src/co
                   {update.summary}
                   <SourceLinks sources={update.sources} />
                 </p>
-                <p class="t-small ink-2">&ldquo;{update.quote}&rdquo;</p>
+                <p class="t-small ink-2" data-quote>&ldquo;{update.quote}&rdquo;</p>
               </div>
             </li>
           ))

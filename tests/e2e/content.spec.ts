@@ -26,9 +26,15 @@ for (const route of builtRoutes()) {
     }
   });
 
-  test(`${route}: pages carry no text with an em dash`, async ({ page, siteUrl }) => {
+  test(`${route}: pages carry no text with an em dash outside verbatim quotes`, async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
-    expect(await page.locator('body').innerText()).not.toContain('\u2014');
+    // A quoted source sentence keeps its punctuation: the footnotes, "What they said", and each update's quote.
+    const copy = await page.locator('body').evaluate((body) => {
+      const clone = body.cloneNode(true) as HTMLElement;
+      for (const quote of clone.querySelectorAll('.footnotes, blockquote, [data-quote]')) quote.remove();
+      return clone.textContent;
+    });
+    expect(copy).not.toContain('\u2014');
   });
 
   test(`${route}: nothing scrolls sideways on a 375px phone`, async ({ page, siteUrl }) => {

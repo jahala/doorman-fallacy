@@ -9,6 +9,8 @@ import '../styles/print.css';
 import tokensCss from '../styles/tokens.css?raw';
 import { ogPath, shareImage, siteCard, type ShareImage } from '../lib/share.ts';
 import { schemePalette } from '../lib/tokens.ts';
+import ExternalLink from '../components/ExternalLink.astro';
+import { repository } from '../data/repository.ts';
 
 const siteName = 'The Doorman Fallacy';
 /** The site map in the footer: every page and chapter, grouped as the header groups them. */
@@ -40,6 +42,7 @@ const siteMap = [
       { label: 'Subscribe', href: '/#subscribe' },
       { label: 'RSS feed', href: '/rss.xml' },
       { label: 'Privacy', href: '/privacy' },
+      { label: 'Source code', href: repository.url, external: true },
     ],
   },
 ] as const;
@@ -146,7 +149,7 @@ if (light === undefined || dark === undefined) throw new Error('src/styles/token
                   <ul class="t-small">
                     {group.links.map((link) => (
                       <li>
-                        <a href={link.href}>{link.label}</a>
+                        {'external' in link ? <ExternalLink href={link.href}>{link.label}</ExternalLink> : <a href={link.href}>{link.label}</a>}
                       </li>
                     ))}
                   </ul>
