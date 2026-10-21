@@ -2,13 +2,11 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { definition } from '../../src/data/definition.ts';
-import { hiddenFunctions } from '../../src/data/hidden-functions.ts';
 import {
   caseCard,
   cardElement,
   cardSize,
   cardTitleSize,
-  ideaCard,
   ogPath,
   shareImage,
   siteCard,
@@ -46,15 +44,6 @@ describe('the cards', () => {
     expect(card.status).toBeNull();
   });
 
-  it('has a hidden function card show its label as the title and its meaning beneath', () => {
-    expect(ideaCard('memory')).toEqual({
-      kicker: 'The hidden work',
-      title: hiddenFunctions.memory.label,
-      line: hiddenFunctions.memory.meaning,
-      status: null,
-    });
-  });
-
   it('has a case card show the short name, the change and the current status as a word', () => {
     const entry = caseEntry('example-2025', { short: 'Example Bank', status: 'reversed' });
     expect(caseCard(entry)).toEqual({
@@ -67,21 +56,20 @@ describe('the cards', () => {
 });
 
 describe('ogPath', () => {
-  it('names one image per page kind', () => {
+  it('names the site image and one image per case', () => {
     expect(ogPath.site).toBe('/og/default.png');
-    expect(ogPath.idea('signal')).toBe('/og/idea/signal.png');
     expect(ogPath.ledger('dnb-2026')).toBe('/og/ledger/dnb-2026.png');
   });
 });
 
 describe('shareImage', () => {
   it('gives the path, the size every card has, and alt text that reads what the card says', () => {
-    const image = shareImage(ideaCard('signal'), ogPath.idea('signal'));
+    const image = shareImage(caseCard(caseEntry('example-2025', { short: 'Example Bank', status: 'reversed' })), ogPath.ledger('example-2025'));
     expect(image).toEqual({
-      path: '/og/idea/signal.png',
+      path: '/og/ledger/example-2025.png',
       width: cardSize.width,
       height: cardSize.height,
-      alt: `The hidden work. Signal. ${hiddenFunctions.signal.meaning}.`,
+      alt: 'Australia · Customer service. Example Bank. 45 roles cut for a voice bot. Reversed.',
     });
   });
 

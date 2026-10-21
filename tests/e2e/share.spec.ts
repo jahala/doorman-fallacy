@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { hiddenFunctionIds } from '../../src/data/hidden-functions.ts';
 import { pngSize } from './png.ts';
 import { builtRoutes, distDir, distFiles, expect, fileForPath, htmlFileForRoute, readBuilt, test } from './site.ts';
 
@@ -58,10 +57,8 @@ for (const route of routes) {
   });
 }
 
-test('each hidden function page, and each case page, names its own card; every other page names the site card', () => {
+test('each case page names its own card; every other page names the site card', () => {
   const own = (route: string): string | undefined => {
-    const idea = /^\/idea\/([^/]+)\/$/.exec(route)?.[1];
-    if (idea !== undefined) return `${origin}/og/idea/${idea}.png`;
     const slug = /^\/ledger\/([^/]+)\/$/.exec(route)?.[1];
     return slug === undefined ? undefined : `${origin}/og/ledger/${slug}.png`;
   };
@@ -73,11 +70,11 @@ test('each hidden function page, and each case page, names its own card; every o
   expect(wrong).toEqual([]);
 });
 
-test('every hidden function and every case has a card in dist, and no card is left without a page', () => {
+test('every case has a card in dist, and no card is left without a page', () => {
   const cards = distFiles().filter((file) => file.startsWith('og/')).sort();
   const cases = routes.flatMap((route) => /^\/ledger\/([^/]+)\/$/.exec(route)?.[1] ?? []);
   expect(cards).toEqual(
-    ['og/default.png', ...hiddenFunctionIds.map((id) => `og/idea/${id}.png`), ...cases.map((slug) => `og/ledger/${slug}.png`)].sort(),
+    ['og/default.png', ...cases.map((slug) => `og/ledger/${slug}.png`)].sort(),
   );
 });
 

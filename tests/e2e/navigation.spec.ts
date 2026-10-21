@@ -1,9 +1,7 @@
 import type { Page } from '@playwright/test';
-import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
 import { expect, readBuilt, test } from './site.ts';
 
 const firstCase = (JSON.parse(readBuilt('ledger.json')) as { cases: { slug: string; short: string }[] }).cases[0];
-const fn = hiddenFunctionIds[0];
 
 /** The computed font size of a type token class, as the page renders it. */
 function sizeOf(page: Page, className: string): Promise<string> {
@@ -31,7 +29,7 @@ function headingsOf(page: Page, level: string): Promise<{ text: string; size: st
 // One hierarchy everywhere: the home page sets its section headings a step larger than the text pages.
 const scales = [
   { route: '/', h1: 't-hero', h2: 't-display', h3: 't-title' },
-  ...['/idea/', `/idea/${fn}/`, '/ledger/', `/ledger/${firstCase?.slug ?? ''}/`, '/approach/', '/privacy/', '/about/'].map((route) => ({
+  ...['/idea/', '/ledger/', `/ledger/${firstCase?.slug ?? ''}/`, '/approach/', '/privacy/', '/about/'].map((route) => ({
     route,
     h1: 't-display',
     h2: 't-title',
@@ -92,14 +90,6 @@ const trails = [
   { route: '/approach/', trail: [['The ledger', '/ledger']], here: 'How the ledger is kept' },
   { route: '/suggest/', trail: [['The ledger', '/ledger']], here: 'Suggest a case' },
   { route: `/ledger/${firstCase?.slug ?? ''}/`, trail: [['The ledger', '/ledger']], here: firstCase?.short ?? '' },
-  ...hiddenFunctionIds.map((id) => ({
-    route: `/idea/${id}/`,
-    trail: [
-      ['The idea', '/idea'],
-      ['The hidden work', '/idea#hidden'],
-    ],
-    here: hiddenFunctions[id].label,
-  })),
 ];
 
 for (const { route, trail, here } of trails) {
@@ -120,10 +110,9 @@ for (const route of ['/', '/idea/', '/ledger/', '/about/', '/privacy/']) {
   });
 }
 
-test('the case and hidden work pages mark their section of the site in the header', async ({ page, siteUrl }) => {
+test('the case pages mark their section of the site in the header', async ({ page, siteUrl }) => {
   for (const [route, current] of [
     [`/ledger/${firstCase?.slug ?? ''}/`, 'The ledger'],
-    [`/idea/${fn}/`, 'The idea'],
   ] as const) {
     await page.goto(new URL(route, siteUrl).href);
     await expect(page.locator('.site-nav a[aria-current="page"]')).toHaveText(current);

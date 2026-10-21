@@ -1,5 +1,4 @@
 import { definition } from '../data/definition.ts';
-import { hiddenFunctions, type HiddenFunctionId } from '../data/hidden-functions.ts';
 import { statuses } from '../data/statuses.ts';
 import { countryName, type CaseEntry } from './ledger.ts';
 import { currentStatus } from './status.ts';
@@ -26,11 +25,6 @@ export function siteCard(): ShareCard {
   return { kicker: 'After Rory Sutherland, Alchemy (2019)', title: 'The doorman fallacy', line: definition, status: null };
 }
 
-export function ideaCard(id: HiddenFunctionId): ShareCard {
-  const { label, meaning } = hiddenFunctions[id];
-  return { kicker: 'The hidden work', title: label, line: meaning, status: null };
-}
-
 export function caseCard(entry: CaseEntry): ShareCard {
   const { data } = entry;
   return {
@@ -44,7 +38,6 @@ export function caseCard(entry: CaseEntry): ShareCard {
 /** Where each card is served. */
 export const ogPath = {
   site: '/og/default.png',
-  idea: (id: HiddenFunctionId): string => `/og/idea/${id}.png`,
   ledger: (slug: string): string => `/og/ledger/${slug}.png`,
 } as const;
 

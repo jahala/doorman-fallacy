@@ -39,8 +39,8 @@ describe('ledgerSummary', () => {
       caseEntry('b-2026', { missed: ['judgment'] }),
     ];
     expect(ledgerSummary(entries).missing).toEqual([
-      { id: 'signal', label: 'Signal', count: 1, href: '/idea/signal' },
-      { id: 'judgment', label: 'Judgment', count: 2, href: '/idea/judgment' },
+      { id: 'signal', label: 'Signal', count: 1, href: '/idea#signal' },
+      { id: 'judgment', label: 'Judgment', count: 2, href: '/idea#judgment' },
     ]);
   });
 });

@@ -29,6 +29,6 @@ export function ledgerSummary(entries: readonly CaseEntry[]): LedgerSummary {
     sentence: counted.length === 0 ? `${countLabel(entries.length)}.` : `${countLabel(entries.length)}: ${counted.join(', ')}.`,
     missing: missingCounts(entries)
       .filter(({ count }) => count > 0)
-      .map(({ id, count }) => ({ id, label: hiddenFunctions[id].label, count, href: `/idea/${id}` })),
+      .map(({ id, count }) => ({ id, label: hiddenFunctions[id].label, count, href: `/idea#${id}` })),
   };
 }

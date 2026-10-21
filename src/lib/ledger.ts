@@ -140,6 +140,8 @@ function refs(data: Pick<Case, 'sources'>, ids: readonly string[]): SourceRef[] 
 
 export interface ReadingPoint {
   readonly label: string;
+  /** Where /idea explains this kind of hidden work. */
+  readonly href: string;
   readonly meaning: string;
   readonly evidence: string;
   readonly sources: SourceRef[];
@@ -149,6 +151,7 @@ export interface ReadingPoint {
 export function doormanReading(data: Pick<Case, 'missed' | 'sources'>): ReadingPoint[] {
   return data.missed.map((point) => ({
     label: hiddenFunctions[point.function].label,
+    href: `/idea#${point.function}`,
     meaning: hiddenFunctions[point.function].meaning,
     evidence: point.evidence,
     sources: refs(data, point.sources),

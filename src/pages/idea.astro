@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import ExternalLink from '../components/ExternalLink.astro';
 import HiddenIcon from '../components/HiddenIcon.astro';
 import NumberedList from '../components/NumberedList.astro';
@@ -12,6 +13,9 @@ import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts'
 import { questions } from '../data/questions.ts';
 import { signs } from '../data/signs.ts';
 import Site from '../layouts/Site.astro';
+import { casesMissing } from '../lib/hidden-work.ts';
+
+const cases = await getCollection('cases');
 
 const contents = [
   { id: 'story', label: 'The story' },
@@ -69,23 +73,55 @@ const contents = [
 
     <TextSection id="hidden-title" anchor="hidden" number={2} title="The hidden work" full>
       <Photo slot="aside" id="portrait" sizes="(min-width: 56rem) 33vw, 100vw" />
-      <p class="prose">Six kinds of work that disappear without being missed at first.</p>
-      <ul class="hidden-cards">
+      <p class="prose">Six kinds of work that disappear without being missed at first. For each: what it looked like at the hotel door, what it looks like today, how its loss shows, and the question to ask before the change.</p>
+      <ul class="hidden-kinds">
         {
-          hiddenFunctionIds.map((id) => (
-            <li class="hidden-cards__item ruled">
-              <h3 class="hidden-cards__label t-subhead">
-                <HiddenIcon id={id} class="ink-2" />
-                {hiddenFunctions[id].label}
-              </h3>
-              <p class="ink-2">{hiddenFunctions[id].meaning}</p>
-              <p class="hidden-cards__link t-small">
-                <a href={`/idea/${id}`}>
-                  At the hotel, today, and in the ledger<span class="visually-hidden">: {hiddenFunctions[id].label}</span>
-                </a>
-              </p>
-            </li>
-          ))
+          hiddenFunctionIds.map((id) => {
+            const kind = hiddenFunctions[id];
+            const found = casesMissing(cases, id);
+            return (
+              <li id={id} class="hidden-kind ruled">
+                <h3 class="hidden-kind__name t-subhead">
+                  <HiddenIcon id={id} class="ink-2" />
+                  {kind.label}
+                </h3>
+                <p class="ink-2">{kind.meaning}</p>
+                <dl class="hidden-kind__facts">
+                  <div>
+                    <dt class="t-small ink-2">At the hotel</dt>
+                    <dd>{kind.atTheHotel}</dd>
+                  </div>
+                  <div>
+                    <dt class="t-small ink-2">Today, for example</dt>
+                    <dd>{kind.today}</dd>
+                  </div>
+                  <div>
+                    <dt class="t-small ink-2">When it goes missing</dt>
+                    <dd>{kind.whenMissing}</dd>
+                  </div>
+                  <div>
+                    <dt class="t-small ink-2">The question to ask</dt>
+                    <dd class="t-label">{kind.ask}</dd>
+                  </div>
+                </dl>
+                <p class="hidden-kind__ledger t-small ink-2">
+                  {found.length === 0 ? (
+                    'No case in the ledger records this missing yet.'
+                  ) : (
+                    <>
+                      In the ledger:{' '}
+                      {found.map((item, index) => (
+                        <>
+                          {index > 0 && ' · '}
+                          <a href={item.href}>{item.short}</a>
+                        </>
+                      ))}
+                    </>
+                  )}
+                </p>
+              </li>
+            );
+          })
         }
       </ul>
     </TextSection>
@@ -190,29 +226,44 @@ const contents = [
     border-block-start: var(--hairline) solid var(--rule);
   }
 
-  /* The hidden work: six ruled cards, two to a row on wider screens. */
-  .hidden-cards {
+  /* The hidden work: one ruled entry per kind, its four facts in two columns on wider screens. */
+  .hidden-kinds {
     display: grid;
-    gap: var(--space-12) var(--grid-gap);
+    gap: var(--space-12);
     margin-block-start: var(--space-12);
   }
 
-  .hidden-cards__label {
+  .hidden-kind {
+    scroll-margin-block-start: var(--space-8);
+  }
+
+  .hidden-kind__name {
     display: flex;
     gap: var(--space-3);
     align-items: center;
   }
 
-  .hidden-cards__item > * + * {
+  .hidden-kind > * + * {
     margin-block-start: var(--space-3);
   }
 
-  .hidden-cards__item > .hidden-cards__link {
-    margin-block-start: var(--space-4);
+  .hidden-kind__facts {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+    margin-block-start: var(--space-6);
+  }
+
+  .hidden-kind__facts dd {
+    margin-block-start: var(--space-1);
+    max-inline-size: var(--measure);
+  }
+
+  .hidden-kind > .hidden-kind__ledger {
+    margin-block-start: var(--space-6);
   }
 
   @media (width >= 40rem) {
-    .hidden-cards {
+    .hidden-kind__facts {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
