@@ -92,9 +92,9 @@ The share cards have no browser behind them. `src/og/render.ts` reads the `.woff
 |---|---|---|
 | Cloudflare | DNS, redirects, the Worker, D1, cookieless analytics | Suggestions and subscriber addresses, in D1 |
 | cfmail | Sends the confirmation email and the desk's weekly report, through a service mailbox ([D-008](decisions.md)) | Copies of mail it sent |
-| Claude Code | Runs the desk's agents on Jan's subscription | Nothing kept |
+| Claude Code | The agent harness the desk's agents run in, on DeepSeek by default (D-021) | Nothing kept |
 | TypeSafe (Jev) | Triages the sweep's headlines and checks each statement against its quote | Nothing kept |
-| DeepSeek | Search for the sweep and for searches by hand: real publisher addresses where Google News gives redirect links | Nothing kept |
+| DeepSeek | Runs the desk's assessment and drafting agents (D-021), and search for the sweep and by hand: real publisher addresses where Google News gives redirect links | Nothing kept |
 | Wayback Machine | Archived copies of sources | Public pages only |
 | GitHub | Code and the public history of every case ([D-004](decisions.md)) | Published cases |
 

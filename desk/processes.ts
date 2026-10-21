@@ -36,11 +36,11 @@ function installHandlers(): void {
 export function runTracked(
   command: string,
   args: readonly string[],
-  options: { timeoutMs: number; onStart?: (pid: number) => void },
+  options: { timeoutMs: number; onStart?: (pid: number) => void; env?: NodeJS.ProcessEnv },
 ): Promise<Ran> {
   installHandlers();
   return new Promise((resolve) => {
-    const child = spawn(command, args, { detached: true, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(command, args, { detached: true, stdio: ['ignore', 'pipe', 'pipe'], env: options.env ?? process.env });
     const pid = child.pid;
     let stdout = '';
     let stderr = '';
