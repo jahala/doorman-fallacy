@@ -22,7 +22,7 @@ The tone is calm and kind to everyone involved, including the managers who made 
 - Rory Sutherland is credited wherever the idea is explained.
 - Photographers are credited wherever their photos appear.
 - No em dashes in site copy.
-- No client-side JavaScript ships. Forms are plain HTML posting to the Worker.
+- One script ships: the inline cookieless page-view counter (D-024), held to that by `tests/e2e/no-script.spec.ts`. Forms are plain HTML posting to the Worker.
 - Personal data and unconfirmed leads live only in D1, never in this repository, and are deleted on the schedule in [docs/data-model.md](docs/data-model.md#d1).
 
 Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-guards).

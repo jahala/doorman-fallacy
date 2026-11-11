@@ -11,6 +11,7 @@ import { ogPath, shareImage, siteCard, type ShareImage } from '../lib/share.ts';
 import { schemePalette } from '../lib/tokens.ts';
 import ExternalLink from '../components/ExternalLink.astro';
 import { repository } from '../data/repository.ts';
+import VisitCount from '../components/VisitCount.astro';
 
 const siteName = 'The Doorman Fallacy';
 /** The site map in the footer: every page and chapter, grouped as the header groups them. */
@@ -160,9 +161,11 @@ if (light === undefined || dark === undefined) throw new Error('src/styles/token
         </div>
         <p class="print-only t-caption">{address.href}</p>
         <p class="site-footer__credit t-caption">
-          The doorman fallacy is an idea from Rory Sutherland's <i>Alchemy</i> (2019).
+          The doorman fallacy is an idea from Rory Sutherland's <i>Alchemy</i> (2019). Visits are counted without
+          cookies, in the EU. <a href="/privacy#visit">How</a>
         </p>
       </div>
     </footer>
+    <VisitCount />
   </body>
 </html>

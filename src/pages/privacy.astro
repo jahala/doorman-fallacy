@@ -27,13 +27,23 @@ import Site from '../layouts/Site.astro';
       </p>
     </TextSection>
 
-    <TextSection id="visit-title" title="When you visit">
+    <TextSection id="visit-title" anchor="visit" title="When you visit">
       <p>
-        The site sets no cookies and uses no tracking scripts. Cloudflare, which hosts the site, counts
-        visits without cookies and without identifying you. Like any web host, it handles your
-        connection&rsquo;s address to deliver the pages. When you send a form, we keep a scrambled form
-        of that address (a one-way hash) for one day, only to limit how many forms one connection can
-        send in an hour.
+        The site sets no cookies and stores nothing in your browser. One small script on each page counts
+        the visit with our own analytics, run on Cloudflare in the EU. It sends the page&rsquo;s address and
+        title, the site you came from, and your browser&rsquo;s type, language, time zone and screen size.
+        If your browser asks sites not to track you (Do Not Track or Global Privacy Control), it sends nothing.
+      </p>
+      <p>
+        To count visitors without identifying you, the analytics service makes a code from your
+        connection&rsquo;s address and your browser, scrambled with a key that changes every day, so a visit
+        today cannot be linked to one tomorrow. The address itself is not stored. Counted visits are kept for
+        395 days.
+      </p>
+      <p>
+        Like any web host, Cloudflare handles your connection&rsquo;s address to deliver the pages. When you
+        send a form, we keep a scrambled form of that address (a one-way hash) for one day, only to limit how
+        many forms one connection can send in an hour.
       </p>
     </TextSection>
 
@@ -50,7 +60,7 @@ import Site from '../layouts/Site.astro';
         <a href="mailto:privacy@thedoormanfallacy.com">privacy@thedoormanfallacy.com</a>. The site is run by
         Mental Audio AS in Oslo, Norway, which is responsible for the data described here.
       </p>
-      <p class="t-caption ink-3">Last updated 21 October 2026.</p>
+      <p class="t-caption ink-3">Last updated 11 November 2026.</p>
     </TextSection>
   </div>
 </Site>

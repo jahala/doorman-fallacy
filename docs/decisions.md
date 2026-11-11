@@ -178,3 +178,11 @@ Chosen: the pages and their cards are removed. Each kind is an anchored entry in
 
 Why: the content of all six fits on one screen, and a reader no longer leaves the idea six times to read it. The link from each kind to its cases, the one thing the pages did that /idea did not, is kept.
 
+## D-024 · 2026-11-11 · One script: a cookieless page-view counter
+
+Context: the site shipped no client-side JavaScript, and the plan named Cloudflare Web Analytics, which was never set up. Jan asked for the site to be counted in his own analytics on Cloudflare. That service tells visitors apart by hashing the address each request comes from, so page views sent by the site's Worker would all carry Cloudflare's address and count as a handful of visitors. The count has to come from the visitor's browser.
+
+Chosen: one inline script on every page sends one page view per load to `e.thedoormanfallacy.com`. It sets no cookies and stores nothing, sends nothing from any host but thedoormanfallacy.com (so local runs and tests count nothing), and sends nothing under Do Not Track or Global Privacy Control. The visitor id is a hash of the address and browser with a key that changes daily; the address is not stored. It is the only script, and `tests/e2e/no-script.spec.ts` fails on any other. The privacy page says what is sent and kept.
+
+Why: it is the smallest change that counts real visitors without cookies or a banner. Keeping one named exception, held by a test, keeps the rest of the site free of script.
+

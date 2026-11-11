@@ -1,0 +1,46 @@
+---
+/**
+ * One cookieless page view per load (D-024), the site's only script. No cookies, no storage, no
+ * library. It sends nothing off the site's own host, or when the visitor's browser asks not to be
+ * tracked (Do Not Track or Global Privacy Control). The intake makes a visitor id from a hash that
+ * changes every day; the connection's address is used for that hash and not stored.
+ */
+import { visitCount } from '../data/visit-count.ts';
+
+const { token, intakeHost, siteHost } = visitCount;
+---
+
+<script is:inline define:vars={{ token, intakeHost, siteHost }}>
+  if (location.host === siteHost && navigator.doNotTrack !== '1' && navigator.globalPrivacyControl !== true) {
+    var referrer = document.referrer;
+    var referringDomain = '$direct';
+    try {
+      if (referrer) referringDomain = new URL(referrer).host;
+    } catch (error) {}
+    var now = new Date().toISOString();
+    var properties = {
+      token: token,
+      distinct_id: '$posthog_cookieless',
+      $cookieless_mode: true,
+      $lib: 'web',
+      $current_url: location.href,
+      $host: location.host,
+      $pathname: location.pathname,
+      title: document.title,
+      $referrer: referrer || '$direct',
+      $referring_domain: referringDomain,
+      $raw_user_agent: navigator.userAgent.slice(0, 1000),
+      $timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      $browser_language: navigator.language,
+      $screen_width: screen.width,
+      $screen_height: screen.height,
+      $viewport_width: innerWidth,
+      $viewport_height: innerHeight,
+    };
+    fetch('https://' + intakeHost + '/i/v0/e/', {
+      method: 'POST',
+      keepalive: true,
+      body: JSON.stringify({ api_key: token, batch: [{ event: '$pageview', properties: properties, timestamp: now }], sent_at: now }),
+    }).catch(function () {});
+  }
+</script>
