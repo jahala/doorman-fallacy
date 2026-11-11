@@ -18,7 +18,7 @@ Versions are pinned in `package.json` and `.nvmrc` at scaffold time.
 - `lib/` holds every rule the site computes. Functions there are pure and total: they take data and dates as arguments and return a value, including the failure case.
 - Pages and components arrange data. They do not decide anything a test would need to check.
 - Text the reader sees lives in the page or the case file. Vocabularies live in `src/data/`.
-- No client-side JavaScript. Forms are plain HTML forms. If an interaction ever needs script, that is a new decision in [decisions.md](decisions.md).
+- One client-side script: the inline page-view counter (`src/components/VisitCount.astro`, D-024). Forms are plain HTML forms. Any other script is a new decision in [decisions.md](decisions.md).
 - Images go through Astro's image pipeline, so every image ships in modern formats with its width and height set. The share cards are the exception: they are drawn at build time with satori and resvg, with no browser ([D-017](decisions.md)).
 
 ## Tests

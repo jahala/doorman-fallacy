@@ -2,7 +2,7 @@
 
 Three parts:
 
-1. **The site.** Astro builds static HTML from the case files. It ships no client-side JavaScript.
+1. **The site.** Astro builds static HTML from the case files. Its only client-side JavaScript is an inline page-view counter (D-024).
 2. **The Worker.** It runs first on every request. It redirects the other hostnames ([D-015](decisions.md)), answers the form routes (suggest a case, subscribe, confirm, unsubscribe) and hands everything else to the built site. It stores what the forms send in a private D1 database and sends the confirmation email through cfmail. A daily job deletes what has passed its time.
 3. **The desk.** A weekly run of AI agents on Jan's Mac. It finds leads, writes and checks cases, reviews old ones, and publishes what passes ([D-009](decisions.md)).
 
@@ -89,7 +89,8 @@ The share cards have no browser behind them. `src/og/render.ts` reads the `.woff
 
 | Service | What it does | Data it holds |
 |---|---|---|
-| Cloudflare | DNS, redirects, the Worker, D1, cookieless analytics | Suggestions and subscriber addresses, in D1 |
+| Cloudflare | DNS, redirects, the Worker, D1 | Suggestions and subscriber addresses, in D1 |
+| Our own analytics on Cloudflare | Counts page views without cookies, through `e.thedoormanfallacy.com` (D-024) | Page views, kept 395 days, in the EU |
 | cfmail | Sends the confirmation email and the desk's weekly report, through a service mailbox ([D-008](decisions.md)) | Copies of mail it sent |
 | Claude Code | The agent harness the desk's agents run in, on DeepSeek by default (D-021) | Nothing kept |
 | TypeSafe (Jev) | Triages the sweep's headlines and checks each statement against its quote | Nothing kept |

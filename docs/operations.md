@@ -82,4 +82,4 @@ The monthly letter is not sent through cfmail. Cloudflare Email Sending allows o
 
 ## Analytics
 
-Cloudflare Web Analytics. It sets no cookies, so the site needs no cookie banner. The privacy page says so.
+Our own cookieless analytics on Cloudflare, in the EU (D-024). Each page sends one page view to `e.thedoormanfallacy.com`, only from thedoormanfallacy.com and never under Do Not Track or Global Privacy Control. It sets no cookies and stores nothing in the browser, so the site needs no cookie banner. The privacy page says what is sent and kept. The token and hosts live in `src/data/visit-count.ts`.
