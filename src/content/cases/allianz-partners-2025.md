@@ -23,19 +23,7 @@ claims:
     said: Artificial intelligence is the reason for the cuts.
     source: ib-jul26
     quote: Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division will cut between 1,500 and 1,800 jobs across Europe – and said plainly that artificial intelligence is the reason.
-missed:
-  - function: judgment
-    evidence: The tool would be intended for simple assistance requests, leaving teams more room for complex situations that need analysis, discernment and empathy.
-    sources:
-      - lassurance-feb26
-  - function: absorption
-    evidence: A conversational robot could answer motorists who had had an accident.
-    sources:
-      - lassurance-feb26
-  - function: signal
-    evidence: Management said a client could have direct access to a human if they wished.
-    sources:
-      - lassurance-feb26
+missed: []
 updates:
   - date: 2025-11-27
     status: too-early
@@ -142,8 +130,8 @@ Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division woul
 [^ib-nov25-2]: "With AI continuing to reshape processes across businesses worldwide, insurance giant Allianz is planning to reduce its workforce by between 1,500 and 1,800 positions within its travel insurance operations over the next 12 to 18 months, according to sources familiar with the plans."
 [^ib-nov25-3]: "The reductions will predominantly affect call center operations across the division."
 [^ib-nov25-4]: "The planned reductions represent approximately 6.6% to 8% of Allianz Partners' total workforce."
-[^ib-nov25-5]: "The company said that it is “actively examining how technological change will affect all employees,” noting that such changes could “also impact roles that are currently heavily reliant on manual processes.”"
-[^ib-nov25-6]: "A company spokesperson indicated that the firm is engaged in “confidential talks with the works councils” regarding the restructuring."
+[^ib-nov25-5]: "The company said that it is ‘actively examining how technological change will affect all employees,’ noting that such changes could ‘also impact roles that are currently heavily reliant on manual processes.’"
+[^ib-nov25-6]: "A company spokesperson indicated that the firm is engaged in ‘confidential talks with the works councils’ regarding the restructuring."
 [^segurosnews-dec25]: "CCOO Servicios ha manifestado su «más rotundo rechazo a la intención de Allianz Partners de despedir a 320 personas trabajadoras en España, por la gravedad y dimensión del ajuste -el 20% de la plantilla- y por no estar en absoluto justificada»."
 [^segurosnews-dec25-2]: "Consultada la entidad por esta redacción, afirman que «en ningún momento se ha hablado de despidos, ni de ERE."
 [^segurosnews-dec25-3]: "Se trata de una cuestión estratégica que no solo se plantea en España, sino que en un primer momento afectará a algunas unidades de negocio de la compañía en Europa, para consolidar nuestra posición de liderazgo en un mercado en un entorno que se transforma y donde la IA ha irrumpido rápidamente»."

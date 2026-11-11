@@ -21,7 +21,8 @@ import { askClaude, isDeepseekModel } from './claude.ts';
 import { deepseekKey } from './deepseek.ts';
 import { allCites, citedSentence, loadedWords, renderCase, type Draft, type SourceMaterial, type Statement } from './case-render.ts';
 import { createJevDoor, type JevAnswer } from './jev.ts';
-import { statementQuestions, supportedThreshold } from './statement-check.ts';
+import { readingQuestion, readingThreshold, statementQuestions, supportedThreshold } from './statement-check.ts';
+import { hiddenFunctions, type HiddenFunctionId } from '../src/data/hidden-functions.ts';
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -176,6 +177,19 @@ async function checkStatement(where: string, text: string, cite: string): Promis
   return null;
 }
 
+/** A point of the doorman reading must report the work going missing, not only that it exists. */
+async function checkReading(where: string, kindId: string, text: string, cite: string): Promise<Failure | null> {
+  const kind = hiddenFunctions[kindId as HiddenFunctionId] as (typeof hiddenFunctions)[HiddenFunctionId] | undefined;
+  if (kind === undefined) return { where, text, cite, reason: `unknown hidden function ${kindId}` };
+  const result = await door.ask({ kind: kind.label, meaning: kind.meaning, evidence: text }, readingQuestion);
+  if (!result.ok) return { where, text, cite, reason: `check could not run: ${result.message}` };
+  const missing = result.answers.missing as Extract<JevAnswer, { type: 'noul' }> | undefined;
+  if (missing === undefined || missing.noul < readingThreshold) {
+    return { where, text, cite, reason: `does not report this work going missing, only that it exists (p=${(missing?.noul ?? 0).toFixed(2)})` };
+  }
+  return null;
+}
+
 function statementsOf(draft: Draft): { where: string; text: string; cite: string }[] {
   const body = (name: string, section: readonly (readonly Statement[])[]): { where: string; text: string; cite: string }[] =>
     section.flatMap((paragraph, p) => paragraph.map((statement, s) => ({ where: `${name}[${String(p)}][${String(s)}]`, ...statement })));
@@ -190,7 +204,10 @@ function statementsOf(draft: Draft): { where: string; text: string; cite: string
 }
 
 async function checkDraft(draft: Draft): Promise<Failure[]> {
-  const checks = await Promise.all(statementsOf(draft).map((item) => checkStatement(item.where, item.text, item.cite)));
+  const checks = await Promise.all([
+    ...statementsOf(draft).map((item) => checkStatement(item.where, item.text, item.cite)),
+    ...draft.missed.map((point, index) => checkReading(`missed[${String(index)}]`, point.function, point.evidence, point.cite)),
+  ]);
   return checks.filter((failure): failure is Failure => failure !== null);
 }
 
@@ -237,7 +254,6 @@ if (failures.length > 0) {
 const final = withoutFailures(draft, failures);
 const problems: string[] = [];
 if (final.updates.length === 0) problems.push('no supported update remains');
-if (final.missed.length === 0) problems.push('no supported doorman reading remains');
 // Publishing check 5: one primary source, or two independent reports, among the sources the case cites.
 const citedSources = sources.filter((source) => allCites(final).some((cite) => cite.startsWith(`${source.id}#`)));
 const primaries = citedSources.filter((source) => source.kind === 'primary').length;

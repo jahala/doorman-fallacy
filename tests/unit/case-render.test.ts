@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
-import { citedSentence, loadedWords, renderCase, type Draft, type SourceMaterial } from '../../desk/case-render.ts';
+import { citedSentence, loadedWords, nestQuotes, renderCase, type Draft, type SourceMaterial } from '../../desk/case-render.ts';
 import { checkCaseText } from '../../scripts/check-cases.ts';
 
 const sources: SourceMaterial[] = [
@@ -124,8 +124,13 @@ describe('renderCase', () => {
     expect(body).toContain('- Do customers wait longer for checks?');
   });
 
-  it('turns straight double quotes inside a quote into curly ones so the quote stays one string', () => {
-    expect(body).toContain('[^example-release-2]: "The bank said “AI is changing the way we work” in a statement."');
+  it('sets a quotation inside a quoted sentence in single marks, so the footnote never shows two pairs', () => {
+    expect(body).toContain('[^example-release-2]: "The bank said ‘AI is changing the way we work’ in a statement."');
+  });
+
+  it('does the same when the source sentence already opens with a curly quote (CBA, 2026-11-11)', () => {
+    expect(nestQuotes('“We have apologised,” a spokesperson said.')).toBe('‘We have apologised,’ a spokesperson said.');
+    expect(nestQuotes('He said it was “not ready”.')).toBe('He said it was ‘not ready’.');
   });
 
   it('sets the review fields for a new case', () => {

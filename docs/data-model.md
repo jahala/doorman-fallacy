@@ -29,7 +29,7 @@ claims:                           # what the organisation said the change would 
     source: union-2025-08
     quote: "..."                  # verbatim from the source
 
-missed:                           # the doorman reading: analysis, tied to evidence
+missed:                           # the doorman reading: analysis, tied to evidence that the work went missing; may be empty
   - function: slack               # id from the hidden-function vocabulary
     evidence: Call volumes rose, and team leaders were answering calls.
     sources: [union-2025-08]
@@ -88,7 +88,7 @@ The bank said the roles were not redundant after all.[^acs-2025-08]
 
 ### Two layers
 
-Everything except `missed` is **reported**: it says what sources say, and each piece carries its quote. `missed` is **the doorman reading**, the site's analysis. The page labels it as analysis, and each point names the reported evidence it rests on.
+Everything except `missed` is **reported**: it says what sources say, and each piece carries its quote. `missed` is **the doorman reading**, the site's analysis. The page labels it as analysis, and each point names the reported evidence it rests on. That evidence must report the hidden work going missing, getting worse, moving to others or landing on fewer people; that the work exists is not enough. Until a source reports that, `missed` is empty and the page says the ledger is still looking.
 
 ## What counts as a case
 

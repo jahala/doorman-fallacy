@@ -6,10 +6,10 @@ import Photo from '../components/Photo.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
 import Site from '../layouts/Site.astro';
-import { countLabel, ledgerRow, newestFirst } from '../lib/ledger.ts';
+import { countLabel, ledgerRow, outcomesFirst } from '../lib/ledger.ts';
 
 const previewLength = 5;
-const cases = newestFirst(await getCollection('cases'));
+const cases = outcomesFirst(await getCollection('cases'));
 const previewRows = cases.slice(0, previewLength).map(ledgerRow);
 ---
 
@@ -59,7 +59,7 @@ const previewRows = cases.slice(0, previewLength).map(ledgerRow);
 
     <section class="section" aria-labelledby="ledger-title">
       <h2 id="ledger-title" class="t-display">The ledger</h2>
-      <p class="t-lead ink-2 section__sub">Following what happens after companies cut roles for AI.</p>
+      <p class="t-lead ink-2 section__sub">Following what happens after organisations cut roles for AI.</p>
       <p class="ledger-preview__all"><a href="/ledger">View all cases</a></p>
       {
         previewRows.length === 0 ? (
@@ -71,7 +71,7 @@ const previewRows = cases.slice(0, previewLength).map(ledgerRow);
             <LedgerTable
               rows={previewRows}
               compact
-              caption={`${countLabel(cases.length)} in the ledger, newest first. Each has its sources, an update history and a date for its next review, and cuts that hold up are followed as closely as those that are reversed.`}
+              caption={`${countLabel(cases.length)} in the ledger, those with a reported outcome first. Each has its sources, an update history and a date for its next review, and cuts that hold up are followed as closely as those that are reversed.`}
               label="Ledger preview"
             />
           </div>

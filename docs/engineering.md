@@ -48,7 +48,7 @@ Checks 2 to 5 run in `desk/draft.ts` before a case is written; check 1 runs ther
 
 1. **Format.** The schema passes, every cited id exists, every source is cited, the body's headings are present and in order, and every paragraph under "What happened next" carries a footnote whose definition holds a quote.
 2. **Quotes are real.** Every quote is found word for word in its source's archived copy. This is a text match with no model involved, so an invented fact cannot pass.
-3. **Claims stay inside their quotes.** Jev, separate from the writer, reads each statement next to its quote and the source's details (publisher, date, kind). It fails a statement that says more than its quote or suggests a motive; code fails one with loaded words. A failure goes back to the writer once, and what still fails is removed.
+3. **Claims stay inside their quotes.** Jev, separate from the writer, reads each statement next to its quote and the source's details (publisher, date, kind). It fails a statement that says more than its quote or suggests a motive; code fails one with loaded words. Each point of the doorman reading must also report the hidden work going missing, moving or landing on fewer people, not only that it exists (`readingQuestion`, threshold 0.3, [2026-11-11-jev-reading.md](research/2026-11-11-jev-reading.md)). A failure goes back to the writer once, and what still fails is removed. A case may publish with no reading point; it waits for evidence.
 4. **Inclusion rule.** The assessor confirms the case meets the rule in [data-model.md](data-model.md#what-counts-as-a-case) before drafting starts.
 5. **Sources.** One primary source, or two independent reports, counted from each source's `kind`.
 

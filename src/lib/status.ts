@@ -12,3 +12,15 @@ export function latestUpdate(subject: WithUpdates): CaseUpdate {
 export function currentStatus(subject: WithUpdates): StatusId {
   return latestUpdate(subject).status;
 }
+
+/**
+ * The update that brought the case to its current status: the first of the newest run of updates
+ * with that status. Later news that leaves the status as it is does not replace it.
+ */
+export function statusUpdate(subject: WithUpdates): CaseUpdate {
+  const status = currentStatus(subject);
+  let at = subject.updates.length - 1;
+  while (at > 0 && subject.updates[at - 1]?.status === status) at -= 1;
+  return subject.updates[at] ?? latestUpdate(subject);
+}
+

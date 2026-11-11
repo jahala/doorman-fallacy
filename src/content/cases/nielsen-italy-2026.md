@@ -3,7 +3,7 @@ company: Nielsen Media Service Italy
 short: Nielsen Italy
 country: IT
 area: Audience measurement
-change: Procedure to dismiss 42 of 136 staff as AI takes data work
+change: 42 of 136 staff to be dismissed as AI takes data work.
 announced: 2026-03-31
 headcount: 42
 door: Producing TV and radio audience data
@@ -29,16 +29,8 @@ claims:
     source: collettiva
     quote: I margini di errore, vista la posta in palio, devono essere bassissimi, laddove l’Ai non può avere la stessa chirurgica precisione dell’occhio umano reso sensibile da anni e anni di esperienza”.
 missed:
-  - function: judgment
-    evidence: The measurement process was made of statistical samples, meters installed in people's homes, and analysis and validation of the data.
-    sources:
-      - tecnoandroid
   - function: memory
     evidence: The monitoring of advertising indices has been moved to Albania, where the local staff do not have the cultural references to interpret the dynamics of Italian television.
-    sources:
-      - affaritaliani
-  - function: absorption
-    evidence: When anomalies in the signal were detected, the households were contacted directly and given assistance with the use of the devices.
     sources:
       - affaritaliani
 updates:
@@ -101,13 +93,6 @@ sources:
     title: "Sarà l'AI a gestire i dati di Sanremo: \"Licenziati in 43\""
     published: 2026-04-01
     archive: https://web.archive.org/web/20260416132133/https://www.quotidiano.net/economia/sara-lai-a-gestire-i-854b1b90
-  - id: tecnoandroid
-    kind: reporting
-    url: https://www.tecnoandroid.it/news/nielsen-italia-licenzia-43-persone-lia-misurera-gli-ascolti-tv-del-festival-di-sanremo-1854055/
-    publisher: Tecnoandroid
-    title: "Nielsen Italia licenzia 43 persone: l'IA misurerà gli ascolti TV del Festival di Sanremo"
-    published: 2026-04-04
-    archive: https://web.archive.org/web/20261021210906/https://www.tecnoandroid.it/news/nielsen-italia-licenzia-43-persone-lia-misurera-gli-ascolti-tv-del-festival-di-sanremo-1854055/
 related: []
 ---
 
@@ -140,13 +125,13 @@ A first meeting between the parties was scheduled for 13 April at Confcommercio 
 - Will the next Sanremo audience data be produced as the union described, and what did the company say about the algorithm's role?
 
 [^collettiva]: "Che parla con grande preoccupazione del clima che si respira negli uffici di Assago, alle porte di Milano, dove per decenni un pool di lavoratrici e lavoratori hanno rendicontato l’audience di trasmissioni televisive e radiofoniche e catalogato milioni di spazi pubblicitari inseriti tra radio, tv, giornali, riviste e persino nelle sale cinematografiche, ogni giorno, h24."
-[^affaritaliani]: "Come riportato sul Corriere della Sera, era il 1986 quando l’impresa iniziò a monitorare lo share del Festival di Sanremo; oggi, a distanza di quarant’anni, dai vertici di Assago scatta l’allerta: “Non saranno più i professionisti in carne e ossa a elaborare le statistiche della prossima edizione condotta da Stefano De Martino – denunciano le maestranze -, un algoritmo di intelligenza artificiale prenderà il loro posto in questa mansione cruciale”."
+[^affaritaliani]: "Come riportato sul Corriere della Sera, era il 1986 quando l’impresa iniziò a monitorare lo share del Festival di Sanremo; oggi, a distanza di quarant’anni, dai vertici di Assago scatta l’allerta: ‘Non saranno più i professionisti in carne e ossa a elaborare le statistiche della prossima edizione condotta da Stefano De Martino – denunciano le maestranze -, un algoritmo di intelligenza artificiale prenderà il loro posto in questa mansione cruciale’."
 [^collettiva-2]: "E siamo ai fatti di questi giorni, quando l’azienda ha comunicato la volontà di voler procedere con il licenziamento di ben 42 persone, su un organico complessivo di 136 lavoratrici e lavoratori, facenti parte della legal entity Nielsen Media Service Italy."
 [^collettiva-3]: "Questa volta la data di partenza è stata il 31 marzo scorso."
-[^quotidiano]: "Secondo una nota diffusa dalla Rsu e dalla Filcams, “su un organico complessivo di 136 lavoratrici e lavoratori, che fanno parte della legal entity Nielsen Media Service Italy, l’azienda ha comunicato la volontà di procedere con il licenziamento di ben 43 persone” applicando “una riduzione massiccia che mette in discussione la stabilità e il futuro di quasi un terzo del personale” in un’azienda che occupa una posizione da leader nel settore."
-[^affaritaliani-2]: "Un timore confermato dalle note della multinazionale, che individua nel “passaggio all’automazione” e nell’”ottimizzazione dei processi” i nuovi pilastri aziendali, a discapito di quei 43 lavoratori su cui ora pende la minaccia dell’esubero."
-[^ilfatto]: "Una scelta che tuttavia condanna alla disoccupazione 43 lavoratori: “Non saranno più le lavoratrici e i lavoratori a produrre i dati di ascolto della prossima edizione del Festival condotta – spiegano i dipendenti – un algoritmo di intelligenza artificiale subentrerà al loro posto in questa operazione strategica”."
+[^quotidiano]: "Secondo una nota diffusa dalla Rsu e dalla Filcams, ‘su un organico complessivo di 136 lavoratrici e lavoratori, che fanno parte della legal entity Nielsen Media Service Italy, l’azienda ha comunicato la volontà di procedere con il licenziamento di ben 43 persone’ applicando ‘una riduzione massiccia che mette in discussione la stabilità e il futuro di quasi un terzo del personale’ in un’azienda che occupa una posizione da leader nel settore."
+[^affaritaliani-2]: "Un timore confermato dalle note della multinazionale, che individua nel ‘passaggio all’automazione’ e nell’’ottimizzazione dei processi’ i nuovi pilastri aziendali, a discapito di quei 43 lavoratori su cui ora pende la minaccia dell’esubero."
+[^ilfatto]: "Una scelta che tuttavia condanna alla disoccupazione 43 lavoratori: ‘Non saranno più le lavoratrici e i lavoratori a produrre i dati di ascolto della prossima edizione del Festival condotta – spiegano i dipendenti – un algoritmo di intelligenza artificiale subentrerà al loro posto in questa operazione strategica’."
 [^affaritaliani-3]: "Da oltre diciotto mesi la società ha implementato un drastico piano di espansione dell’Ai, con riduzioni del personale e delocalizzazioni in tutta l’area europea — chiarisce Giuseppe Nardozza, responsabile del controllo qualità del panel statistico, rappresentante Filcams Cgil e vicepresidente europeo del comitato aziendale —."
-[^quotidiano-2]: "Per questo i dipendenti, riuniti in assemblea, hanno proclamato lo stato di agitazione, annunciando “momenti di protesta e mobilitazione” con modalità ancora da definire."
-[^affaritaliani-4]: "Una compagine lavorativa che oggi rischia di vedere svanire un ulteriore terzo dei suoi membri, con pesanti incertezze anche sulla prossima rassegna canora: “Il livello qualitativo rischia un crollo verticale, Nielsen sta depauperando il proprio know-how — accusa Nardozza —."
+[^quotidiano-2]: "Per questo i dipendenti, riuniti in assemblea, hanno proclamato lo stato di agitazione, annunciando ‘momenti di protesta e mobilitazione’ con modalità ancora da definire."
+[^affaritaliani-4]: "Una compagine lavorativa che oggi rischia di vedere svanire un ulteriore terzo dei suoi membri, con pesanti incertezze anche sulla prossima rassegna canora: ‘Il livello qualitativo rischia un crollo verticale, Nielsen sta depauperando il proprio know-how — accusa Nardozza —."
 [^collettiva-4]: "Lunedì prossimo, 13 aprile, ci sarà un primo incontro tra le parti in Confcommercio a Milano."

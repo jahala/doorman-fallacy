@@ -33,23 +33,7 @@ claims:
     said: Digitalisation has reduced the need for manual tasks, particularly in customer service.
     source: nrk
     quote: Digitalisering har minket behovet for manuelle oppgaver, særlig i kundeservice, sier Stene.
-missed:
-  - function: judgment
-    evidence: If customers need to speak to people, the company must have people who can answer them.
-    sources:
-      - nrk
-  - function: signal
-    evidence: Pettersen said Telenor Norge was on the wrong path when it did not see the value of presence across the country.
-    sources:
-      - frifagbevegelse
-  - function: memory
-    evidence: Nesheim said very many of the staff had been there for very many years.
-    sources:
-      - nrk
-  - function: slack
-    evidence: Other customer centres had been cut so far this year.
-    sources:
-      - nrk
+missed: []
 updates:
   - date: 2024-10-10
     status: too-early

@@ -18,11 +18,7 @@ claims:
     said: Salesforce did not lay off 4,000 employees.
     source: itbrief
     quote: Salesforce did not lay off 4,000 employees.
-missed:
-  - function: judgment
-    evidence: Agentforce escalates complex cases to human employees, so cases outside what the agents handle still reach people.
-    sources:
-      - channelnews
+missed: []
 updates:
   - date: 2025-09-04
     status: too-early
@@ -92,11 +88,11 @@ Critics said Agentforce proved unreliable in customer deployments.[^itbrief-3] S
 
 [^channelnews]: "Salesforce has cut nearly half its customer support workforce, with AI agents taking over thousands of tasks once handled by humans."
 [^channelnews-2]: "Agentforce is the AI-powered platform that deploys autonomous agents to handle queries, follow up on leads, and escalate complex cases to human employees."
-[^channelnews-3]: "“I’ve reduced it from 9,000 heads to about 5,000 because I need less heads,” he said, noting that Salesforce’s Agentforce was central to the change."
+[^channelnews-3]: "‘I’ve reduced it from 9,000 heads to about 5,000 because I need less heads,’ he said, noting that Salesforce’s Agentforce was central to the change."
 [^channelnews-4]: "Speaking on The Logan Bartlett Show recently, Benioff said AI was now handling up to half of customer conversations."
-[^channelnews-5]: "The company said it has redeployed “hundreds of employees” into other functions such as sales, professional services, and customer success."
+[^channelnews-5]: "The company said it has redeployed ‘hundreds of employees’ into other functions such as sales, professional services, and customer success."
 [^channelnews-6]: "It’s also the case that Salesforce still employs about 76,000 staff globally."
 [^itbrief]: "Salesforce did not lay off 4,000 employees."
-[^itbrief-2]: "This included internal redeployment of employees to growth areas, decisions not to backfill certain roles, and natural attrition,“ a Salesforce spokesperson said."
+[^itbrief-2]: "This included internal redeployment of employees to growth areas, decisions not to backfill certain roles, and natural attrition,‘ a Salesforce spokesperson said."
 [^itbrief-3]: "Salesforce has rejected claims that it replaced thousands of staff with AI agents, after criticism that its Agentforce product proved unreliable in customer deployments and forced a return to hard-coded automation for basic tasks."
 [^itbrief-4]: "Salesforce has closed more than 18,500 Agentforce deals, with over 9,500 already in paid production."

@@ -2,8 +2,9 @@ import type { Case, CaseSource, IsoDate } from '../data/case-schema.ts';
 import { hiddenFunctions } from '../data/hidden-functions.ts';
 import type { LedgerRow } from '../data/ledger-row.ts';
 import { statuses } from '../data/statuses.ts';
+import { normaliseText } from './quotes.ts';
 import { derivedNextReview } from './review.ts';
-import { currentStatus, latestUpdate } from './status.ts';
+import { currentStatus, latestUpdate, statusUpdate } from './status.ts';
 
 /**
  * What the ledger pages show, worked out from cases. The pages arrange these values and decide
@@ -57,6 +58,23 @@ export function newestFirst<T extends CaseEntry>(entries: readonly T[]): T[] {
   });
 }
 
+/**
+ * The home page's order: cases with a reported outcome first, newest outcome first (dated by the
+ * update that set the status), then cases too early to tell, by their latest news. Ties go by id,
+ * so the page never reshuffles. A visitor sees what happened before what was announced.
+ */
+export function outcomesFirst<T extends CaseEntry>(entries: readonly T[]): T[] {
+  const key = (entry: T): [number, IsoDate] =>
+    currentStatus(entry.data) === 'too-early' ? [1, latestUpdate(entry.data).date] : [0, statusUpdate(entry.data).date];
+  return [...entries].sort((a, b) => {
+    const [groupA, dateA] = key(a);
+    const [groupB, dateB] = key(b);
+    if (groupA !== groupB) return groupA - groupB;
+    if (dateA !== dateB) return dateA < dateB ? 1 : -1;
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+  });
+}
+
 export function ledgerRow(entry: CaseEntry): LedgerRow {
   const { data } = entry;
   return {
@@ -64,7 +82,9 @@ export function ledgerRow(entry: CaseEntry): LedgerRow {
     meta: `${countryName(data.country)} · ${data.area}`,
     change: data.change,
     status: statuses[currentStatus(data)].label,
-    outcome: latestUpdate(data).summary,
+    // A case too early to tell has no outcome yet, only news; its line says how recent that is.
+    outcome:
+      currentStatus(data) === 'too-early' ? `Latest news ${formatDate(latestUpdate(data).date)}.` : statusUpdate(data).summary,
     href: `/ledger/${entry.id}`,
   };
 }
@@ -179,17 +199,22 @@ export interface TimelineEntry {
   readonly date: string;
   readonly status: string;
   readonly summary: string;
-  readonly quote: string;
+  /** Null when the body already shows the same sentence in a footnote. */
+  readonly quote: string | null;
   readonly sources: SourceRef[];
 }
 
-/** Every update, oldest first, as the case lists them. */
-export function timelineEntries(data: Pick<Case, 'updates' | 'sources'>): TimelineEntry[] {
+/** A sentence for comparing, with its quotation marks removed: footnotes nest them, quotes in front matter do not. */
+const comparable = (sentence: string): string => normaliseText(sentence).replace(/["']/g, '');
+
+/** Every update, oldest first, as the case lists them. `body` is the case's Markdown, whose footnotes hold quotes. */
+export function timelineEntries(data: Pick<Case, 'updates' | 'sources'>, body = ''): TimelineEntry[] {
+  const shown = new Set([...body.matchAll(/^\[\^[^\]]+\]: (.*)$/gm)].map((match) => comparable(match[1] ?? '')));
   return data.updates.map((update) => ({
     date: formatDate(update.date),
     status: statuses[update.status].label,
     summary: update.summary,
-    quote: update.quote,
+    quote: shown.has(comparable(update.quote)) ? null : update.quote,
     sources: refs(data, update.sources),
   }));
 }

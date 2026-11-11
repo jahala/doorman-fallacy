@@ -1,0 +1,200 @@
+[
+  {
+    "id": "allianz-partners-2025#0",
+    "label": "no",
+    "p": 0.07,
+    "evidence": "The tool would be intended for simple assistance requests, leaving teams more room for complex situations that need analysis, discernment and empathy."
+  },
+  {
+    "id": "allianz-partners-2025#1",
+    "label": "no",
+    "p": 0.04,
+    "evidence": "A conversational robot could answer motorists who had had an accident."
+  },
+  {
+    "id": "allianz-partners-2025#2",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "Management said a client could have direct access to a human if they wished."
+  },
+  {
+    "id": "atlassian-2025#0",
+    "label": "no",
+    "p": 0.11,
+    "evidence": "Work is routed to the right experts, who can resolve issues more quickly."
+  },
+  {
+    "id": "atlassian-2025#1",
+    "label": "no",
+    "p": 0.12,
+    "evidence": "Some Atlassian customers will be interfacing directly with AI."
+  },
+  {
+    "id": "atlassian-2025#2",
+    "label": "no",
+    "p": 0.05,
+    "evidence": "Future complaints would more likely be treated in part with AI."
+  },
+  {
+    "id": "cba-2025#0",
+    "label": "no",
+    "p": 0.04,
+    "evidence": "CBA said that with simple queries automated, its teams could focus on more complex queries that need empathy and experience."
+  },
+  {
+    "id": "cba-2025#1",
+    "label": "yes",
+    "p": 0.71,
+    "evidence": "The Finance Sector Union said calls were increasing and management were offering overtime and asking team leaders to answer some calls."
+  },
+  {
+    "id": "dinero-2026#0",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "The AI can take just over 71 per cent of all customer enquiries."
+  },
+  {
+    "id": "dnb-2026#0",
+    "label": "no",
+    "p": 0.02,
+    "evidence": "DNB named customer data control and Know Your Customer work as areas where AI agents can contribute substantial efficiency gains."
+  },
+  {
+    "id": "dnb-2026#1",
+    "label": "no",
+    "p": 0.14,
+    "evidence": "DNB said the restructuring will affect employees who have made a strong contribution to the bank for many years."
+  },
+  {
+    "id": "duolingo-2024#0",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "A company spokesperson said human experts check that the translated output is good enough for teaching."
+  },
+  {
+    "id": "ing-2026#0",
+    "label": "no",
+    "p": 0.11,
+    "evidence": "The Dutch audit office said the strict controls do not always lead to useful investigations."
+  },
+  {
+    "id": "ing-2026#1",
+    "label": "no",
+    "p": 0.1,
+    "evidence": "The audit office said the checks can lead to detailed questions about finances, or to a refused bank account, for ordinary people."
+  },
+  {
+    "id": "klarna-2024#0",
+    "label": "yes",
+    "p": 0.33,
+    "evidence": "Klarna's chief executive said the company was planning a recruitment drive so that customers could speak to a real person rather than a chatbot."
+  },
+  {
+    "id": "konecta-2026#0",
+    "label": "no",
+    "p": 0.02,
+    "evidence": "Konecta's Katalyst 2028 plan keeps humans in the loop for exceptions and quality supervision."
+  },
+  {
+    "id": "konecta-2026#1",
+    "label": "no",
+    "p": 0.05,
+    "evidence": "Among the demands put to the administrations was recognition of the experience the workers had accumulated over more than two decades serving the tax agency's taxpayers."
+  },
+  {
+    "id": "mercado-libre-2026#0",
+    "label": "yes",
+    "p": 0.61,
+    "evidence": "Some accounts said simple problems were resolved only after insisting until the person reached a human operator."
+  },
+  {
+    "id": "mercado-libre-2026#1",
+    "label": "yes",
+    "p": 0.89,
+    "evidence": "The platform now faces rigid and less nuanced responses after dropping the people who made interactions more empathetic."
+  },
+  {
+    "id": "mercado-libre-2026#2",
+    "label": "borderline",
+    "p": 0.58,
+    "evidence": "Former employees said they spent much of their work training automated systems that now answer customers and sellers, including through WhatsApp."
+  },
+  {
+    "id": "mercado-libre-2026#3",
+    "label": "yes",
+    "p": 0.85,
+    "evidence": "The union said workers who stayed were told they would also take on the Content area's responsibilities, accumulating functions."
+  },
+  {
+    "id": "nielsen-italy-2026#0",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "The measurement process was made of statistical samples, meters installed in people's homes, and analysis and validation of the data."
+  },
+  {
+    "id": "nielsen-italy-2026#1",
+    "label": "yes",
+    "p": 0.9,
+    "evidence": "The monitoring of advertising indices has been moved to Albania, where the local staff do not have the cultural references to interpret the dynamics of Italian television."
+  },
+  {
+    "id": "nielsen-italy-2026#2",
+    "label": "no",
+    "p": 0.05,
+    "evidence": "When anomalies in the signal were detected, the households were contacted directly and given assistance with the use of the devices."
+  },
+  {
+    "id": "salesforce-2025#0",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "Agentforce escalates complex cases to human employees, so cases outside what the agents handle still reach people."
+  },
+  {
+    "id": "telenor-2024#0",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "If customers need to speak to people, the company must have people who can answer them."
+  },
+  {
+    "id": "telenor-2024#1",
+    "label": "borderline",
+    "p": 0.19,
+    "evidence": "Pettersen said Telenor Norge was on the wrong path when it did not see the value of presence across the country."
+  },
+  {
+    "id": "telenor-2024#2",
+    "label": "no",
+    "p": 0.03,
+    "evidence": "Nesheim said very many of the staff had been there for very many years."
+  },
+  {
+    "id": "telenor-2024#3",
+    "label": "no",
+    "p": 0.43,
+    "evidence": "Other customer centres had been cut so far this year."
+  },
+  {
+    "id": "tiktok-2026#0",
+    "label": "no",
+    "p": 0.04,
+    "evidence": "More ambiguous cases, including misinformation, bullying and content requiring cultural or linguistic context, are referred to human moderators."
+  },
+  {
+    "id": "tiktok-2026#1",
+    "label": "borderline",
+    "p": 0.09,
+    "evidence": "The systems can flag content showing smoking or drinking, but may struggle to distinguish a bottle of kombucha from alcohol or a religious symbol from an extremist logo."
+  },
+  {
+    "id": "tiktok-2026#2",
+    "label": "borderline",
+    "p": 0.03,
+    "evidence": "Moderators told The Independent they did not believe AI moderation was ready to be rolled out at scale."
+  },
+  {
+    "id": "tiktok-2026#3",
+    "label": "no",
+    "p": 0.02,
+    "evidence": "Moderators use regional playbooks to account for local laws, languages and cultural contexts."
+  }
+]

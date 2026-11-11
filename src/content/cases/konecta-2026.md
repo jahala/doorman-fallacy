@@ -3,7 +3,7 @@ company: Konecta
 short: Konecta
 country: IT
 area: Customer service
-change: "670 roles in excess: 600 operational and 70 staff."
+change: 670 more roles to go in Italy as automation cuts volumes.
 announced: 2026-09-15
 headcount: 670
 door: Answering customer calls and making collections calls
@@ -33,24 +33,16 @@ claims:
     said: The technological transition must not again be paid for by workers.
     source: lavocediasti-sep
     quote: '"Servono alternative agli esuberi, regole contro il massimo ribasso, clausole sociali e un piano di formazione per affrontare l’impatto dell’intelligenza artificiale", ha precisato la deputata, per poi concludere con un messaggio netto sulle nuove sfide che attendono il mondo del lavoro: "La transizione tecnologica non può essere pagata ancora una volta dai lavoratori".'
-missed:
-  - function: judgment
-    evidence: Konecta's Katalyst 2028 plan keeps humans in the loop for exceptions and quality supervision.
-    sources:
-      - ecosistemastartup
-  - function: memory
-    evidence: Among the demands put to the administrations was recognition of the experience the workers had accumulated over more than two decades serving the tax agency's taxpayers.
-    sources:
-      - elconciso
+missed: []
 updates:
   - date: 2026-09-16
-    status: strained
+    status: too-early
     summary: Konecta counted 600 operational and 70 staff roles, over 1,000 jobs in all.
     sources:
       - slc-cgil
     quote: Konecta quantifica, di conseguenza, una ulteriore eccedenza di personale pari a 600 FTE operativi e 70 FTE con funzioni di indiretti/staff, per complessivi oltre 1000 posti di lavoro.
   - date: 2026-09-22
-    status: strained
+    status: too-early
     summary: Chiara Gribaudo filed a parliamentary question on the cuts.
     sources:
       - lavocediasti-sep
@@ -100,13 +92,6 @@ sources:
     title: LAB denuncia que la inteligencia artificial se está utilizando como excusa para destruir empleo en la empresa Konecta BTO de Güeñes
     published: 2026-06-24
     archive: https://web.archive.org/web/20261021202443/https://www.lab.eus/es/lab-denuncia-que-la-inteligencia-artificial-se-esta-utilizando-como-excusa-para-destruir-empleo-en-la-empresa-konecta-bto-de-guenes/
-  - id: elconciso
-    kind: reporting
-    url: https://www.elconciso.es/empresas/konecta-salida-empleados-agencia-tributaria-call-center_0_2007442983.html
-    publisher: El Conciso
-    title: Konecta busca salidas para 1.000 empleados tras rescatar la Agencia Tributaria el servicio de call center
-    published: 2026-07-15
-    archive: https://web.archive.org/web/20260721143050/https://www.elconciso.es/empresas/konecta-salida-empleados-agencia-tributaria-call-center_0_2007442983.html
   - id: mangasverdes
     kind: reporting
     url: https://mangasverdes.es/inteligencia-artificial/konecta-recorta-21000-empleos-mientras-la-ia-dispara-costes-deuda-y-castigo-bursatil-en-el-sector_18490_102.html
@@ -121,13 +106,6 @@ sources:
     title: "Crisi Konecta, l'allarme di Gribaudo: a rischio centinaia di posti di lavoro tra Asti e Ivrea"
     published: 2026-09-22
     archive: https://web.archive.org/web/20261021202819/https://www.lavocediasti.it/2026/09/22/sommario/vacanze-astigiane/leggi-notizia/argomenti/economia-11/articolo/crisi-konecta-lallarme-di-gribaudo-a-rischio-centinaia-di-posti-di-lavoro-tra-asti-e-ivrea.html
-  - id: ecosistemastartup
-    kind: reporting
-    url: https://ecosistemastartup.com/konecta-invierte-e150m-en-ia-agentica-para-latam-con-kolibri/
-    publisher: El Ecosistema Startup
-    title: Konecta invierte 150 millones de euros en IA agéntica para LATAM con Kolibri
-    published: 2026-09-17
-    archive: https://web.archive.org/web/20261021202942/https://ecosistemastartup.com/konecta-invierte-e150m-en-ia-agentica-para-latam-con-kolibri/
 related: []
 ---
 
@@ -169,8 +147,8 @@ On 22 September 2026, Chiara Gribaudo, vice-president of the Democratic Party, t
 [^uilfpc-6]: "Accorpamento dei tre siti piemontesi in un unico grande sito a Torino, con la conseguente chiusura di Asti e Ivrea Dunque, di fronte a un mercato del CRM/BPO sempre più impattato dai profondi cambiamenti imposti dalla digitalizzazione e che richiede una nuova visione che porti alla riconversione e riqualificazione del personale, la soluzione proposta Konecta ci proietta indietro nel tempo: la chiusura di sedi e l’accorpamento in un unico sito produttivo!"
 [^mangasverdes]: "La diferencia es que aquí los cambios ya tienen números muy concretos, desde los 84,5 millones invertidos hasta los 21.000 empleos afectados entre despidos ejecutados y previstos."
 [^mangasverdes-2]: "Ese dinero sirvió para lanzar un sistema de atención automática de llamadas y sistemas de inteligencia artificial autónoma."
-[^konecta-3]: "Whether it is implementing AI-enabled speech analytics and copilots in Peru's insurance sector to elevate customer service, or implementing collections voicebots in Mexico's luxury retail sector and Colombia’s financial sector that have boosted payment promise fulfillment by over 30%, our teams are proving that hybrid human-and-AI models are the future of customer experience in this region“."
+[^konecta-3]: "Whether it is implementing AI-enabled speech analytics and copilots in Peru's insurance sector to elevate customer service, or implementing collections voicebots in Mexico's luxury retail sector and Colombia’s financial sector that have boosted payment promise fulfillment by over 30%, our teams are proving that hybrid human-and-AI models are the future of customer experience in this region‘."
 [^mangasverdes-3]: "La empresa ha ejecutado unos 11.000 despidos y prevé recortar otros 10.000 puestos de trabajo."
 [^slc-cgil-4]: "Le scriventi ritengono indispensabile aprire immediatamente un tavolo istituzionale presso le istituzioni, coinvolgendo il Ministero del Lavoro e il Ministero delle Imprese e del Made in Italy, con la partecipazione dell'azienda e delle OO.SS.."
 [^lavocediasti-sep]: "L'allarme arriva direttamente da Chiara Gribaudo, vicepresidente del Partito Democratico, che ha deciso di portare la questione in parlamento per difendere il futuro di centinaia di addetti del customer care."
-[^lavocediasti-sep-2]: "Di fronte a questo scenario, la rappresentante del centrosinistra chiede un'assunzione di responsabilità all'esecutivo, annunciando un'iniziativa formale: “Il governo non può stare a guardare mentre il costo delle riorganizzazioni viene scaricato sui lavoratori, per questo ho depositato un’interrogazione parlamentare per chiedere chiarimenti”."
+[^lavocediasti-sep-2]: "Di fronte a questo scenario, la rappresentante del centrosinistra chiede un'assunzione di responsabilità all'esecutivo, annunciando un'iniziativa formale: ‘Il governo non può stare a guardare mentre il costo delle riorganizzazioni viene scaricato sui lavoratori, per questo ho depositato un’interrogazione parlamentare per chiedere chiarimenti’."

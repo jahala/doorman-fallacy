@@ -18,11 +18,7 @@ claims:
     said: We do not expect to save much money in the short run, but we will give our customers much better support.
     source: dr
     quote: "- Det skal nok koste nogle millioner (årligt, red.) bare på kundesupporten, så jeg tror egentlig ikke, at vi på den korte klinge kommer til at spare så forbandet meget rent økonomisk, men vi kommer til at give langt bedre support til vores kunder."
-missed:
-  - function: judgment
-    evidence: The AI can take just over 71 per cent of all customer enquiries.
-    sources:
-      - dr
+missed: []
 updates:
   - date: 2026-02-23
     status: too-early

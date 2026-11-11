@@ -18,11 +18,7 @@ claims:
     said: The company will gradually stop using contractors for work that AI can handle.
     source: techco-2025
     quote: "According to von Ahn: “We’ll gradually stop using contractors to do work that AI can handle.”"
-missed:
-  - function: judgment
-    evidence: A company spokesperson said human experts check that the translated output is good enough for teaching.
-    sources:
-      - techcrunch-2024
+missed: []
 updates:
   - date: 2024-01-09
     status: too-early
@@ -94,12 +90,12 @@ Von Ahn told the Financial Times that he did not expect the amount of blowback.[
 - Will users or staff report errors in AI-generated lessons that human review did not catch?
 - Will Duolingo bring back human content staff or contractors?
 
-[^techcrunch-2024]: "A company spokesperson explained to us that GPT is used to translate sentences and then “human experts validate that the output quality is high enough for teaching and is in accordance with CEFR standards for what learners should be able to do at each CEFR level.”"
+[^techcrunch-2024]: "A company spokesperson explained to us that GPT is used to translate sentences and then ‘human experts validate that the output quality is high enough for teaching and is in accordance with CEFR standards for what learners should be able to do at each CEFR level.’"
 [^techcrunch-2024-2]: "Duolingo had 600 full-time employees in 2022, per company filings."
 [^techcrunch-2024-3]: "The company confirmed it cut around 10% of its contractor workforce at the end of 2023, as it turns to AI models like OpenAI’s GPT-4 to streamline content production and translations."
-[^techcrunch-2024-4]: "However, the company disputed calling the departures “layoffs,” saying that only a “small minority” of Duolingo’s contractors were let go as their projects wrapped."
+[^techcrunch-2024-4]: "However, the company disputed calling the departures ‘layoffs,’ saying that only a ‘small minority’ of Duolingo’s contractors were let go as their projects wrapped."
 [^techcrunch-2024-5]: "In a comment to Bloomberg, the company also confirmed that part of the reason it no longer needed as many people was attributable to AI."
 [^fortune-2025]: "On April 28, Duolingo cofounder and CEO Luis von Ahn posted an email on LinkedIn that he had just sent to all employees at his company."
-[^techco-2025]: "According to von Ahn: “We’ll gradually stop using contractors to do work that AI can handle.”"
-[^fortune-2025-2]: "A week later, von Ahn walked back his initial statements, clarifying that he does not “see AI replacing what our employees do” but instead views it as a “tool to accelerate what we do, at the same or better level of quality.”"
-[^fortune-2025-3]: "“I did not expect the amount of blowback,” he recently told the Financial Times."
+[^techco-2025]: "According to von Ahn: ‘We’ll gradually stop using contractors to do work that AI can handle.’"
+[^fortune-2025-2]: "A week later, von Ahn walked back his initial statements, clarifying that he does not ‘see AI replacing what our employees do’ but instead views it as a ‘tool to accelerate what we do, at the same or better level of quality.’"
+[^fortune-2025-3]: "‘I did not expect the amount of blowback,’ he recently told the Financial Times."

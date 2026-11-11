@@ -108,8 +108,8 @@ describe('limits and required fields', () => {
   const firstUpdate = (valid['updates'] as Record<string, unknown>[])[0] ?? {};
 
   it('allows 60 characters in change and refuses 61', () => {
-    expect(issuePaths(withField('change', 'x'.repeat(60)))).toEqual([]);
-    expect(issuePaths(withField('change', 'x'.repeat(61)))).toContainEqual(['change']);
+    expect(issuePaths(withField('change', `${'x'.repeat(59)}.`))).toEqual([]);
+    expect(issuePaths(withField('change', `${'x'.repeat(60)}.`))).toContainEqual(['change']);
   });
 
   it('allows 80 characters in a summary and refuses 81', () => {
@@ -131,9 +131,17 @@ describe('limits and required fields', () => {
     ]);
   });
 
-  it('needs at least one update, one hidden function, one source and one watch query and signal', () => {
+  it('needs the change line to be one sentence ending in a full stop, so the ledger table reads evenly', () => {
+    expect(issuePaths(withField('change', 'Procedure to dismiss 42 of 136 staff as AI takes data work'))).toContainEqual(['change']);
+    expect(issuePaths(withField('change', '42 of 136 staff to be dismissed as AI takes data work.'))).toEqual([]);
+  });
+
+  it('accepts a case with no doorman reading yet: it waits for a source that reports the work going missing', () => {
+    expect(issuePaths(withField('missed', []))).toEqual([]);
+  });
+
+  it('needs at least one update, one source and one watch query and signal', () => {
     expect(issuePaths(withField('updates', []))).toContainEqual(['updates', 0]);
-    expect(issuePaths(withField('missed', []))).toContainEqual(['missed', 0]);
     expect(issuePaths(withField('sources', []))).toContainEqual(['sources']);
     expect(issuePaths(withField('watch', { queries: [], signals: ['rehiring'] }))).toContainEqual(['watch', 'queries']);
     expect(issuePaths(withField('watch', { queries: ['q'], signals: [] }))).toContainEqual(['watch', 'signals']);

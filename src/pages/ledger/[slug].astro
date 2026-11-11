@@ -35,7 +35,7 @@ const { Content } = await render(entry);
 const facts = caseFacts(data);
 const reading = doormanReading(data);
 const claims = claimEntries(data);
-const timeline = timelineEntries(data);
+const timeline = timelineEntries(data, entry.body ?? '');
 const changelog = caseChangelog(data);
 const sources = sourceEntries(data);
 const history = repository.caseHistory(entry.id);
@@ -88,20 +88,29 @@ const history = repository.caseHistory(entry.id);
           Analysis. This is the site&rsquo;s reading of what the sources describe, not something they say.
         </p>
       </div>
-      <ul class="case__body reading">
-        {
-          reading.map((point) => (
-            <li class="reading__item">
-              <h3 class="t-subhead"><a class="reading__name" href={point.href}>{point.label}</a></h3>
-              <p class="t-small ink-2">{point.meaning}</p>
-              <p class="reading__evidence">
-                {point.evidence}
-                <SourceLinks sources={point.sources} />
-              </p>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        reading.length === 0 ? (
+          <p class="case__body reading__none ink-2">
+            No source has reported hidden work going missing yet, such as complaints, waits, overtime, rehiring or a
+            reversal. The ledger looks for it at each review.
+          </p>
+        ) : (
+        <ul class="case__body reading">
+          {
+            reading.map((point) => (
+              <li class="reading__item">
+                <h3 class="t-subhead"><a class="reading__name" href={point.href}>{point.label}</a></h3>
+                <p class="t-small ink-2">{point.meaning}</p>
+                <p class="reading__evidence">
+                  {point.evidence}
+                  <SourceLinks sources={point.sources} />
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+        )
+      }
     </section>
 
     {
@@ -146,7 +155,7 @@ const history = repository.caseHistory(entry.id);
                   {update.summary}
                   <SourceLinks sources={update.sources} />
                 </p>
-                <p class="t-small ink-2" data-quote>&ldquo;{update.quote}&rdquo;</p>
+                {update.quote !== null && <p class="t-small ink-2" data-quote>&ldquo;{update.quote}&rdquo;</p>}
               </div>
             </li>
           ))
@@ -319,6 +328,10 @@ const history = repository.caseHistory(entry.id);
 
   .reading__name:hover {
     text-decoration-color: currentcolor;
+  }
+
+  .reading__none {
+    max-inline-size: var(--measure);
   }
 
   .reading__evidence {

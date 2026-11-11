@@ -37,6 +37,11 @@ These exist only in Cloudflare and cfmail, so nothing in the repository can make
 5. **The repository public.** The site links to GitHub for its code, its licence and each case's history, so the repository must be public before the first release, or those links show visitors a 404. To undo: make it private again.
 6. **The secret and the custom domains, at the first release.** Before it: put the key into the Worker from the Keychain (`security find-generic-password -s doorman-fallacy -a CFMAIL_KEY -w | npx wrangler secret put CFMAIL_KEY`), and delete the apex and `www` A records in both zones, left from the registrar, because a custom domain refuses a hostname that has a record. The release then creates the four custom domains from `routes`, with their records and certificates. To undo: remove a domain in the Worker's Domains and Routes settings, or remove it from `routes` and release again.
 
+Two more must be true before launch:
+
+- **Suggestions are read.** The suggest page says the desk checks every suggestion and error report, but nothing reads the D1 table yet. The weekly desk run needs a step that takes new suggestions as leads, and error reports as corrections to check, and marks each one resolved.
+- **The desk runs on a schedule.** No case has been re-checked since it was written, because `scripts/install-desk-schedule.sh` has not been run. Until it is, statuses go stale (Telenor's, from 2024, still reads too early to tell).
+
 The zone thedoormanfallacy.com also has a DMARC record from the registrar (`p=quarantine`, reports to `onsecureserver.net`). cfmail's guide leaves an existing DMARC record alone; pointing its reports elsewhere is Jan's call once sending has worked for a while.
 
 After the first release, check that the Worker answers: the home page loads, `https://www.doormanfallacy.com/idea` redirects to `https://thedoormanfallacy.com/idea`, and a sign-up with Jan's own address delivers the confirmation email.

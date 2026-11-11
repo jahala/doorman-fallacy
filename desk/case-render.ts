@@ -67,12 +67,19 @@ export function loadedWords(text: string): string[] {
 }
 
 /** Straight double quotes inside a quote become curly ones, so the footnote stays one quoted string. */
-function curlInner(sentence: string): string {
+/**
+ * A footnote wraps its source sentence in double quote marks, so a quotation inside that sentence
+ * takes single marks: “‘We have apologised,’ a spokesperson said.” Straight double marks alternate
+ * open and close; curly ones keep their side.
+ */
+export function nestQuotes(sentence: string): string {
   let open = true;
-  return sentence.replace(/"/g, () => {
-    const mark = open ? '“' : '”';
+  return sentence.replace(/["“”]/g, (mark) => {
+    if (mark === '“') return '‘';
+    if (mark === '”') return '’';
+    const nested = open ? '‘' : '’';
     open = !open;
-    return mark;
+    return nested;
   });
 }
 
@@ -127,7 +134,7 @@ export function renderCase(draft: Draft, sources: readonly SourceMaterial[], tod
     perSource.set(found.source, count);
     const name = count === 1 ? found.source : `${found.source}-${String(count)}`;
     labels.set(key, name);
-    footnotes.push(`[^${name}]: "${curlInner(found.sentence)}"`);
+    footnotes.push(`[^${name}]: "${nestQuotes(found.sentence)}"`);
     return name;
   };
   const paragraphs = (section: readonly (readonly Statement[])[]): string =>

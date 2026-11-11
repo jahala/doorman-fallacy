@@ -43,19 +43,7 @@ claims:
     said: Some human agents would remain.
     source: cxdive
     quote: But the Atlassian spokesperson said some human agents would remain.
-missed:
-  - function: judgment
-    evidence: Work is routed to the right experts, who can resolve issues more quickly.
-    sources:
-      - cxdive
-  - function: signal
-    evidence: Some Atlassian customers will be interfacing directly with AI.
-    sources:
-      - itpro
-  - function: absorption
-    evidence: Future complaints would more likely be treated in part with AI.
-    sources:
-      - yahoo
+missed: []
 updates:
   - date: 2025-07-30
     status: too-early
@@ -147,19 +135,19 @@ Max Ball, principal analyst at Forrester, said layoffs like these are outliers r
 [^itpro-2]: "The Australian software company will slash 150 roles out of its total 12,000 globally, telling local reporters the cuts were focused on the customer service and support team."
 [^hrleader]: "[The] changes impact 150 teammates across the US, Australia, India, Germany, Canada, and the UK."
 [^hrleader-2]: "On 30 July, Atlassian CEO and co-founder Mike Cannon-Brookes notified staff through a pre-recorded video that jobs were being terminated and that staff would need to wait 15 minutes to receive an email determining their future at the company."
-[^hrleader-3]: "“We have made this decision after implementing improvements to the customer experience across our platform and tools, resulting in a significant reduction in support needs,” the company said."
-[^itpro-3]: "“While we’re proud of this momentum, it leaves us with more capacity than needed to deliver strong customer support,” the company said in the statement, adding that customers will be able to “self-service through the embedding of AI in our contact form, but it’s primarily because our customers need less help with the product.“"
-[^itpro-4]: "“These roles are not being replaced by AI,” the statement added."
-[^cxdive]: "“These improvements include reducing the time spent on support tickets with more efficient ways to route work to the right experts who can resolve issues more quickly, better identification and resolution of error codes, and more,” the spokesperson said."
+[^hrleader-3]: "‘We have made this decision after implementing improvements to the customer experience across our platform and tools, resulting in a significant reduction in support needs,’ the company said."
+[^itpro-3]: "‘While we’re proud of this momentum, it leaves us with more capacity than needed to deliver strong customer support,’ the company said in the statement, adding that customers will be able to ‘self-service through the embedding of AI in our contact form, but it’s primarily because our customers need less help with the product.‘"
+[^itpro-4]: "‘These roles are not being replaced by AI,’ the statement added."
+[^cxdive]: "‘These improvements include reducing the time spent on support tickets with more efficient ways to route work to the right experts who can resolve issues more quickly, better identification and resolution of error codes, and more,’ the spokesperson said."
 [^cxdive-2]: "But the Atlassian spokesperson said some human agents would remain."
 [^itpro-5]: "Reports suggested that the roles were being replaced by AI."
 [^itpro-6]: "However, the company has denied jobs are being outright replaced by AI."
-[^yahoo]: "Professionals Australia director Paul Inglis told Yahoo Finance it was a “devastating day for Atlassian employees”, with 44 of the global job cuts based in Australia."
-[^yahoo-2]: "“Atlassian has confirmed that these roles are being made redundant due to the impact of artificial intelligence,” he said."
+[^yahoo]: "Professionals Australia director Paul Inglis told Yahoo Finance it was a ‘devastating day for Atlassian employees’, with 44 of the global job cuts based in Australia."
+[^yahoo-2]: "‘Atlassian has confirmed that these roles are being made redundant due to the impact of artificial intelligence,’ he said."
 [^cxdive-3]: "Atlassian made headlines earlier this summer when its CEO left a recorded message for employees telling them customer service issues would be largely addressed with AI, The Australian reported at the time."
 [^yahoo-4]: "Larger clients had been moved off the older software platform and into the cloud, reducing the volume of complex support tasks required."
 [^cxdive-4]: "Atlassian has laid off 200 European customer service and support workers in addition to the 150 cut in July who were told that they would largely be replaced with AI."
-[^cxdive-5]: "The impacted workers were in France and the Netherlands, and Atlassian engaged in works councils in both countries, “which accounts for the delay in notice for the European-based employees who were impacted,” the spokesperson said."
+[^cxdive-5]: "The impacted workers were in France and the Netherlands, and Atlassian engaged in works councils in both countries, ‘which accounts for the delay in notice for the European-based employees who were impacted,’ the spokesperson said."
 [^cxdive-6]: "But rather than indicating a trend of customer service workers losing their jobs to AI, layoffs like these are outliers, according to Max Ball, principal analyst at Forrester."
-[^cxdive-7]: "“I don't know what their turnover rate is, but the average is 30%, so you very rarely lay people off in the contact center,” he said."
+[^cxdive-7]: "‘I don't know what their turnover rate is, but the average is 30%, so you very rarely lay people off in the contact center,’ he said."
 [^cxdive-8]: "AI will eventually disrupt the contact center workforce, but the technology isn’t there yet, he said."

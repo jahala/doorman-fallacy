@@ -37,10 +37,6 @@ missed:
     evidence: The platform now faces rigid and less nuanced responses after dropping the people who made interactions more empathetic.
     sources:
       - gizmodo
-  - function: memory
-    evidence: Former employees said they spent much of their work training automated systems that now answer customers and sellers, including through WhatsApp.
-    sources:
-      - eleconomista
   - function: slack
     evidence: The union said workers who stayed were told they would also take on the Content area's responsibilities, accumulating functions.
     sources:
@@ -172,20 +168,20 @@ A lawyer represented a former Mercado Libre employee in a case seeking reinstate
 [^eleconomista]: "Según esos testimonios, se despidió a casi todo el equipo de contenidos, se mantuvo a los diseñadores y a estos últimos se les pidió ahora asumir tareas más integrales, incluyendo redacción."
 [^gizmodo]: "Convocados a reuniones masivas por Zoom, trabajadores de distintos países escucharon un comunicado de Recursos Humanos leído en español y portugués."
 [^gizmodo-2]: "Finalizada la llamada, perdieron acceso inmediato a sus cuentas y herramientas de trabajo."
-[^tiempoar]: "Lola Rodríguez, una de las despedidas explica: “Lo que nos manifestaron es que la empresa estaba en pos de eficientizar los procesos, y en base a eso, estaban buscando roles generalistas."
-[^tiempoar-2]: "También nos dijeron que ya no se iban a contemplar personas que escriban, que diseñen o que dibujen pantallas si no que a todos se les iba a pedir todo”."
+[^tiempoar]: "Lola Rodríguez, una de las despedidas explica: ‘Lo que nos manifestaron es que la empresa estaba en pos de eficientizar los procesos, y en base a eso, estaban buscando roles generalistas."
+[^tiempoar-2]: "También nos dijeron que ya no se iban a contemplar personas que escriban, que diseñen o que dibujen pantallas si no que a todos se les iba a pedir todo’."
 [^tiempoar-3]: "Durante todo el 2025, a los trabajadores del área de UX, como parte de su tarea, se les asignó entrenar al modelo de inteligencia artificial."
 [^eleconomista-2]: "Varios ex empleados contaron —bajo anonimato, como es habitual en la empresa— que dedicaban buena parte de su trabajo a entrenar sistemas automatizados que hoy responden a clientes y vendedores, incluso a través del WhatsApp de MercadoLibre."
 [^fastcompanybrasil]: "Os profissionais que permaneceram na equipe ter&atilde;o acesso a novas ferramentas de Intelig&ecirc;ncia Artificial e a expectativa &eacute; que designers assumam parte das tarefas antes feitas por redatores de UX."
 [^infogremiales-3]: "Por su parte, desde la empresa respondieron: «Estamos evolucionando la organización de nuestros equipos de Experiencia de Usuario (UX) para integrar de manera más efectiva las áreas de Diseño y Contenido."
 [^infogremiales-4]: "Esta transformación busca fomentar estructuras más ágiles y colaborativas, aprovechando la tecnología para seguir mejorando la experiencia de nuestros usuarios»."
 [^fastcompanybrasil-2]: "A empresa afirma que a medida n&atilde;o muda seus planos de crescimento no pa&iacute;s."
-[^bloomberglinea]: "“Esta acción puntual, implica la salida de un grupo acotado de personas, que representa una parte mínima de nuestro equipo (menos del 0,09% de nuestros más de 125.000 empleados)”, dijo la compañía tecnológica"
+[^bloomberglinea]: "‘Esta acción puntual, implica la salida de un grupo acotado de personas, que representa una parte mínima de nuestro equipo (menos del 0,09% de nuestros más de 125.000 empleados)’, dijo la compañía tecnológica"
 [^eleconomista-3]: "Sin embargo, muchos de los despedidos sostienen que el proceso estuvo directamente ligado a la inteligencia artificial."
 [^bloomberglinea-2]: "Personas con conocimiento del asunto, que pidieron la reserva de sus nombres, relataron que, desde comienzos del año pasado, la empresa impulsó de forma explícita el uso de herramientas de inteligencia artificial para aumentar la productividad, especialmente en el área de Contenidos y Diseño."
 [^bloomberglinea-3]: "Los equipos habrían entrenado modelos y bots, como Gemini y GPT, para realizar tareas de redacción, ideación, flujos de experiencia y cumplimiento de manuales de estilo."
 [^bloomberglinea-4]: "La Asociación Gremial de Computación en Argentina (AGC) también asoció los despidos al uso de inteligencia artificial, refiriéndose al testimonio de empleados que fueron cesados en el país."
-[^bloomberglinea-5]: "“Testimonios de trabajadores desvinculados y el análisis de las tareas afectadas sugieren que la incorporación de herramientas de inteligencia artificial habría estado detrás de la decisión“, dijo en una nota publicada en su web."
+[^bloomberglinea-5]: "‘Testimonios de trabajadores desvinculados y el análisis de las tareas afectadas sugieren que la incorporación de herramientas de inteligencia artificial habría estado detrás de la decisión‘, dijo en una nota publicada en su web."
 [^gizmodo-3]: "Usuarios y vendedores comenzaron a notar cambios en la atención al cliente, con un aumento de interacciones mediadas por agentes automatizados, especialmente a través de canales como WhatsApp."
 [^gizmodo-4]: "Si bien algunas experiencias resultaron satisfactorias, otros testimonios señalan dificultades para resolver problemas simples, que solo se destraban tras insistir hasta llegar a un operador humano."
 [^sindpdsc]: "O SINDPD/SC vem a público denunciar de forma firme e categórica a postura antisindical do Mercado Livre (MELI), que, após promover demissões em massa, se recusa a negociar coletivamente com o sindicato, atacando direitos e desrespeitando a organização dos trabalhadores."
