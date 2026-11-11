@@ -1,7 +1,8 @@
 /**
  * The three questions to ask before replacing a role: the site's one way of seeing the whole job.
  * Each question gathers the ideas that answer it, and each idea names the research it rests on
- * (docs/research/2026-10-19-mental-model.md). Read by the home page and /idea.
+ * (docs/research/2026-10-19-mental-model.md). Each also lists the signs that a decision skipped it.
+ * Read by the home page and /idea.
  */
 export interface Source {
   readonly cite: string;
@@ -19,6 +20,8 @@ export interface Question {
   readonly title: string;
   /** The question itself. */
   readonly ask: string;
+  /** Signs that a decision skipped this question, one line each. */
+  readonly signs: readonly string[];
   readonly parts: readonly QuestionPart[];
 }
 
@@ -26,6 +29,7 @@ export const questions: readonly Question[] = [
   {
     title: 'The task being automated',
     ask: 'What can the system now handle?',
+    signs: ['The role is described by one task.', 'Nobody asked the people in the role.'],
     parts: [
       {
         title: 'Look at the work as it is done.',
@@ -52,6 +56,7 @@ export const questions: readonly Question[] = [
   {
     title: 'The work that remains',
     ask: 'What did the person notice, remember or resolve?',
+    signs: ['The exceptions have no owner.'],
     parts: [
       {
         title: 'Name the invisible work, and find out why it is there.',
@@ -71,6 +76,11 @@ export const questions: readonly Question[] = [
   {
     title: 'Who takes it on',
     ask: 'Another team, the customer, or nobody?',
+    signs: [
+      'The savings are counted on that task alone.',
+      'Success is measured by the number that justified the change.',
+      'The cost turns up somewhere else.',
+    ],
     parts: [
       {
         title: 'Count what is lost as well as what is saved.',

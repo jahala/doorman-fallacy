@@ -186,3 +186,10 @@ Chosen: one inline script on every page sends one page view per load to `e.thedo
 
 Why: it is the smallest change that counts real visitors without cookies or a banner. Keeping one named exception, held by a test, keeps the rest of the site free of script.
 
+## D-025 · 2026-11-11 · /idea asks each question once
+
+Context: the site review found that `/idea` asked the reader the same thing three ways: a "question to ask" under each of the six kinds of hidden work, the three questions with their ideas, and six signs of the mistake in a block of their own. Each kind also retold a hotel example that the story at the top already tells. The page ran to about nine screens.
+
+Chosen, with Jan's yes on each removal: the three questions are the page's one checklist. Each question lists, one line each, the signs that a decision skipped it; the separate block of signs and its detail lines are removed. Each kind of hidden work keeps its meaning, today's example, how its loss shows and its cases in the ledger; its hotel example and its question to ask are removed. The signs to watch after an announcement stay on `/ledger`.
+
+Why: a reader meets each idea once, in the place where it can be acted on, and the page is shorter without losing a question or a source.

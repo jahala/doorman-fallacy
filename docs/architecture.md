@@ -55,7 +55,7 @@ scripts → lib, data
 | Path | Page | Mockup |
 |---|---|---|
 | `/` | Home: hero, the work beyond the task (the six kinds of hidden work), ledger preview, sign-up | all five |
-| `/idea` | The idea, in five numbered sections: the story, the hidden work (each kind anchored at `/idea#<id>`, with its examples, the question to ask and its cases in the ledger), the three questions (with the signs of the mistake), when automation is the right call, further reading. The head holds the definition, how to cite it and the contents | 1, 2 |
+| `/idea` | The idea, in five numbered sections: the story, the hidden work (each kind anchored at `/idea#<id>`, with today's example, how its loss shows and its cases in the ledger), the three questions (each with the signs that a decision skipped it), when automation is the right call, further reading. The head holds the definition, how to cite it and the contents | 1, 2 |
 | `/ledger` | The ledger, in five numbered sections: the cases (newest announcement first, with a summary above; a designed empty state when there are none), what the ledger watches for, statuses and follow-up, what is known beyond the ledger, the data | 3 |
 | `/ledger.csv`, `/ledger.json` | The whole ledger as data, built from the cases ([data-model.md](data-model.md#the-dataset)) | |
 | `/og/default.png`, `/og/ledger/<slug>.png` | Share cards, 1200 by 630, drawn at build time. Every page names one in its head: its own where it has one, the site's otherwise | |

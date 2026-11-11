@@ -3,14 +3,15 @@ import path from 'node:path';
 import { questions } from '../../src/data/questions.ts';
 import { expect, test } from './site.ts';
 
-test('/idea#questions gives each question its ideas, with every source, linking those that have an address', async ({ page, siteUrl }) => {
+test('/idea#questions gives each question its signs of being skipped and its ideas, with every source, linking those that have an address', async ({ page, siteUrl }) => {
   await page.goto(new URL('/idea/', siteUrl).href);
-  const rows = page.locator('#questions .question:not(#signs)');
+  const rows = page.locator('#questions .question');
   await expect(rows).toHaveCount(questions.length);
   for (const [index, question] of questions.entries()) {
     const row = rows.nth(index);
     await expect(row.getByRole('heading', { level: 3 })).toHaveText(question.title);
     await expect(row).toContainText(question.ask);
+    expect(await row.locator('.question__signs li').allInnerTexts()).toEqual([...question.signs]);
     for (const part of question.parts) {
       await expect(row).toContainText(part.title);
       await expect(row).toContainText(part.detail);

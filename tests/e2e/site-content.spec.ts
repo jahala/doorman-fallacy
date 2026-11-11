@@ -1,7 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import { citation, definition } from '../../src/data/definition.ts';
 import { hiddenFunctionIds, hiddenFunctions } from '../../src/data/hidden-functions.ts';
-import { signs } from '../../src/data/signs.ts';
+import { questions } from '../../src/data/questions.ts';
 import { statusIds, statuses } from '../../src/data/statuses.ts';
 import { expect, readBuilt, test } from './site.ts';
 
@@ -235,19 +235,12 @@ test.describe('/idea', () => {
     ]);
   });
 
-  test('lists the six signs from their data file under the three questions, numbered, with the detail in ink-2', async ({ page, siteUrl }) => {
+  test('asks the per-kind questions and the signs of the mistake only once, inside the three questions', async ({ page, siteUrl }) => {
     await page.goto(new URL(route, siteUrl).href);
-    const signsBlock = page.locator('#questions #signs');
-    await expect(signsBlock.getByRole('heading', { name: 'Signs of the mistake', level: 3 })).toBeVisible();
-    const items = signsBlock.locator('ol.numbered > li');
-    await expect(items).toHaveCount(signs.length);
-    for (const [index, { title, detail }] of signs.entries()) {
-      const item = items.nth(index);
-      await expect(item.locator('.t-label')).toHaveText(title);
-      await expect(item.locator('p').nth(1)).toHaveText(detail);
-      expect((await style(item.locator('p').nth(1))).colour).toBe(await colourOf(page, 'ink-2'));
-      await expect(item.locator('.section-number')).toHaveText(String(index + 1));
-    }
+    await expect(page.locator('#signs')).toHaveCount(0);
+    await expect(page.getByText('The question to ask')).toHaveCount(0);
+    const signs = page.locator('#questions .question__signs li');
+    await expect(signs).toHaveCount(questions.flatMap((question) => question.signs).length);
   });
 
   for (const [width, aligned] of [
@@ -269,13 +262,13 @@ test.describe('/idea', () => {
   }
 
   for (const id of hiddenFunctionIds) {
-    test(`gives ${id} its own entry, anchored for links: the meaning, the four facts from the data file, and its cases in the ledger`, async ({ page, siteUrl }) => {
+    test(`gives ${id} its own entry, anchored for links: the meaning, today's example and how its loss shows, and its cases in the ledger`, async ({ page, siteUrl }) => {
       await page.goto(new URL(route, siteUrl).href);
       const entry = hiddenFunctions[id];
       const item = page.locator(`#hidden li#${id}`);
       await expect(item.getByRole('heading', { level: 3 })).toHaveText(entry.label);
-      for (const text of [entry.meaning, entry.atTheHotel, entry.today, entry.whenMissing, entry.ask]) await expect(item).toContainText(text);
-      expect(await item.locator('dt').allInnerTexts()).toEqual(['At the hotel', 'Today, for example', 'When it goes missing', 'The question to ask']);
+      for (const text of [entry.meaning, entry.today, entry.whenMissing]) await expect(item).toContainText(text);
+      expect(await item.locator('dt').allInnerTexts()).toEqual(['Today, for example', 'When it goes missing']);
       const wanted = dataset.cases.filter((item) => item.missed.includes(id)).map((item) => `/ledger/${item.slug}`).sort();
       const linked = (await item.locator('.hidden-kind__ledger a').evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href') ?? ''))).sort();
       expect(linked).toEqual(wanted);

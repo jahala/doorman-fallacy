@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import ExternalLink from '../components/ExternalLink.astro';
 import HiddenIcon from '../components/HiddenIcon.astro';
-import NumberedList from '../components/NumberedList.astro';
 import PageHead from '../components/PageHead.astro';
 import Pager from '../components/Pager.astro';
 import Photo from '../components/Photo.astro';
@@ -11,7 +10,6 @@ import WhereWorkGoes from '../components/WhereWorkGoes.astro';
 import { citation, definition } from '../data/definition.ts';
 import { hiddenFunctionIds, hiddenFunctions } from '../data/hidden-functions.ts';
 import { questions } from '../data/questions.ts';
-import { signs } from '../data/signs.ts';
 import Site from '../layouts/Site.astro';
 import { casesMissing } from '../lib/hidden-work.ts';
 
@@ -73,7 +71,7 @@ const contents = [
 
     <TextSection id="hidden-title" anchor="hidden" number={2} title="The hidden work" full>
       <Photo slot="aside" id="portrait" sizes="(min-width: 56rem) 33vw, 100vw" />
-      <p class="prose">Six kinds of work that disappear without being missed at first. For each: what it looked like at the hotel door, what it looks like today, how its loss shows, and the question to ask before the change.</p>
+      <p class="prose">Six kinds of work that disappear without being missed at first. For each: what it looks like today, how its loss shows, and the cases in the ledger where it went missing.</p>
       <ul class="hidden-kinds">
         {
           hiddenFunctionIds.map((id) => {
@@ -88,20 +86,12 @@ const contents = [
                 <p class="ink-2">{kind.meaning}</p>
                 <dl class="hidden-kind__facts">
                   <div>
-                    <dt class="t-small ink-2">At the hotel</dt>
-                    <dd>{kind.atTheHotel}</dd>
-                  </div>
-                  <div>
                     <dt class="t-small ink-2">Today, for example</dt>
                     <dd>{kind.today}</dd>
                   </div>
                   <div>
                     <dt class="t-small ink-2">When it goes missing</dt>
                     <dd>{kind.whenMissing}</dd>
-                  </div>
-                  <div>
-                    <dt class="t-small ink-2">The question to ask</dt>
-                    <dd class="t-label">{kind.ask}</dd>
                   </div>
                 </dl>
                 <p class="hidden-kind__ledger t-small ink-2">
@@ -133,12 +123,18 @@ const contents = [
       </p>
       <div slot="wide" class="questions">
         {
-          questions.map(({ title, ask, parts }, index) => (
+          questions.map(({ title, ask, signs, parts }, index) => (
             <div class="question grid">
               <div class="question__head">
                 <p class="section-number">Question {index + 1}</p>
                 <h3 class="t-subhead">{title}</h3>
                 <p class="ink-2">{ask}</p>
+                <div class="question__signs">
+                  <p class="t-small ink-2">Signs it was skipped</p>
+                  <ul class="t-small">
+                    {signs.map((sign) => <li>{sign}</li>)}
+                  </ul>
+                </div>
               </div>
               <ul class="question__parts">
                 {parts.map((part) => (
@@ -157,15 +153,6 @@ const contents = [
           ))
         }
         <WhereWorkGoes />
-        <div id="signs" class="question grid">
-          <div class="question__head">
-            <h3 id="signs-title" class="t-subhead">Signs of the mistake</h3>
-            <p class="ink-2">A decision that shows several of these has answered the first question and skipped the other two.</p>
-          </div>
-          <div class="question__parts">
-            <NumberedList items={signs} />
-          </div>
-        </div>
       </div>
     </TextSection>
 
@@ -296,6 +283,17 @@ const contents = [
     display: grid;
     gap: var(--space-8);
     max-inline-size: var(--measure);
+  }
+
+  .question__signs {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-start: var(--space-3);
+  }
+
+  .question__signs ul {
+    display: grid;
+    gap: var(--space-1);
   }
 
   .question__part > * + * {

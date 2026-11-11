@@ -1,6 +1,6 @@
 # Site review (2026-11-11)
 
-A walk through every page at desktop and phone width, with 14 cases in the ledger. Findings are ranked by how much they mislead or tire a reader. Nothing below has been changed except item 1.
+A walk through every page at desktop and phone width, with 14 cases in the ledger. Findings are ranked by how much they mislead or tire a reader. Item 1 was fixed in PR #26, items 2, 3, 4, 6 and 7 in PR #28, and item 5 with D-025.
 
 ## 1. A false statement (fixed)
 
