@@ -46,7 +46,7 @@
     "jiti": "2.7.0",
     "stylelint": "17.16.0",
     "stylelint-config-html": "2.0.0",
-    "stylelint-config-standard": "40.0.0",
+    "stylelint-config-standard": "41.0.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
     "vitest": "5.1.0",
