@@ -22,7 +22,7 @@ claims:
     who: Mercado Libre
     said: The measure did not change its growth plans in the country.
     source: fastcompanybrasil
-    quote: A empresa afirma que a medida n&atilde;o muda seus planos de crescimento no pa&iacute;s.
+    quote: A empresa afirma que a medida não muda seus planos de crescimento no país.
   - date: 2026-01-23
     who: Mercado Libre
     said: The departures were less than 0.09% of its more than 125,000 employees.
@@ -172,10 +172,10 @@ A lawyer represented a former Mercado Libre employee in a case seeking reinstate
 [^tiempoar-2]: "También nos dijeron que ya no se iban a contemplar personas que escriban, que diseñen o que dibujen pantallas si no que a todos se les iba a pedir todo’."
 [^tiempoar-3]: "Durante todo el 2025, a los trabajadores del área de UX, como parte de su tarea, se les asignó entrenar al modelo de inteligencia artificial."
 [^eleconomista-2]: "Varios ex empleados contaron —bajo anonimato, como es habitual en la empresa— que dedicaban buena parte de su trabajo a entrenar sistemas automatizados que hoy responden a clientes y vendedores, incluso a través del WhatsApp de MercadoLibre."
-[^fastcompanybrasil]: "Os profissionais que permaneceram na equipe ter&atilde;o acesso a novas ferramentas de Intelig&ecirc;ncia Artificial e a expectativa &eacute; que designers assumam parte das tarefas antes feitas por redatores de UX."
+[^fastcompanybrasil]: "Os profissionais que permaneceram na equipe terão acesso a novas ferramentas de Inteligência Artificial e a expectativa é que designers assumam parte das tarefas antes feitas por redatores de UX."
 [^infogremiales-3]: "Por su parte, desde la empresa respondieron: «Estamos evolucionando la organización de nuestros equipos de Experiencia de Usuario (UX) para integrar de manera más efectiva las áreas de Diseño y Contenido."
 [^infogremiales-4]: "Esta transformación busca fomentar estructuras más ágiles y colaborativas, aprovechando la tecnología para seguir mejorando la experiencia de nuestros usuarios»."
-[^fastcompanybrasil-2]: "A empresa afirma que a medida n&atilde;o muda seus planos de crescimento no pa&iacute;s."
+[^fastcompanybrasil-2]: "A empresa afirma que a medida não muda seus planos de crescimento no país."
 [^bloomberglinea]: "‘Esta acción puntual, implica la salida de un grupo acotado de personas, que representa una parte mínima de nuestro equipo (menos del 0,09% de nuestros más de 125.000 empleados)’, dijo la compañía tecnológica"
 [^eleconomista-3]: "Sin embargo, muchos de los despedidos sostienen que el proceso estuvo directamente ligado a la inteligencia artificial."
 [^bloomberglinea-2]: "Personas con conocimiento del asunto, que pidieron la reserva de sus nombres, relataron que, desde comienzos del año pasado, la empresa impulsó de forma explícita el uso de herramientas de inteligencia artificial para aumentar la productividad, especialmente en el área de Contenidos y Diseño."
