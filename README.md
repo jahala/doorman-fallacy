@@ -24,18 +24,20 @@ The writing agent never types a quote. It cites sentences by number, code copies
 
 ## The desk
 
-The desk finds cases each week, cheapest stage first. Most AI layoff news is not a doorman case: many cuts fund AI investment, and AI does not take over the cut roles' work.
+Each week the desk follows up every case and looks for new ones, cheapest stage first. Most AI layoff news is not a doorman case: many cuts fund AI investment, and AI does not take over the cut roles' work.
 
 | Stage | Who | Cost |
 |---|---|---|
-| Sweep news searches | Code | Free |
+| Read readers' suggestions and error reports | Code | Free |
+| Sweep news searches | Code | A fraction of a cent per search |
 | Triage each headline | Jev | Fractions of a cent per lead |
 | Rank by doorman priority | Code | Free |
-| Assess the strongest leads | Claude | About $0.20 per organisation |
-| Write the case | Claude | About $0.20 per case |
+| Assess the strongest leads | An AI agent | About $0.03 per organisation |
+| Write the case | An AI agent | About $0.07 per case |
 | Check every statement | Jev and code | Under $0.001 per case |
+| Review every case for news since its last check | An AI agent, Jev and code | $0.02 to $0.10 per case |
 
-Every paid call goes through one budget per run. [docs/desk.md](docs/desk.md) has the design and what the first runs showed.
+A review adds what was reported since the last check, under the same checks as a new case, and new material needs one primary source or two independent reports of its own. A correction's words are written by code, never by a reader or a model. Every paid call goes through one budget per run, $3 a week. [docs/desk.md](docs/desk.md) has the design and what the runs showed.
 
 ## Run it
 
@@ -49,12 +51,13 @@ npm run build      # the static site into dist/
 npm run test:site  # browser checks against dist/
 ```
 
-The desk needs Claude Code, a TypeSafe key and archive.org keys in the macOS Keychain:
+The desk needs Claude Code, a DeepSeek key, a TypeSafe key and archive.org keys in the macOS Keychain, and a Wrangler login to read readers' suggestions:
 
 ```sh
-node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
+node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn,deepseek --budget 0.30
 node desk/assess.ts --top 4 --budget 1.50
 node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --publish
+node desk/review.ts --case cba-2025 --due --publish   # follow up one case
 node desk/weekly.ts --budget 3   # every stage, as the Monday schedule runs it
 ```
 
