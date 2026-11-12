@@ -64,6 +64,6 @@ Each list holds items of these shapes:
 - `fields`: `{ "field": "change", "value": "...", "reason": "news" }`. `field` is `change` (the summary line: at most 60 characters, one sentence ending in a full stop), `door` (the visible task that was automated) or `headcount` (a number, or null when not disclosed). `reason` is `error` when the field was wrong, `news` when events changed it.
 - `open`: a new list of open questions, or null to keep the case's own.
 - `reports`: `{ "id": 3, "outcome": "no-change", "reason": "one sentence for the desk's log" }` for every error report given below. `corrected` only when you removed or changed something it pointed to.
-- `kinds`: `{ "source-id": "reporting" }` for each new source you cite: `primary` for the organisation's own statement, a union, a court, a regulator or a filing; `reporting` for news.
+- `kinds`: `{ "source-id": "reporting" }` for each new source you cite: `primary` for the organisation's own statement, a union, a court, a regulator or a filing; `reporting` for news. A vendor's case study or marketing page about its own product is neither; do not cite it.
 
 ## The material

@@ -1,3 +1,4 @@
+// The cases these tests change are frozen copies in tests/fixtures/review, since reviews change the published ones each week.
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -7,7 +8,7 @@ import { renderCase, statementsOf, type SourceMaterial } from '../../desk/case-r
 import { applyReview, dropCiting, emptyReview, parseReview, trimForLength, type Review } from '../../desk/review-apply.ts';
 import { checkCaseText } from '../../scripts/check-cases.ts';
 
-const text = readFileSync(path.resolve(import.meta.dirname, '../../src/content/cases/cba-2025.md'), 'utf8');
+const text = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/cba-2025.md'), 'utf8');
 
 function cba(): ReadCase {
   const read = readCase(text);
@@ -126,7 +127,7 @@ describe('applyReview', () => {
 });
 
 describe('a removal that leaves the rest hanging', () => {
-  const telenor = readFileSync(path.resolve(import.meta.dirname, '../../src/content/cases/telenor-2024.md'), 'utf8');
+  const telenor = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/telenor-2024.md'), 'utf8');
   function telenorCase(): ReadCase {
     const read = readCase(telenor);
     if (!read.ok) throw new Error(read.problems.join('; '));
@@ -162,7 +163,7 @@ describe('a removal that leaves the rest hanging', () => {
 });
 
 describe('trimForLength', () => {
-  const telenor = readFileSync(path.resolve(import.meta.dirname, '../../src/content/cases/telenor-2024.md'), 'utf8');
+  const telenor = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/telenor-2024.md'), 'utf8');
   const read = readCase(telenor);
   if (!read.ok) throw new Error(read.problems.join('; '));
   const { draft } = read.value;

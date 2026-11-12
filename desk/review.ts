@@ -122,7 +122,10 @@ async function write(review: Review, newSources: readonly SourceMaterial[], page
   const applied = applyReview(current, review, newSources, today);
   const counts = { pages, added: statementsOf(review.add).length, removed: review.remove.length };
   if (!applied.ok) return finish({ reviewed: true, written: false, ...counts, corrections: [], reports: [], problems: applied.problems });
-  const rendered = renderCase(applied.draft, applied.sources, today, applied.record);
+  // The check is recorded only when the desk could look: a search answered, or a link was read.
+  const looked = searchesAnswered > 0 || pages > 0;
+  if (!looked) note('no search answered and no page read, so the date of the last check stays');
+  const rendered = renderCase(applied.draft, applied.sources, looked ? today : current.lastChecked, applied.record);
   if (!rendered.ok) return finish({ reviewed: true, written: false, ...counts, corrections: [], reports: [], problems: rendered.problems });
   const findings = checkCaseText(`${slug}.md`, rendered.text).map((finding) => `case check ${finding.rule}: ${finding.message}`);
   if (findings.length > 0) return finish({ reviewed: true, written: false, ...counts, corrections: [], reports: [], problems: findings });
@@ -137,6 +140,7 @@ async function write(review: Review, newSources: readonly SourceMaterial[], page
 const since = new Date(Date.parse(current.lastChecked) - 7 * 86_400_000).toISOString().slice(0, 10);
 const pointed: Candidate[] = [...new Set([...values.links.split(',').filter((url) => url !== ''), ...reports.flatMap((report) => report.links)])].map((url) => ({ url, title: '', publisher: '', published: '', pointed: true }));
 const searched: Candidate[] = [];
+let searchesAnswered = 0;
 const key = await deepseekKey();
 if (key === null) note('search: no DEEPSEEK_API_KEY; only pointed links are read');
 else {
@@ -144,7 +148,8 @@ else {
   for (const query of current.draft.watch.queries) {
     const found = await search.search(`${query} after:${since}`, { count: 5, content: false });
     if (!found.ok) note(`search "${query}": ${found.reason}: ${found.message}`);
-    else for (const lead of found.leads) searched.push({ url: lead.url, title: lead.title, publisher: lead.outlet, published: lead.published, pointed: false });
+    else searchesAnswered += 1;
+    if (found.ok) for (const lead of found.leads) searched.push({ url: lead.url, title: lead.title, publisher: lead.outlet, published: lead.published, pointed: false });
   }
 }
 const candidates = selectCandidates([...pointed, ...searched], current.sources.map((source) => source.url), since, Number(values['max-pages']));
@@ -178,7 +183,7 @@ for (const candidate of candidates) {
 if (pages.length === 0 && reports.length === 0) {
   const overLimit = bodyLength(current.draft) > maxBodyStatements;
   if (!values.due && !overLimit) await finish({ reviewed: false, written: false, pages: 0, added: 0, removed: 0, corrections: [], reports: [], problems: [] });
-  note(`${slug}: ${values.due ? 'due' : 'over its length limit'}, and nothing new found; recording the check`);
+  note(`${slug}: ${values.due ? 'due' : 'over its length limit'}, and nothing new found`);
   await write((await withTrim(emptyReview)).review, [], 0);
 }
 
@@ -305,9 +310,10 @@ if (newSourceProblem !== null) {
 }
 // A statement removed as superseded makes way for news; when no news from a new source is left, it stays.
 const newsLeft = statementsOf(review.add).some((item) => archived.some((source) => !unusable.has(source.id) && item.cite.startsWith(`${source.id}#`)));
-if (!newsLeft && review.remove.some((removal) => removal.reason === 'superseded')) {
-  note('no news from a new source is left, so the statements removed as superseded stay');
-  review = { ...review, remove: review.remove.filter((removal) => removal.reason !== 'superseded') };
+// New open questions grow from the news, and a question can carry a fact, so they go with it too.
+if (!newsLeft && (review.remove.some((removal) => removal.reason === 'superseded') || review.open !== null)) {
+  note('no news from a new source is left, so the statements removed as superseded stay, and so do the open questions');
+  review = { ...review, remove: review.remove.filter((removal) => removal.reason !== 'superseded'), open: null };
 }
 
 // 6. Trim again for what is left, then apply, render, check, write.

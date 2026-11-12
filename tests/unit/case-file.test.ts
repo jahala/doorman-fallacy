@@ -24,7 +24,7 @@ describe('readCase', () => {
   });
 
   it('gives each source the quotes the case holds from it, so a review can cite them again', () => {
-    const text = readFileSync(path.join(casesDir, 'cba-2025.md'), 'utf8');
+    const text = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/cba-2025.md'), 'utf8');
     const read = readCase(text);
     if (!read.ok) throw new Error(read.problems.join('; '));
     const source = read.value.sources.find((item) => item.id === 'acs-reversal');
@@ -33,7 +33,7 @@ describe('readCase', () => {
   });
 
   it('refuses a body sentence that has no footnote, rather than dropping it', () => {
-    const text = readFileSync(path.join(casesDir, 'cba-2025.md'), 'utf8').replace(
+    const text = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/cba-2025.md'), 'utf8').replace(
       'CBA said it was also reviewing its internal processes.[^acs-reversal-6]',
       'CBA said it was also reviewing its internal processes.',
     );
@@ -42,7 +42,7 @@ describe('readCase', () => {
   });
 
   it('refuses a reading point whose source holds no quote in the case', () => {
-    const text = readFileSync(path.join(casesDir, 'cba-2025.md'), 'utf8').replace('      - acs-reversal\nupdates:', '      - extra-source\nupdates:');
+    const text = readFileSync(path.resolve(import.meta.dirname, '../fixtures/review/cba-2025.md'), 'utf8').replace('      - acs-reversal\nupdates:', '      - extra-source\nupdates:');
     const read = readCase(text);
     expect(read.ok).toBe(false);
   });
