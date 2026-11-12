@@ -112,5 +112,16 @@ One sweep in the eight European and Asian languages (1,494 leads) put twelve org
 - **A page that changed.** A France 3 article was edited after the draft read it, and the quoted sentence vanished from both the page and its archive. The quote check is right to stop such a case; it needs a fresh draft from the current text.
 - **A real quote about something else.** The checks prove that each quote exists and supports its statement. They cannot tell whether the quote is about this case. Drafts used a union's general remark about voice bots (Atlassian), a supplier that lost Telenor as a client (Telenor), a contract that moved to Deloitte (Konecta), and a fatal crash with no stated link to the cuts (TikTok). Each was removed by hand before publishing, and the drafting prompt now says to cite only sentences about this organisation's change. Every case is read before it is published.
 
-Waiting for a retry, one at a time: Dukaan (wrong capture, now fixed), Le Progrès (edited source), ABN AMRO and CCF (an archived copy that cannot be read), Teleperformance and Izzi (investor pages that refuse archiving), Sparebanken Norge (a MarketScreener source), and IBM, which passed every statement and quote but has a source with no publication date (IBM's own case study), which the case schema does not allow. Drafting now runs the case checks before publishing, so such a case stays a draft instead of breaking the build.
+The eight cases that waited for a retry were all published on 2026-11-12. They were drafted one at a time, for $0.68 in all. Most needed a source swapped, not a fix:
+
+- **Dukaan.** Two sources had no date in the assessment; each page's own `datePublished` gave it. AppSumo was dropped because its text sits only in Next.js data, which the quote check strips. Trustpilot was dropped because it refuses fetching.
+- **Le Progrès.** Drafted again from the current text, and passed the first time.
+- **ABN AMRO.** Every archived copy was read this time. The cited earnings-call transcript on StockAnalysis refuses archiving; the bank's own release on Ariva carries the same facts.
+- **CCF.** Its AFP copy keeps an HTML entity in every accented letter, and La Revue du Digital's page now shows other articles. Le Figaro's copy of the same AFP dispatch replaced both.
+- **Teleperformance.** No archivable copy of the investor pages was found. The case rests on L'Informé, CGT FAPT, a written question in the National Assembly, ICI and TP's own release. The Portuguese dismissal of 2025 was left out: TP gave a business reason, and no source tied it to AI.
+- **Izzi.** Xataka México and El Tiempo Monclova replaced the earnings-call transcript.
+- **Sparebanken Norge.** Finansavisen's copy of the announcement redirects, so it could not be archived either. The case rests on reporting from five outlets. MarketScreener did accept a save that day, for an ABN AMRO page.
+- **IBM.** The case study's page gives its own date (2026-07-16) in its metadata; the assessor had left it empty.
+
+Reading the drafts found one more thing the checks cannot see: quotes that keep HTML entities such as `&eacute;`, which the page shows as written. Those statements were removed before publishing; the Mercado Libre case still shows three. Drafting now runs the case checks before publishing, so a case that would break the build stays a draft.
 
