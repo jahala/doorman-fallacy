@@ -13,3 +13,5 @@ playwright-report
 .dev.vars*
 # Folders for test builds of the site; each test removes its own
 .test-builds
+# Snapshots and logs of the Playwright browser tool
+.playwright-mcp/

@@ -22,45 +22,40 @@ DNB said the changes entail a reduction in the workforce of about 400 full-time 
 
 The writing agent never types a quote. It cites sentences by number, code copies them in, and [Jev](https://typesafe.ai) checks each statement against its sentence and the source's details. A statement that says more than its source, or suggests a motive, goes back to the writer once and is then removed. Without a supported update, a case is not published at all.
 
-## The desk
+## Where the cases are
 
-The desk finds cases each week, cheapest stage first. Most AI layoff news is not a doorman case: many cuts fund AI investment, and AI does not take over the cut roles' work.
+Every case is one Markdown file in [src/content/cases/](src/content/cases/), named after the organisation and the year of the cut, such as [cba-2025.md](src/content/cases/cba-2025.md). The front matter holds the facts, the statuses and every source with its archived copy; the body holds the reported story, each sentence with its footnote.
+
+A case file's git history is the case's record. Every update, review and correction the desk makes is a commit, with what changed and why in its message, and each case page links to its history. The format is described in [docs/data-model.md](docs/data-model.md). The whole ledger is also published as data at [/ledger.csv](https://thedoormanfallacy.com/ledger.csv) and [/ledger.json](https://thedoormanfallacy.com/ledger.json).
+
+## How the agents work
+
+Each week the desk follows up every case and looks for new ones, cheapest stage first. Most AI layoff news is not a doorman case: many cuts fund AI investment, and AI does not take over the cut roles' work.
 
 | Stage | Who | Cost |
 |---|---|---|
-| Sweep news searches | Code | Free |
+| Read readers' suggestions and error reports | Code | Free |
+| Sweep news searches | Code | A fraction of a cent per search |
 | Triage each headline | Jev | Fractions of a cent per lead |
 | Rank by doorman priority | Code | Free |
-| Assess the strongest leads | Claude | About $0.20 per organisation |
-| Write the case | Claude | About $0.20 per case |
+| Assess the strongest leads | An AI agent | About $0.03 per organisation |
+| Write the case | An AI agent | About $0.07 per case |
 | Check every statement | Jev and code | Under $0.001 per case |
+| Review every case for news since its last check | An AI agent, Jev and code | $0.02 to $0.10 per case |
 
-Every paid call goes through one budget per run. [docs/desk.md](docs/desk.md) has the design and what the first runs showed.
+A review adds what was reported since the last check, under the same checks as a new case, and new material needs one primary source or two independent reports of its own. A correction's words are written by code, never by a reader or a model. Every paid call goes through one budget per run, $3 a week.
 
-## Run it
+What the agents are told, word for word:
 
-Needs Node 26 (`.nvmrc`).
+- [desk/prompts/assess.md](desk/prompts/assess.md): judging whether a lead is a doorman case.
+- [desk/prompts/draft.md](desk/prompts/draft.md): writing a new case.
+- [desk/prompts/review.md](desk/prompts/review.md): following up a published case.
 
-```sh
-npm ci             # also points git at .githooks, so pushes run the checks
-npm run dev        # the site on localhost
-npm run check      # types, lint, unit tests, copy, docs and case checks
-npm run build      # the static site into dist/
-npm run test:site  # browser checks against dist/
-```
+The checks every statement must pass are in [desk/checks.ts](desk/checks.ts) and [scripts/check-cases.ts](scripts/check-cases.ts), and the weekly run is [desk/weekly.ts](desk/weekly.ts). [docs/desk.md](docs/desk.md) explains the design and what each run showed, mistakes included.
 
-The desk needs Claude Code, a TypeSafe key and archive.org keys in the macOS Keychain:
+## The rules
 
-```sh
-node desk/sweep.ts --size full --days 30 --sources gnews,gdelt,hn --budget 0.30
-node desk/assess.ts --top 4 --budget 1.50
-node desk/draft.ts --assessment .desk-runs/<run>/assessments/<org>.json --publish
-node desk/weekly.ts --budget 3   # every stage, as the Monday schedule runs it
-```
-
-## Where things are
-
-[CLAUDE.md](CLAUDE.md) is the brief: the hard rules and where everything lives. The design, the case format, every rule with the check that enforces it, and the decision log are in [docs/](docs/).
+[docs/engineering.md](docs/engineering.md) lists every rule the site and the desk keep, each with the check that holds it. Decisions, with the reasons for them, are in [docs/decisions.md](docs/decisions.md).
 
 ## Contributing
 
