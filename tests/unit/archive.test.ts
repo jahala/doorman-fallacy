@@ -25,3 +25,12 @@ describe('captureAddress', () => {
     expect(captureAddress(article, { timestamp: '2' })).toEqual({ ok: true, archive: `https://web.archive.org/web/2/${article}` });
   });
 });
+
+describe('captureAddress and fragments', () => {
+  it('leaves the fragment a page reported off the archive address', () => {
+    expect(captureAddress('https://www.eltiempo.example/nota', { timestamp: '20261021120000', original_url: 'https://www.eltiempo.example/nota#google_vignette' })).toEqual({
+      ok: true,
+      archive: 'https://web.archive.org/web/20261021120000/https://www.eltiempo.example/nota',
+    });
+  });
+});

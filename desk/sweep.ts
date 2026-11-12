@@ -9,7 +9,7 @@
  *   node desk/sweep.ts --sources gnews,deepseek ...   (DeepSeek search: real addresses, $0.00075 a search)
  */
 import { execFile } from 'node:child_process';
-import { mkdir, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs, promisify } from 'node:util';
 import { dedupeLeads, type Lead, type RawLead } from '../src/lib/leads.ts';
@@ -36,6 +36,8 @@ const { values } = parseArgs({
     model: { type: 'string', default: 'jev-latest' },
     // Searches of your own, in place of the standard set: a backfill of named organisations, over a long window.
     query: { type: 'string', multiple: true },
+    // Leads of your own, read from a JSON file of RawLead, triaged with the rest: readers' suggestions.
+    extra: { type: 'string' },
   },
 });
 
@@ -181,7 +183,9 @@ const started = Date.now();
 const pruned = await pruneOldRuns();
 const fetched = await fetchAll();
 const fetchedAt = Date.now();
-const unique = dedupeLeads(fetched.leads).slice(0, limit);
+// Extra leads come first, so the limit never drops them and a duplicate keeps their address.
+const extra = values.extra === undefined ? [] : (JSON.parse(await readFile(values.extra, 'utf8')) as RawLead[]);
+const unique = dedupeLeads([...extra, ...fetched.leads]).slice(0, limit);
 const { triaged, door, model } = await triageAll(unique);
 const finished = Date.now();
 const groups = clusters(triaged);

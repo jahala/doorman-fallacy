@@ -78,6 +78,8 @@ Plain Markdown with these headings, in this order:
 ## Open questions
 ```
 
+The body holds at most 15 cited statements across the role, the change and what happened next (`maxBodyStatements` in `scripts/check-cases.ts`), so a long case cannot hide what happened. A review that adds news keeps within it by removing what the news supersedes.
+
 Every factual sentence ends with a footnote, and the footnote carries the verbatim quote the sentence rests on. A footnote's label is the source id; when one source backs several sentences, later labels add `-2`, `-3` and so on:
 
 ```md
@@ -194,7 +196,7 @@ The suggestion's `case_slug` column would be called `case` if it were not an SQL
 | `name` | The sender's name, at most 100 characters; null when not given or after it is blanked |
 | `email` | The sender's address, lower case; null when not given or after it is blanked |
 | `credit` | 1 when the sender asked to be credited by name, else 0 |
-| `triage_label` | The desk's label; null until triaged |
+| `triage_label` | What the desk found, one of the labels in `desk/suggestion-sql.ts`: for a suggested case `case:published`, `case:not-published`, `case:watch`, `case:rejected`, `case:in-ledger` or `case:not-a-lead`; for an error report `error:corrected`, `error:no-change` or `error:unknown-case`. Null until resolved |
 | `resolved_at` | When the desk finished with the suggestion; null until then. The 90 days run from here |
 
 ### `subscribers`

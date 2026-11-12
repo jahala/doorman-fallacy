@@ -54,6 +54,8 @@ Checks 2 to 5 run in `desk/draft.ts` before a case is written; check 1 runs ther
 
 Checks 2 and 5 need no model. Checks 3 and 4 do, and their verdicts are written to the run's log so a rejection can be read later.
 
+A review of a published case (`desk/review.ts`) holds what it adds to checks 1 to 3, through the same code in `desk/checks.ts`: every added statement against its sentence, every reading point for evidence of loss, every new quote on its archived copy. What it removes is held too. A removal that writes a correction needs a second judge: a sentence goes as unsupported only when Jev also finds its quote does not support it, and as about another matter only on a reader's report. A removal may not leave a kept sentence naming someone introduced only in a removed one, or leaning on the removed sentence before it. A case over its length limit is trimmed by code, least needed sentence first as Jev rates it, never by the agent. The words of a correction are written by code, never by the agent, so nothing a reader typed reaches the page.
+
 ## Rules and their guards
 
 Every rule this project states is listed here once, with what fails when it breaks. A check that reads source text has a sample in `tests/fixtures/` that it must flag.
@@ -94,9 +96,14 @@ Every rule this project states is listed here once, with what fails when it brea
 | A desk run leaves no child process behind, even when killed | `desk/processes.ts`. Unit test kills a runner holding a real `sleep` child and waits for the child to end |
 | What the drafter renders passes the case checks | Contract test in `tests/unit/case-render.test.ts` runs `checkCaseText` on a rendered case |
 | Tests run on the Node major version in `.nvmrc` | `tests/unit/runtime.test.ts`, which names the switch command |
-| The fast checks pass before code leaves the machine | `.githooks/pre-push`, installed by `npm ci`. CI runs the same once the repository is public |
+| The fast checks pass before code leaves the machine | `.githooks/pre-push`, installed by `npm ci`. CI runs the same on every pull request and every push to master |
 | Checks pass on a fresh clone | `npm run check` generates Astro's types first (`npm run sync`) |
-| Cases due for review are reviewed | Unit test of `lib/review.ts`. The desk's review step is not built yet |
+| Cases due for review are reviewed | Unit test of `lib/review.ts`; the weekly run passes `--due` to `desk/review.ts` for each, and a due case with no news still gets a new `lastChecked` |
+| A case read back and rendered again is the same file, so a review changes only what it adds, removes or corrects | `tests/unit/case-file.test.ts` round-trips every published case through `readCase` and `renderCase` |
+| A review keeps the case whole: no section or update list left empty, the body within its limit, no sentence left hanging, a correction only when something was corrected | `applyReview` in `desk/review-apply.ts`; unit tests for each refusal, on real cases |
+| The body holds at most 15 cited statements | `body-length` in `scripts/check-cases.ts`; a unit test at the limit and one past it. Drafting sends a long draft back to the writer once, then trims it with `trimForLength`; a review trims with it too. Unit tests: least needed first, nothing left hanging, every section keeps one |
+| The desk reads readers' suggestions without their email addresses, and resolves each once, with a label from a fixed list | `desk/suggestion-sql.ts`; `tests/worker/suggestion-sql.test.ts` runs its SQL on the real local D1 with the real migrations, and refuses an id, label or time that is not one |
+| A suggestion is resolved only when what it led to is on master | `desk/weekly.ts` marks suggestions resolved after the push succeeds; `resolveAssessed` and `resolveReviewed` leave a stage that did not finish open (unit tests in `tests/unit/suggestion-routing.test.ts`) |
 | Sources still resolve | Not built yet: the desk's report will list dead links. It does not block a build, since outside sites fail on their own |
 | Write what was reported, never motives | Publishing check 3 in `desk/draft.ts` (Jev, plus a loaded-word list tested in `tests/unit/case-render.test.ts`) |
 | Personal data is deleted on time | Unit test of `cutoffs` in `src/lib/limits.ts`; Worker test runs the daily job at a fixed time with rows either side of each cut-off |

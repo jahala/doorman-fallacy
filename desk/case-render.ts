@@ -83,6 +83,16 @@ export function nestQuotes(sentence: string): string {
   });
 }
 
+/** Lower case words joined by hyphens, with accents dropped rather than turned into hyphens ("Le Progrès" is le-progres). */
+export function slugOf(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 /** Every citation in a draft, so they can all be resolved before anything is rendered. */
 export function allCites(draft: Draft): string[] {
   const sections = [...draft.body.role, ...draft.body.change, ...draft.body.next].flat();
@@ -96,7 +106,60 @@ export function allCites(draft: Draft): string[] {
 
 export type Rendered = { ok: true; text: string } | { ok: false; problems: string[] };
 
-export function renderCase(draft: Draft, sources: readonly SourceMaterial[], today: string): Rendered {
+/** What a case keeps from its life on the ledger, which a first draft starts empty. */
+export interface CaseRecord {
+  readonly corrections: readonly { readonly date: string; readonly what: string }[];
+  readonly suggestedBy: string | null;
+  readonly related: readonly string[];
+  /** An override of the derived review date; absent in most cases. */
+  readonly nextReview?: string | null;
+}
+
+export const firstRecord: CaseRecord = { corrections: [], suggestedBy: null, related: [] };
+
+/** The statements a draft or a review cites, each with its place: claims[0], next[1][2] and so on. */
+export interface CitingParts {
+  readonly claims: Draft['claims'];
+  readonly missed: Draft['missed'];
+  readonly updates: Draft['updates'];
+  readonly body: Pick<Draft['body'], 'role' | 'change' | 'next'>;
+}
+
+export type BodySection = 'role' | 'change' | 'next';
+export const bodySections: readonly BodySection[] = ['role', 'change', 'next'];
+
+export function statementsOf(draft: CitingParts): { where: string; text: string; cite: string }[] {
+  const body = (name: BodySection): { where: string; text: string; cite: string }[] =>
+    draft.body[name].flatMap((paragraph, p) => paragraph.map((statement, s) => ({ where: `${name}[${String(p)}][${String(s)}]`, ...statement })));
+  return [
+    ...draft.claims.map((claim, index) => ({ where: `claims[${String(index)}]`, text: claim.said, cite: claim.cite })),
+    ...draft.missed.map((point, index) => ({ where: `missed[${String(index)}]`, text: point.evidence, cite: point.cite })),
+    ...draft.updates.map((update, index) => ({ where: `updates[${String(index)}]`, text: update.summary, cite: update.cite })),
+    ...bodySections.flatMap(body),
+  ];
+}
+
+/** The same statements without those at the given places. A paragraph left empty is dropped. */
+export function withoutPlaces<T extends CitingParts>(draft: T, places: ReadonlySet<string>): T {
+  const keep = (name: BodySection): Statement[][] =>
+    draft.body[name]
+      .map((paragraph, p) => paragraph.filter((_, s) => !places.has(`${name}[${String(p)}][${String(s)}]`)))
+      .filter((paragraph) => paragraph.length > 0);
+  return {
+    ...draft,
+    claims: draft.claims.filter((_, index) => !places.has(`claims[${String(index)}]`)),
+    missed: draft.missed.filter((_, index) => !places.has(`missed[${String(index)}]`)),
+    updates: draft.updates.filter((_, index) => !places.has(`updates[${String(index)}]`)),
+    body: { ...draft.body, role: keep('role'), change: keep('change'), next: keep('next') },
+  };
+}
+
+/** How many statements the body holds, across the role, the change and what happened next. */
+export function bodyLength(draft: Pick<CitingParts, 'body'>): number {
+  return bodySections.reduce((sum, name) => sum + draft.body[name].flat().length, 0);
+}
+
+export function renderCase(draft: Draft, sources: readonly SourceMaterial[], today: string, record: CaseRecord = firstRecord): Rendered {
   const problems = allCites(draft).flatMap((cite) => {
     const found = citedSentence(cite, sources);
     return found.ok ? [] : [found.message];
@@ -173,14 +236,15 @@ export function renderCase(draft: Draft, sources: readonly SourceMaterial[], tod
     claims,
     missed,
     updates,
-    corrections: [],
-    suggestedBy: null,
+    corrections: record.corrections.map(({ date, what }) => ({ date, what })),
+    suggestedBy: record.suggestedBy,
     lastChecked: today,
+    ...(record.nextReview === undefined ? {} : { nextReview: record.nextReview }),
     watch: { queries: [...draft.watch.queries], signals: [...draft.watch.signals] },
     sources: sources
       .filter((source) => cited.has(source.id))
       .map(({ id, kind, url, publisher, title, published, archive }) => ({ id, kind, url, publisher, title, published, archive })),
-    related: [],
+    related: [...record.related],
   };
 
   return { ok: true, text: `---\n${stringify(front, { lineWidth: 0 })}---\n\n${body}` };

@@ -14,6 +14,7 @@ Most AI layoff news is not a doorman case. Many large cuts fund AI investment or
 | 4. Assessment | Agent (DeepSeek Flash, D-021) | About $0.03 per organisation | Researches the lead and rates its doorman fit from 0 to 3, using `desk/prompts/assess.md` |
 | 5. Drafting | Agent (DeepSeek Flash) | About $0.07 per case | Writes the case from the sources' numbered sentences (`desk/prompts/draft.md`), citing sentences by number; code copies each cited sentence in as the quote |
 | 6. Checks | Jev and code | Under $0.001 per case | The [publishing checks](engineering.md#publishing-checks); failures go back to the writer once, then are removed |
+| 7. Review | DeepSeek search, an agent, Jev and code | $0.02 to $0.10 per case | Each published case: news since its last check and readers' error reports, [below](#following-up-a-case) |
 
 Commands:
 
@@ -55,6 +56,33 @@ Runs are written to `.desk-runs/`, which git ignores, because leads are unconfir
 - **Roles that deal with people carry the most hidden work.** `roleWeight` ranks customer-facing roles first.
 - **The assessor rates the question, not the outcome.** A change that holds up is as useful to the ledger as one that fails. The assessor rates how clearly a case shows "what else was the person doing?"
 - **Quotes are checked against the page.** `src/lib/quotes.ts` matches a quote word for word against the fetched page, ignoring only markup, case, spacing and typographic marks.
+
+## Following up a case
+
+Most coverage stops on the day of the cut, so the review is the part of the desk the ledger exists for. `desk/review.ts` reviews one case; the weekly run reviews every case ([operations.md](operations.md#the-desks-weekly-run)).
+
+1. **Find.** Code searches each of the case's watch queries through DeepSeek from a week before its last check, and adds the week's news about the organisation and any links readers sent. Pages the case already cites are left out, and so is a searched page with no date, since every source is dated. At most eight pages are read.
+2. **Read.** Each page is fetched (or its Wayback copy) and split into sentences. A link a reader sent has no headline or date, so they come from the page itself (`src/lib/page-facts.ts`).
+3. **Decide.** An agent (DeepSeek Flash) sees the case as it stands, each statement with its quote and its place (`next[1][0]`), the new pages, and any error reports (`desk/prompts/review.md`). It answers with what to add, what to remove and why, fields to change, new open questions, and an answer to each report.
+4. **Check.** Every added statement passes the same checks as a new case (`desk/checks.ts`); failures go back to the agent once, then are dropped. A removal that writes a correction needs a second judge (see [engineering.md](engineering.md#publishing-checks)). The new sources the additions cite are archived, and each quote must be on the archived copy.
+5. **Trim.** When the case would pass its limit of 15 statements, Jev rates how much a reader needs each sentence (`neededQuestion` in `desk/statement-check.ts`), and code removes the least needed until it fits (`trimForLength`). It skips a removal that would leave a name or a "this" hanging, and keeps at least one sentence in each section. The agent removes only what its news supersedes.
+6. **Apply.** Code applies the answer to the case (`desk/review-apply.ts`) and renders it with the same renderer as a new case. A case read back and rendered again is the same file, so the diff holds only what the review changed. The case checks run before it is written.
+
+When nothing new is found, a case that is due by the schedule gets a new `lastChecked` date and nothing else; one that is not due is left alone. A correction's words are written by code, from what was removed or changed, so a reader's report or a model never writes text on the page. A case over its limit is trimmed at its next review, whether or not news was found.
+
+### What the first reviews showed (2026-11-12)
+
+Dry runs on CBA, Konecta and Telenor, $0.02 to $0.10 each.
+
+| Finding | Consequence |
+|---|---|
+| A reading point stores its source, not a quote. The first version showed the agent that source's first sentence as the point's quote, and the agent removed CBA's reading point as unsupported, with a correction | Reading points are shown with their source and no quote, and cannot be removed as unsupported. A sentence goes as unsupported only when Jev agrees |
+| Given a CommBank release on self-service, the agent added it as news; with the rule that news is about the cut roles, their work or the system that took it over, it added nothing | The prompt says what counts as news for a case |
+| Konecta's review added two Italian reports (a hundred staff moving to Turin, 1,500 more redundancies expected) and trimmed background to stay within 15 statements | Follow-up works across languages, with the quote kept in the source's language |
+| Trimming Telenor, the agent removed the sentence that introduced its managing director and kept a later one naming her, and removed the chatbot sentence that a later "this would also reduce" leaned on | `hangingProblems` refuses such removals |
+| Trimming Konecta, the agent cut the paragraph on the Italian plan and kept Konecta's global figures, against the prompt; across three rounds its choices did not follow the rules | Trimming moved from the agent to Jev and code. The agent no longer removes for length |
+| Jev's first rating of what a reader needs ranked reports of trouble low: Mercado Libre customers reaching a person only after insisting (0.33), TikTok restoring 8.8 million removed videos (0.14) | The question names those reports as what the ledger exists for; they then rated 0.86 and 0.76, while background such as a company's size stayed under 0.1 |
+| Hanging references the check cannot see remain possible, such as "The fall" after the sentence giving the fall was removed | Known limit of `hangingProblems`, which looks for names and pronouns only |
 
 ## What the first test showed (2026-10-19)
 
