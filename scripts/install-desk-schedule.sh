@@ -8,7 +8,7 @@ desk="${DESK_WORKTREE:-$(dirname "$repo")/df-desk}"
 label="ai.plotplot.doorman-desk"
 plist="$HOME/Library/LaunchAgents/$label.plist"
 
-echo "This installs a weekly job (Mondays 07:00) running $desk/desk/weekly.sh."
+echo "This installs a weekly job (Mondays 08:00) running $desk/desk/weekly.sh."
 echo "To undo: launchctl bootout gui/$(id -u)/$label && trash \"$plist\" && git -C \"$repo\" worktree remove \"$desk\""
 
 git -C "$repo" fetch origin
@@ -25,4 +25,4 @@ fi
 sed "s#__DESK__#$desk#" "$repo/desk/launchd/$label.plist" > "$plist"
 launchctl bootout "gui/$(id -u)/$label" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$plist"
-echo "Installed. The next run is on Monday at 07:00; the log is $desk/.desk-runs/last-run.log"
+echo "Installed. The next run is on Monday at 08:00; the log is $desk/.desk-runs/last-run.log"

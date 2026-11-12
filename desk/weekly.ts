@@ -8,8 +8,8 @@
  *   5. draft and publish each case the assessor recommends, suggested ones first;
  *   6. review every case in the ledger: news since its last check, the week's news and readers'
  *      links about it, and readers' error reports (desk/review.ts);
- *   7. with --commit, commit and push what changed, then mark each suggestion the desk looked at
- *      as resolved; write the report and notify.
+ *   7. with --commit, commit and push what changed, mark each suggestion the desk looked at as
+ *      resolved, and release the site, so the week's changes go live; write the report and notify.
  *
  *   node desk/weekly.ts --budget 3 [--commit]
  *
@@ -263,6 +263,15 @@ if (landed) {
 }
 const resolvedCount = landed ? resolutions.length : 0;
 
+// Release what landed, from this checkout, which now matches master. The release runs every check
+// again and stops at the first failure, so a bad week never reaches the site.
+let release: WeeklyResult['release'] = !values.commit ? 'not-a-commit-run' : 'nothing-to-release';
+if (values.commit && landed && changed.length > 0) {
+  const ran = await runTracked('npm', ['run', 'release'], { timeoutMs: 30 * 60_000 });
+  release = ran.ok ? 'released' : 'failed';
+  if (!ran.ok) failures.push(`release: ${ran.message} ${ran.stderr.slice(-300)}`.trim());
+}
+
 const result: WeeklyResult = {
   today,
   late,
@@ -273,6 +282,7 @@ const result: WeeklyResult = {
   rejected: summaries.filter((item) => item.recommendation === 'reject').map((item) => ({ organisation: item.organisation, reason: item.reason })),
   reviews: [...reviews.values()].filter((review) => review.reviewed || review.problems.length > 0),
   suggestions: { resolved: resolvedCount, open: suggestions.length - resolvedCount },
+  release,
   failures,
   costUsd: {
     sweep: sweepMeta?.costUsd ?? 0,
