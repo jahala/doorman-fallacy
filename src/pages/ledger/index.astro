@@ -37,6 +37,11 @@ const known = [
     source: 'HR Dive, 29 April 2025',
     href: 'https://www.hrdive.com/news/leaders-who-laid-off-workers-due-to-ai-regretted-it/746643/',
   },
+  {
+    text: 'A 2026 survey for SHL, which provides talent assessment to recruiters and employers, asked 2,036 employed adults in the United States and the United Kingdom in June and July 2026. Nearly one in five in the US (19 percent) and about one in eight in the UK (13 percent) said they had first-hand experience of being replaced by AI and later asked back. The release gives what workers would want in order to return, but does not say whether those shares are of everyone asked or only of those asked back.',
+    source: 'SHL, 29 October 2026',
+    href: 'https://www.shl.com/about/news-and-events/press-releases/workers-replaced-by-ai-would-demand-higher-pay-and-greater-job-security-to-return-shl-research-finds/',
+  },
 ] as const;
 ---
 
@@ -109,8 +114,8 @@ const known = [
 
     <TextSection id="known-title" anchor="known" number={4} title="What is known beyond the ledger">
       <p>
-        The ledger records named cases with sources. Around it, a survey and a forecast are widely quoted. Here is what
-        they say, and where they come from.
+        The ledger records named cases with sources. Around it, two surveys and a forecast are widely quoted. Here is
+        what they say, and where they come from.
       </p>
       {
         known.map(({ text, source, href }) => (

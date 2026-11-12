@@ -184,11 +184,12 @@ test.describe('/ledger', () => {
     await page.goto(new URL('/ledger/', siteUrl).href);
     const section = page.locator('#known');
     await expect(section).toContainText(
-      'The ledger records named cases with sources. Around it, a survey and a forecast are widely quoted. Here is what they say, and where they come from.',
+      'The ledger records named cases with sources. Around it, two surveys and a forecast are widely quoted. Here is what they say, and where they come from.',
     );
     const sources = [
       ['Forrester’s Predictions 2026: The Future of Work', 'Resultsense, 30 October 2025', 'https://www.resultsense.com/news/2025-10-30-forrester-predicts-ai-layoff-reversals-lower-pay/'],
       ['A 2025 survey by Orgvue', 'HR Dive, 29 April 2025', 'https://www.hrdive.com/news/leaders-who-laid-off-workers-due-to-ai-regretted-it/746643/'],
+      ['A 2026 survey for SHL', 'SHL, 29 October 2026', 'https://www.shl.com/about/news-and-events/press-releases/workers-replaced-by-ai-would-demand-higher-pay-and-greater-job-security-to-return-shl-research-finds/'],
     ] as const;
     const items = section.locator('.known__item');
     await expect(items).toHaveCount(sources.length);
