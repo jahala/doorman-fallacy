@@ -116,5 +116,5 @@ Every rule this project states is listed here once, with what fails when it brea
 | The other hostnames, and plain http, redirect to https://thedoormanfallacy.com with path and query | Unit test of `lib/hosts.ts`; Worker test through the real entry point |
 | The mail key is sent only in the Authorization header, and never logged | Worker test of the cfmail sender; `CFMAIL_KEY` is a required secret in `wrangler.jsonc`, so a deploy without it fails; git ignores `.dev.vars*` |
 | The D1 schema matches the migrations and is described in the data model, column by column | Worker test reads `sqlite_master` after the migrations and compares it with `docs/data-model.md` |
-| The Worker's generated types match `wrangler.jsonc` | `npm run typecheck` runs `wrangler types --check` |
+| The Worker's generated types match `wrangler.jsonc` and the installed Wrangler | `npm run sync`, which `npm run check` runs first, generates them each time; they are not committed, so they cannot drift |
 | An applied migration is never edited | Not built yet: nothing is applied until the first release. That release adds a check that each applied file is unchanged |

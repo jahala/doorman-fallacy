@@ -10,6 +10,9 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
+      # Stylelint and its configs only install together, so every update to them, majors too, comes as one PR.
+      stylelint:
+        patterns: ['stylelint', 'stylelint-*']
       minor-and-patch:
         update-types: [minor, patch]
   - package-ecosystem: github-actions
