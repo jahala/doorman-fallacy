@@ -15,6 +15,7 @@ const result: WeeklyResult = {
     { slug: 'ing-2026', written: false, added: 0, removed: 0, corrections: [], problems: ['agent: no JSON answer'] },
   ],
   suggestions: { resolved: 3, open: 1 },
+  release: 'released',
   failures: [],
   costUsd: { sweep: 0.04, assess: 1.02, draft: 0.31, review: 0.12 },
   budgetUsd: 3,
@@ -44,6 +45,12 @@ describe('weeklyReport', () => {
   it('says when nothing went wrong, and names failures when something did', () => {
     expect(text).toContain('No failures.');
     expect(weeklyReport({ ...result, failures: ['sweep: HTTP 500'] })).toContain('Failures:\n- sweep: HTTP 500');
+  });
+
+  it('says whether the changes of the week reached the site', () => {
+    expect(text).toContain('Released to thedoormanfallacy.com.');
+    expect(weeklyReport({ ...result, release: 'failed' })).toContain('Not released: the release failed, so the site does not show this week');
+    expect(weeklyReport({ ...result, release: 'nothing-to-release' })).toContain('Nothing new to release.');
   });
 
   it('says when the run was late', () => {

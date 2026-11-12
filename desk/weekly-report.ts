@@ -20,6 +20,8 @@ export interface WeeklyResult {
   /** Every case review that ran, whether or not it changed the case. */
   readonly reviews: readonly ReviewLine[];
   readonly suggestions: { readonly resolved: number; readonly open: number };
+  /** Whether the week's changes reached the live site through `npm run release`. */
+  readonly release: 'released' | 'failed' | 'nothing-to-release' | 'not-a-commit-run';
   readonly failures: readonly string[];
   readonly costUsd: { readonly sweep: number; readonly assess: number; readonly draft: number; readonly review: number };
   readonly budgetUsd: number;
@@ -40,6 +42,13 @@ function reviewLine(review: ReviewLine): string {
   return `- ${review.slug}: ${parts.join('; ')}`;
 }
 
+function releaseLine(release: WeeklyResult['release']): string {
+  if (release === 'released') return 'Released to thedoormanfallacy.com.';
+  if (release === 'failed') return 'Not released: the release failed, so the site does not show this week\'s changes. See the run\'s log.';
+  if (release === 'nothing-to-release') return 'Nothing new to release.';
+  return 'Not released: a run without --commit changes nothing live.';
+}
+
 export function weeklyReport(result: WeeklyResult): string {
   const updated = result.reviews.filter((review) => review.written).length;
   const counts = [
@@ -56,6 +65,7 @@ export function weeklyReport(result: WeeklyResult): string {
     '',
     `Leads read: ${String(result.leads)}.`,
     `Readers' suggestions: ${String(result.suggestions.resolved)} resolved, ${String(result.suggestions.open)} still open.`,
+    releaseLine(result.release),
     ...section('Published', result.published.map((item) => `- ${item.organisation}: https://thedoormanfallacy.com/ledger/${item.slug}`)),
     ...section('Not published', result.notPublished.map((item) => `- ${item.organisation}: ${item.problems.join('; ')}`)),
     ...section('To watch', result.watch.map((item) => `- ${item.organisation}: ${item.reason}`)),

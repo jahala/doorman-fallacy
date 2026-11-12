@@ -210,3 +210,11 @@ Chosen: the root font size is 90%, which scales every type size and space togeth
 
 Why: one value sets the scale, so the type and spacing scales keep their proportions, and the reader's own default size still counts. The narrower page answers the wide sections without changing any one of them.
 
+## D-028 · 2026-11-12 · The weekly run releases the site, at 08:00
+
+Context: the weekly run committed its new cases, reviews and corrections to master, but nothing deployed them; the live site changes only through `npm run release`. The desk's follow-ups would have piled up in the repository and never reached readers.
+
+Chosen: after a weekly run lands its commit, it runs the release from its own worktree, which then matches master. The release runs every check, the build and the browser tests, and stops at the first failure. Because the release builds and runs browser tests, the schedule moves from 07:00 to 08:00, after quiet hours on this Mac.
+
+Why: it needs no new credential, and the same release gate that guards a manual deploy guards the weekly one.
+
