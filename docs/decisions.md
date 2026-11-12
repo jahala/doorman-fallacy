@@ -201,3 +201,12 @@ Context: following up is what the site adds to the news, but nothing drafted upd
 Chosen: a review stage. Each week every case is searched for news since its last check, cheaply, and an agent decides what to add, remove or correct only when something new was found or a reader reported an error. A review adds to the case and removes from it; it never rewrites it. What it adds passes the publishing checks, and what it removes for a correction needs Jev's agreement or a reader's report. A correction's words are written by code. Readers' suggested links are triaged with the sweep: one about an organisation in the ledger goes to that case's review, any other is assessed whatever its rank. Each suggestion is resolved in D1 with what the desk found, once the result is on master. A case body holds at most 15 statements, checked in every build.
 
 Why: one stage serves the schedule, the news and the readers, through the same checks as a new case. Appending keeps a case's history readable in git, and code-written corrections keep a reader's or a model's words off the page. The limit of 15 sits above the prompt's twelve, so a new case has room and a long one is cut back.
+
+## D-027 · 2026-11-12 · The site at 90% scale, 1200 pixels wide, with more air at the sides
+
+Context: Jan, on a laptop: "the general scale of everything feels to big? ... going to 90% in my browser feels more natural somehow? i think the site needs better padding.... maybe not all sections, but some sections feel wide?" The content ran up to 1400 pixels with side margins of at most 72, so on a laptop the ledger rows spanned nearly the whole window. Shown the built pages side by side with a proposal, he chose it ("the proposed versions are better") and asked for more room between the text and the form on `/suggest`.
+
+Chosen: the root font size is 90%, which scales every type size and space together, as the zoom he liked did. Content stops at 1200 pixels, and the side margins grow with the window up to 6rem. In a two-column section the text column ends one grid column before the side column.
+
+Why: one value sets the scale, so the type and spacing scales keep their proportions, and the reader's own default size still counts. The narrower page answers the wide sections without changing any one of them.
+
