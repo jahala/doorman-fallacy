@@ -78,11 +78,11 @@ sources:
     archive: https://web.archive.org/web/20260722142412/https://www.irishexaminer.com/business/companies/arid-41882773.html
   - id: irishtimes-aug
     kind: reporting
-    url: https://staging.irishtimes.com/business/2026/08/17/tech-lay-offs-tiktok-starts-offering-redundancy-agreements-to-staff/
+    url: https://www.irishtimes.com/business/2026/08/17/tech-lay-offs-tiktok-starts-offering-redundancy-agreements-to-staff/
     publisher: The Irish Times
     title: TikTok offering redundancy agreements amid plans to cut about 300 jobs at Dublin office
     published: 2026-08-19
-    archive: https://web.archive.org/web/20261021205334/https://staging.irishtimes.com/business/2026/08/17/tech-lay-offs-tiktok-starts-offering-redundancy-agreements-to-staff/
+    archive: https://web.archive.org/web/20260914212822/https://www.irishtimes.com/business/2026/08/17/tech-lay-offs-tiktok-starts-offering-redundancy-agreements-to-staff/
   - id: koreatimes
     kind: reporting
     url: https://www.koreatimes.co.kr/business/tech-science/20260826/inside-tiktoks-transparency-center-ai-catches-97-of-removed-videos

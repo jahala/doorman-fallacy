@@ -79,7 +79,7 @@ sources:
     publisher: Insurance Business
     title: Allianz confirms hundreds of job cuts as AI reshapes insurance
     published: 2026-07-08
-    archive: https://web.archive.org/web/20261021101156/https://www.insurancebusinessmag.com/us/news/breaking-news/allianz-confirms-hundreds-of-job-cuts-as-ai-reshapes-insurance-581696.aspx
+    archive: https://web.archive.org/web/20261112193544/https://www.insurancebusinessmag.com/us/news/breaking-news/allianz-confirms-hundreds-of-job-cuts-as-ai-reshapes-insurance-581696.aspx
   - id: segurosnews-dec25
     kind: reporting
     url: https://segurosnews.com/news/allianz-partners-afirma-que-en-ningun-momento-se-ha-hablado-de-despidos-ni-de-ere
