@@ -18,6 +18,9 @@ export default defineConfig([
     'worker-configuration.d.ts',
     // Fixtures are files that a guard must flag, so the guards skip them in the normal run.
     'tests/fixtures/',
+    // Git ignores these: a workspace's own notes and scratch files, and the desk's run output.
+    '.context/',
+    '.desk-runs/',
   ]),
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
