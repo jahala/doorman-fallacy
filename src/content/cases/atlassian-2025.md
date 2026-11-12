@@ -114,15 +114,13 @@ On 30 July, Atlassian CEO and co-founder Mike Cannon-Brookes told staff by pre-r
 
 The company said the decision came after improvements to the customer experience across its platform and tools, which led to a significant reduction in support needs.[^hrleader-3] It said customers can self-serve through AI embedded in its contact form, but that it is primarily because customers need less help with the product.[^itpro-3] It said the roles are not being replaced by AI.[^itpro-4] A spokesperson said improvements included reducing the time spent on support tickets by routing work more efficiently to the right experts.[^cxdive] A spokesperson said some human agents would remain.[^cxdive-2]
 
-Reports suggested the roles were being replaced by AI.[^itpro-5] The company denied that jobs were being outright replaced by AI.[^itpro-6] Professionals Australia director Paul Inglis said 44 of the global job cuts were based in Australia.[^yahoo] He said Atlassian had confirmed that the roles were being made redundant due to the impact of artificial intelligence.[^yahoo-2]
+Reports suggested the roles were being replaced by AI.[^itpro-5] The company denied that jobs were being outright replaced by AI.[^itpro-6]
 
-The CEO left a recorded message telling employees customer service issues would be largely addressed with AI.[^cxdive-3] Larger clients had been moved off the older software platform and into the cloud, reducing the volume of complex support tasks required.[^yahoo-3]
+The CEO left a recorded message telling employees customer service issues would be largely addressed with AI.[^cxdive-3]
 
 ## What happened next
 
-Atlassian laid off a further 200 European customer service and support workers in addition to the 150 cut in July.[^cxdive-4] The impacted workers were in France and the Netherlands, and Atlassian engaged works councils in both countries.[^cxdive-5]
-
-Max Ball, principal analyst at Forrester, said layoffs like these are outliers rather than a trend.[^cxdive-6] He said the average turnover in contact centres is 30%, so companies very rarely lay people off there.[^cxdive-7] He said AI will eventually disrupt the contact centre workforce, but the technology is not there yet.[^cxdive-8]
+Atlassian laid off a further 200 European customer service and support workers in addition to the 150 cut in July.[^cxdive-4]
 
 ## Open questions
 
@@ -142,12 +140,5 @@ Max Ball, principal analyst at Forrester, said layoffs like these are outliers r
 [^cxdive-2]: "But the Atlassian spokesperson said some human agents would remain."
 [^itpro-5]: "Reports suggested that the roles were being replaced by AI."
 [^itpro-6]: "However, the company has denied jobs are being outright replaced by AI."
-[^yahoo]: "Professionals Australia director Paul Inglis told Yahoo Finance it was a ‘devastating day for Atlassian employees’, with 44 of the global job cuts based in Australia."
-[^yahoo-2]: "‘Atlassian has confirmed that these roles are being made redundant due to the impact of artificial intelligence,’ he said."
 [^cxdive-3]: "Atlassian made headlines earlier this summer when its CEO left a recorded message for employees telling them customer service issues would be largely addressed with AI, The Australian reported at the time."
-[^yahoo-3]: "Larger clients had been moved off the older software platform and into the cloud, reducing the volume of complex support tasks required."
 [^cxdive-4]: "Atlassian has laid off 200 European customer service and support workers in addition to the 150 cut in July who were told that they would largely be replaced with AI."
-[^cxdive-5]: "The impacted workers were in France and the Netherlands, and Atlassian engaged in works councils in both countries, ‘which accounts for the delay in notice for the European-based employees who were impacted,’ the spokesperson said."
-[^cxdive-6]: "But rather than indicating a trend of customer service workers losing their jobs to AI, layoffs like these are outliers, according to Max Ball, principal analyst at Forrester."
-[^cxdive-7]: "‘I don't know what their turnover rate is, but the average is 30%, so you very rarely lay people off in the contact center,’ he said."
-[^cxdive-8]: "AI will eventually disrupt the contact center workforce, but the technology isn’t there yet, he said."
