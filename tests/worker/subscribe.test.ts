@@ -55,6 +55,9 @@ https://thedoormanfallacy.com/confirm?token=${tokenNumber(1)}
 
 If it was not you, ignore this email. The address is deleted in 7 days unless it is confirmed.
 
+To unsubscribe at any time, open this link and press the button:
+https://thedoormanfallacy.com/unsubscribe?token=${tokenNumber(1)}
+
 The Doorman Fallacy
 https://thedoormanfallacy.com
 `,
@@ -245,6 +248,25 @@ describe('GET /confirm', () => {
     await seed(row({ token_sent_at: new Date(noon.getTime() - 7 * 86_400_000 - 1).toISOString() }));
     expect(location(await request(`/confirm?token=${tokenNumber(50)}`))).toBe('/subscribe/problem');
     expect((await all())[0]?.confirmed_at).toBeNull();
+  });
+
+  it('tells the site once, with the total and without the address, when someone confirms', async () => {
+    await seed(row({ email: 'bo@example.com', token: tokenNumber(40), confirmed_at: sent(3) }));
+    await seed(row());
+    const { request, mail } = world();
+    await request(`/confirm?token=${tokenNumber(50)}`);
+    await request(`/confirm?token=${tokenNumber(50)}`, { at: minutes(5) });
+    expect(mail.sent).toHaveLength(1);
+    expect(mail.sent[0]?.to).toBe('hello@thedoormanfallacy.com');
+    expect(mail.sent[0]?.text).toContain('Confirmed subscribers: 2.');
+    expect(JSON.stringify(mail.sent)).not.toContain('ada@example.com');
+  });
+
+  it('keeps the confirmation when the note to the site cannot be sent', async () => {
+    await seed(row());
+    const { request } = world('refused');
+    expect(location(await request(`/confirm?token=${tokenNumber(50)}`))).toBe('/subscribe/confirmed');
+    expect((await all())[0]?.confirmed_at).toBe(noon.toISOString());
   });
 
   it('shows the problem page for a token nobody holds, a malformed one, and none', async () => {

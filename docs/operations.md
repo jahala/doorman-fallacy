@@ -77,7 +77,8 @@ cfmail sends the site's mail through a service mailbox, `noreply@thedoormanfalla
 
 | Mail | When |
 |---|---|
-| Confirm your subscription | On sign-up |
+| Confirm your subscription, with the person's own unsubscribe link | On sign-up |
+| New subscriber, to hello@thedoormanfallacy.com: the total, never the address | When someone confirms, once ([D-029](decisions.md)) |
 | The desk's weekly report | After each run, to Jan |
 
 The monthly letter is not sent through cfmail. Cloudflare Email Sending allows only transactional mail, and a review of the account would pause sending for every project on cfmail. The letter's sender is chosen when there are subscribers and something to send.
