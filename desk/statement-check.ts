@@ -18,6 +18,19 @@ export const statementQuestions = {
   },
 };
 
+/**
+ * How much a reader needs one statement of a case body, asked of each when the body is over its
+ * limit, so the least needed are removed first (trimForLength in desk/review-apply.ts).
+ */
+export const neededQuestion = {
+  needed: {
+    type: 'noul',
+    instructions:
+      'This is one sentence of a ledger case about `organisation`, summed up as `change`; the visible task that was automated is `door`. A reader needs a sentence when it says what was cut, what AI or automation took over, what the organisation said about it, what happened to the people or the work, or what happened next. Reports of problems after the change are what the ledger exists for, and a reader needs them most: complaints, waits, errors, decisions reversed or restored, customers struggling to reach a person, staff taking on the work. A reader does not need background about the organisation (its size, its services, its history), figures from other countries, sites or years, the date or format of a meeting, or a repeat of `change`. How much does the reader need `statement`?',
+    criteria: { true: 'The reader needs this to follow the case.', false: 'Background, another matter, or a repeat.' },
+  },
+} as const;
+
 /** A statement passes when Jev's probability that its sentence supports it reaches this. */
 export const supportedThreshold = 0.6;
 

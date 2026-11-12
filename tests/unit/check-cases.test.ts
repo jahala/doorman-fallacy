@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { checkCases, checkCaseText, resolveFootnoteLabel, type CaseRule } from '../../scripts/check-cases.ts';
+import { checkCases, checkCaseText, maxBodyStatements, resolveFootnoteLabel, type CaseRule } from '../../scripts/check-cases.ts';
 import { readCaseFixtureText } from './fixture-case.ts';
 
 const root = path.resolve(import.meta.dirname, '../..');
@@ -29,6 +29,26 @@ describe('archived copies', () => {
       text.replace(/archive: https:\/\/web\.archive\.org\/web\/(\d+)\/https?:\/\/[^\s]+/, 'archive: https://web.archive.org/web/$1/https://opus.analytics.yahoo.com/tag/opus-frame.html'),
     );
     expect(findings.map((finding) => finding.rule)).toContain('archive-other-site');
+  });
+});
+
+describe('the length of the body', () => {
+  /** The valid fixture with extra cited sentences in "What happened next", until the body holds `total`. */
+  function withStatements(total: number): ReturnType<typeof checkCaseText> {
+    const text = readCaseFixtureText('valid');
+    const opening = text.indexOf('## The role');
+    const open = text.indexOf('## Open questions');
+    const present = [...text.slice(opening, open).matchAll(/\[\^[^\]\s]+\]/g)].length;
+    const extra = Array.from({ length: Math.max(0, total - present) }, () => 'The bank said the work continued.[^gazette-background]').join(' ');
+    return checkCaseText('edited.md', extra === '' ? text : text.replace('## Open questions', `${extra}\n\n## Open questions`));
+  }
+
+  it('passes a body at the limit', () => {
+    expect(withStatements(maxBodyStatements)).toEqual([]);
+  });
+
+  it('flags a body over the limit, so a long case cannot hide what happened', () => {
+    expect(withStatements(maxBodyStatements + 1)).toEqual([expect.objectContaining({ rule: 'body-length', line: 0 })]);
   });
 });
 

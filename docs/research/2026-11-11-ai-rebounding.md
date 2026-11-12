@@ -21,3 +21,5 @@ CNBC's own figures (30 October 2026, Sophie Caldwell) differ from SHL's release:
 ## For the site
 
 SHL's survey fits "What is known beyond the ledger" on /ledger, beside Forrester and Orgvue's 2025 survey, with the release as the source and its unclear base stated. Orgvue's 32% stays out until it is read at the source.
+
+Added on 2026-11-12, after reading the release again at shl.com: it gives 19% (US) and 13% (UK) with first-hand experience, the method sentence above, and the 51%, 42%, 40% and 8% figures with no sentence saying what they are shares of.

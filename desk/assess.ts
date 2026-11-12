@@ -14,6 +14,7 @@ import { askClaude, isDeepseekModel } from './claude.ts';
 import { deepseekKey } from './deepseek.ts';
 import { sameOrganisation } from '../src/lib/leads.ts';
 import { assessable, clusters, readableFirst, type Cluster, type Triaged } from './clusters.ts';
+import { assessedPath, rememberAssessed, type Assessed } from './assessed.ts';
 
 const { values } = parseArgs({
   options: {
@@ -25,9 +26,13 @@ const { values } = parseArgs({
     concurrency: { type: 'string', default: '3' },
     only: { type: 'string' },
     exclude: { type: 'string' },
+    // Organisations always assessed, whatever their rank or a recent assessment: readers' suggestions.
+    include: { type: 'string' },
     summary: { type: 'string' },
+    today: { type: 'string' },
   },
 });
+const today = values.today ?? new Date().toISOString().slice(0, 10);
 
 async function latestRun(): Promise<string> {
   const runs = (await readdir('.desk-runs')).sort();
@@ -144,11 +149,18 @@ const prompt = await readFile(path.join(import.meta.dirname, 'prompts', 'assess.
 const only = values.only?.split(',').map((name) => name.trim().toLowerCase());
 // Organisations already in the ledger, or assessed recently, are left to the review step.
 const excluded = (values.exclude ?? '').split('|').map((name) => name.trim()).filter((name) => name !== '');
-const chosen = clusters(triaged)
+const included = (values.include ?? '').split('|').map((name) => name.trim()).filter((name) => name !== '');
+const candidates = clusters(triaged)
   .filter(assessable)
-  .filter((cluster) => only === undefined || only.includes(cluster.key))
-  .filter((cluster) => !excluded.some((name) => sameOrganisation(name, cluster.name)))
-  .slice(0, Number(values.top));
+  .filter((cluster) => only === undefined || only.includes(cluster.key));
+const forced = candidates.filter((cluster) => included.some((name) => sameOrganisation(name, cluster.name)));
+const chosen = [
+  ...forced,
+  ...candidates
+    .filter((cluster) => !forced.includes(cluster))
+    .filter((cluster) => !excluded.some((name) => sameOrganisation(name, cluster.name)))
+    .slice(0, Number(values.top)),
+];
 
 const outcomes: Outcome[] = new Array<Outcome>(chosen.length);
 let next = 0;
@@ -191,6 +203,10 @@ const reportText = [
   ...outcomes.flatMap((outcome) => (outcome.assessment === undefined ? [] : [`**${outcome.assessment.organisation}**: ${outcome.assessment.fit_reason}`, ''])),
 ].join('\n');
 await writeFile(path.join(runDir, 'assess-report.md'), reportText);
+// Every assessment is remembered, so no run assesses the same organisation again within 30 days.
+const memory = await readFile(assessedPath, 'utf8').then((text) => JSON.parse(text) as Assessed[]).catch(() => []);
+const added = outcomes.flatMap((outcome) => (outcome.assessment === undefined ? [] : [{ name: outcome.assessment.organisation, date: today, recommendation: outcome.assessment.recommendation }]));
+await writeFile(assessedPath, `${JSON.stringify(rememberAssessed(memory, added, today), null, 2)}\n`);
 console.log(reportText);
 if (values.summary !== undefined) {
   const summary = outcomes.map((outcome) => ({

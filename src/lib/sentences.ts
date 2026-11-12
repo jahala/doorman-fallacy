@@ -3,18 +3,7 @@
  * number, so every quote in a case is a sentence copied from the page by code, never typed
  * by a model.
  */
-
-const named: Record<string, string> = {
-  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
-  ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’', ndash: '–', mdash: '—', hellip: '…',
-};
-
-function decode(text: string): string {
-  return text
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
-    .replace(/&([a-z]+);/gi, (whole, name: string) => named[name.toLowerCase()] ?? whole);
-}
+import { decodeEntities } from './entities.ts';
 
 const abbreviations = new Set([
   'mr', 'mrs', 'ms', 'dr', 'prof', 'st', 'sr', 'jr', 'inc', 'ltd', 'co', 'corp', 'plc', 'vs', 'etc', 'no', 'fig', 'gen', 'gov',
@@ -50,7 +39,7 @@ export function splitSentences(text: string): string[] {
 }
 
 function textOf(html: string): string {
-  return decode(html.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''));
+  return decodeEntities(html.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''));
 }
 
 /** Paragraph texts from <p> and <pre> blocks, outside navigation, headers, footers and asides. */

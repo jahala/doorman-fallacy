@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
-import { citedSentence, loadedWords, nestQuotes, renderCase, type Draft, type SourceMaterial } from '../../desk/case-render.ts';
+import { citedSentence, loadedWords, nestQuotes, renderCase, slugOf, type Draft, type SourceMaterial } from '../../desk/case-render.ts';
 import { checkCaseText } from '../../scripts/check-cases.ts';
 
 const sources: SourceMaterial[] = [
@@ -144,5 +144,13 @@ describe('renderCase', () => {
   it('produces a case that passes the schema and every case check (the contract between drafter and site)', () => {
     expect(result.ok).toBe(true);
     expect(checkCaseText('rendered.md', rendered)).toEqual([]);
+  });
+});
+
+describe('slugOf', () => {
+  it('keeps letters with accents as their plain letters, so a name stays readable in a file name', () => {
+    expect(slugOf('Le Progrès')).toBe('le-progres');
+    expect(slugOf('Göteborgs-Posten')).toBe('goteborgs-posten');
+    expect(slugOf('  ABN AMRO & Co. ')).toBe('abn-amro-co');
   });
 });

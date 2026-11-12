@@ -42,17 +42,17 @@ Each rule's guard: [docs/engineering.md](docs/engineering.md#rules-and-their-gua
 
 ## Commands
 
-| Command | What | When | Time (2026-10-19) |
+| Command | What | When | Time (2026-11-12) |
 |---|---|---|---|
-| `npm run check` | Types, lint, unit tests, Worker tests, copy, docs and case checks | Every change; the pre-push hook runs it | 17 s |
-| `npm run build` | The static site into `dist/` | Before site tests and release | 3 s |
+| `npm run check` | Types, lint, unit tests, Worker tests, copy, docs and case checks | Every change; the pre-push hook runs it | 23 s |
+| `npm run build` | The static site into `dist/` | Before site tests and release | 4 s |
 | `npm run test:worker` | The Worker's tests, part of `npm run check`; run alone while working on `src/worker/` | Every change to the Worker, `migrations/` or `wrangler.jsonc` | 1 s |
-| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 14 s |
-| `npm run test:size` | Builds 500 generated cases and holds the ledger page to its budget | Changes to the ledger page, the case schema or `src/lib/` | 8 s |
+| `npm run test:site` | Browser checks against `dist/` | Every change to pages, styles or components | 20 s |
+| `npm run test:size` | Builds 500 generated cases and holds the ledger page to its budget | Changes to the ledger page, the case schema or `src/lib/` | 9 s |
 | `npm run dev:worker` | The site and the form routes on http://localhost:8787, with a local database | Working on the forms ([operations](docs/operations.md#running-the-worker-locally)) | |
 
-The whole suite runs in about 30 seconds, so every run is a full run; there is no changed-only selection. CI runs the same three once the repository is public. Node's major version comes from `.nvmrc`, and a test fails with the switch command when another is running.
+The whole suite is fast enough that every run is a full run; there is no changed-only selection. CI runs the same three on GitHub's hosted runners on every pull request and every push to master. Node's major version comes from `.nvmrc`, and a test fails with the switch command when another is running.
 
 ## How cases are added
 
-The desk adds them: a weekly run of agents that finds leads, drafts cases, checks them and publishes what passes ([docs/operations.md](docs/operations.md#the-desks-weekly-run)). The case format and what counts as a case: [docs/data-model.md](docs/data-model.md). The checks a case must pass: [docs/engineering.md](docs/engineering.md#publishing-checks).
+The desk adds them: a weekly run of agents that finds leads, drafts cases, checks them and publishes what passes, then reviews every case for news and readers' error reports ([docs/operations.md](docs/operations.md#the-desks-weekly-run)). The case format and what counts as a case: [docs/data-model.md](docs/data-model.md). The checks a case must pass: [docs/engineering.md](docs/engineering.md#publishing-checks).

@@ -193,3 +193,11 @@ Context: the site review found that `/idea` asked the reader the same thing thre
 Chosen, with Jan's yes on each removal: the three questions are the page's one checklist. Each question lists, one line each, the signs that a decision skipped it; the separate block of signs and its detail lines are removed. Each kind of hidden work keeps its meaning, today's example, how its loss shows and its cases in the ledger; its hotel example and its question to ask are removed. The signs to watch after an announcement stay on `/ledger`.
 
 Why: a reader meets each idea once, in the place where it can be acted on, and the page is shorter without losing a question or a source.
+
+## D-026 · 2026-11-12 · The desk reviews every case each week, and reads what readers send
+
+Context: following up is what the site adds to the news, but nothing drafted updates to a published case, and nothing read the suggestions and error reports the suggest page promises to check. The drafting prompt asked for about twelve statements per case, and six cases held 19 to 29.
+
+Chosen: a review stage. Each week every case is searched for news since its last check, cheaply, and an agent decides what to add, remove or correct only when something new was found or a reader reported an error. A review adds to the case and removes from it; it never rewrites it. What it adds passes the publishing checks, and what it removes for a correction needs Jev's agreement or a reader's report. A correction's words are written by code. Readers' suggested links are triaged with the sweep: one about an organisation in the ledger goes to that case's review, any other is assessed whatever its rank. Each suggestion is resolved in D1 with what the desk found, once the result is on master. A case body holds at most 15 statements, checked in every build.
+
+Why: one stage serves the schedule, the news and the readers, through the same checks as a new case. Appending keeps a case's history readable in git, and code-written corrections keep a reader's or a model's words off the page. The limit of 15 sits above the prompt's twelve, so a new case has room and a long one is cut back.

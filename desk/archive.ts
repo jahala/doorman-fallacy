@@ -7,6 +7,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { articleSentences } from '../src/lib/sentences.ts';
+import { withoutFragment } from './review-material.ts';
 
 const run = promisify(execFile);
 const browser = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15';
@@ -69,7 +70,8 @@ function siteOf(url: string): string | null {
  * source, 2026-10-21). A capture counts only when it is of the same site as the page asked for.
  */
 export function captureAddress(url: string, status: { timestamp: string; original_url?: string }): Archived {
-  const saved = status.original_url ?? url;
+  // A fragment names a place on the page, not the page; Save Page Now sometimes reports one (#google_vignette).
+  const saved = withoutFragment(status.original_url ?? url);
   const host = siteOf(saved);
   if (host === null || host !== siteOf(url)) {
     return { ok: false, message: `Save Page Now captured another page (${host ?? saved}), not the source` };

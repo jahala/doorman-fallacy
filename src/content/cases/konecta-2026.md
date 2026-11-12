@@ -49,7 +49,7 @@ updates:
     quote: "Di fronte a questo scenario, la rappresentante del centrosinistra chiede un'assunzione di responsabilità all'esecutivo, annunciando un'iniziativa formale: \"Il governo non può stare a guardare mentre il costo delle riorganizzazioni viene scaricato sui lavoratori, per questo ho depositato un’interrogazione parlamentare per chiedere chiarimenti\"."
 corrections: []
 suggestedBy: null
-lastChecked: 2026-10-21
+lastChecked: 2026-11-12
 watch:
   queries:
     - Konecta esuberi 2027
@@ -111,7 +111,7 @@ related: []
 
 ## The role
 
-Konecta is a global service provider in customer management business process outsourcing.[^konecta] The company has 109,000 employees working in 40 languages across 4 continents and 28 countries.[^konecta] Konecta's services include acquisition, retention, customer service, technical support and collection.[^konecta-2]
+Konecta is a global service provider in customer management business process outsourcing.[^konecta]
 
 ## The change
 
@@ -119,7 +119,7 @@ On 15 September 2026, Konecta Italia met the national secretariats of Slc-Cgil, 
 
 A meeting took place on 5 December 2025.[^uilfpc] The national and territorial secretariats of Slc-Cgil, Fistel-Cisl and Uilcom-Uil, with the works councils, and Konecta Italia met to present the 2026 industrial plan.[^uilfpc-2] At the start of the meeting, the company's director general described the difficulties of the Italian outsourcing market, which had led to a fall of about 10 percent in the overall volumes Konecta managed.[^uilfpc-3] The fall mainly hit the telecoms and energy markets and is linked to changes in customer behaviour, including the use of apps and self-service, and to an evolution of the IVR.[^uilfpc-4] The tools the group used in 2025 included new artificial intelligence technologies for managing the customer base and a digital division that grew by about 40 percent on 2024.[^uilfpc-5] The 2026 plan included merging the three Piedmont sites into one in Turin, with the closure of Asti and Ivrea.[^uilfpc-6]
 
-Konecta's changes have concrete figures, from 84.5 million euros invested to 21,000 jobs affected between redundancies carried out and planned.[^mangasverdes] That money funded the launch of an automatic call handling system and autonomous artificial intelligence systems.[^mangasverdes-2] Collections voicebots in Mexico's luxury retail sector and Colombia's financial sector raised payment promise fulfilment by over 30 percent.[^konecta-3] The company has carried out about 11,000 redundancies and plans to cut another 10,000 jobs.[^mangasverdes-3]
+Konecta's changes have concrete figures, from 84.5 million euros invested to 21,000 jobs affected between redundancies carried out and planned.[^mangasverdes] That money funded the launch of an automatic call handling system and autonomous artificial intelligence systems.[^mangasverdes-2]
 
 ## What happened next
 
@@ -135,7 +135,6 @@ On 22 September 2026, Chiara Gribaudo, vice-president of the Democratic Party, t
 - Do the Asti and Ivrea closures proceed as agreed in February 2026, or does the September procedure change them?
 
 [^konecta]: "Konecta is a leading innovative global service provider in customer management business process outsourcing, with 109,000 passionate employees working in 40 languages across 4 continents and 28 countries."
-[^konecta-2]: "Focusing on the unique needs and opportunities of each industry, Konecta offers a full range of end-to-end customer management solutions – including acquisition, retention, customer service, technical support, and collection – all based on a sustainable business model."
 [^slc-cgil]: "In data 15 settembre 2026 si è tenuto l’incontro tra Konecta Italia e le Segreterie Nazionali di Slc- Cgil Fistel-Cisl Uilfpc-Uil, unitamente alle delegazioni territoriali ed RSU."
 [^slc-cgil-2]: "Konecta quantifica, di conseguenza, una ulteriore eccedenza di personale pari a 600 FTE operativi e 70 FTE con funzioni di indiretti/staff, per complessivi oltre 1000 posti di lavoro."
 [^slc-cgil-3]: "L'azienda denuncia una forte contrazione dei volumi legata all’evoluzione tecnologica, una riduzione di fatturato e marginalità, il cambiamento delle esigenze dei committenti e una competizione sempre più esasperata, evidenziando inoltre come gli interventi già messi in campo negli anni 2025 e 2026 non abbiano consentito di superare le difficoltà."
@@ -147,8 +146,6 @@ On 22 September 2026, Chiara Gribaudo, vice-president of the Democratic Party, t
 [^uilfpc-6]: "Accorpamento dei tre siti piemontesi in un unico grande sito a Torino, con la conseguente chiusura di Asti e Ivrea Dunque, di fronte a un mercato del CRM/BPO sempre più impattato dai profondi cambiamenti imposti dalla digitalizzazione e che richiede una nuova visione che porti alla riconversione e riqualificazione del personale, la soluzione proposta Konecta ci proietta indietro nel tempo: la chiusura di sedi e l’accorpamento in un unico sito produttivo!"
 [^mangasverdes]: "La diferencia es que aquí los cambios ya tienen números muy concretos, desde los 84,5 millones invertidos hasta los 21.000 empleos afectados entre despidos ejecutados y previstos."
 [^mangasverdes-2]: "Ese dinero sirvió para lanzar un sistema de atención automática de llamadas y sistemas de inteligencia artificial autónoma."
-[^konecta-3]: "Whether it is implementing AI-enabled speech analytics and copilots in Peru's insurance sector to elevate customer service, or implementing collections voicebots in Mexico's luxury retail sector and Colombia’s financial sector that have boosted payment promise fulfillment by over 30%, our teams are proving that hybrid human-and-AI models are the future of customer experience in this region‘."
-[^mangasverdes-3]: "La empresa ha ejecutado unos 11.000 despidos y prevé recortar otros 10.000 puestos de trabajo."
 [^slc-cgil-4]: "Le scriventi ritengono indispensabile aprire immediatamente un tavolo istituzionale presso le istituzioni, coinvolgendo il Ministero del Lavoro e il Ministero delle Imprese e del Made in Italy, con la partecipazione dell'azienda e delle OO.SS.."
 [^lavocediasti-sep]: "L'allarme arriva direttamente da Chiara Gribaudo, vicepresidente del Partito Democratico, che ha deciso di portare la questione in parlamento per difendere il futuro di centinaia di addetti del customer care."
 [^lavocediasti-sep-2]: "Di fronte a questo scenario, la rappresentante del centrosinistra chiede un'assunzione di responsabilità all'esecutivo, annunciando un'iniziativa formale: ‘Il governo non può stare a guardare mentre il costo delle riorganizzazioni viene scaricato sui lavoratori, per questo ho depositato un’interrogazione parlamentare per chiedere chiarimenti’."

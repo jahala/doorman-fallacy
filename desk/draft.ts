@@ -3,7 +3,8 @@
  *   1. fetch each source (from the publisher, or the Wayback copy) and split it into sentences;
  *   2. archive each source;
  *   3. a Claude agent writes the case, citing sentences by number (desk/prompts/draft.md);
- *   4. Jev checks every cited statement against its sentence, and code checks for loaded words;
+ *   4. Jev checks every cited statement against its sentence, and code checks for loaded words
+ *      and the body's length (desk/checks.ts, shared with the review stage);
  *   5. failures go back to the agent once; what still fails is removed;
  *   6. code renders the case file with each cited sentence copied in as the quote.
  *
@@ -12,17 +13,17 @@
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
-import { checkCaseText } from '../scripts/check-cases.ts';
-import { quoteFound } from '../src/lib/quotes.ts';
+import { checkCaseText, maxBodyStatements } from '../scripts/check-cases.ts';
+import { pageFacts } from '../src/lib/page-facts.ts';
 import { articleSentences } from '../src/lib/sentences.ts';
 import { archive, fetchPage } from './archive.ts';
 import { createBudget } from './budget.ts';
 import { askClaude, isDeepseekModel } from './claude.ts';
 import { deepseekKey } from './deepseek.ts';
-import { allCites, citedSentence, loadedWords, renderCase, type Draft, type SourceMaterial, type Statement } from './case-render.ts';
-import { createJevDoor, type JevAnswer } from './jev.ts';
-import { readingQuestion, readingThreshold, statementQuestions, supportedThreshold } from './statement-check.ts';
-import { hiddenFunctions, type HiddenFunctionId } from '../src/data/hidden-functions.ts';
+import { allCites, bodyLength, firstRecord, renderCase, slugOf, statementsOf, withoutPlaces, type Draft, type SourceMaterial } from './case-render.ts';
+import { archiveFindings, checkStatements, neededScores, readWaybackRaw, sourceRuleProblem, type Failure } from './checks.ts';
+import { trimForLength } from './review-apply.ts';
+import { createJevDoor } from './jev.ts';
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -35,6 +36,8 @@ const { values } = parseArgs({
     today: { type: 'string' },
     publish: { type: 'boolean', default: false },
     summary: { type: 'string' },
+    /** A reader's name, when the case came from their suggestion and they asked to be credited. */
+    'suggested-by': { type: 'string' },
   },
 });
 if (values.assessment === undefined) {
@@ -81,6 +84,8 @@ for (const source of assessment.sources) {
     continue;
   }
   const sentences = articleSentences(page.html).slice(0, 150);
+  // A source the assessor left undated takes the date the page gives itself; every source is dated.
+  const published = source.published ?? pageFacts(page.html).published ?? '';
   const archived = await archive(source.url, sleep);
   note(`source ${source.id}: ${String(sentences.length)} sentences via ${page.via}; archive ${archived.ok ? archived.archive : `missing (${archived.message})`}`);
   sources.push({
@@ -89,7 +94,7 @@ for (const source of assessment.sources) {
     url: source.url,
     publisher: source.publisher,
     title: source.title,
-    published: source.published ?? '',
+    published,
     archive: archived.ok ? archived.archive : '',
     sentences,
   });
@@ -143,89 +148,9 @@ const door = createJevDoor({ budget, model: 'jev-latest', sleep });
 // A DeepSeek model needs its key, read once here at the edge.
 const agentKey = isDeepseekModel(values.model) ? await deepseekKey() : null;
 
-interface Failure {
-  where: string;
-  text: string;
-  cite: string;
-  reason: string;
-}
-
-async function checkStatement(where: string, text: string, cite: string): Promise<Failure | null> {
-  const found = citedSentence(cite, sources);
-  if (!found.ok) return { where, text, cite, reason: found.message };
-  const words = loadedWords(text);
-  if (words.length > 0) return { where, text, cite, reason: `loaded words: ${words.join(', ')}` };
-  const source = sources.find((candidate) => candidate.id === found.source);
-  const result = await door.ask(
-    {
-      statement: text,
-      quote: found.sentence,
-      source: {
-        publisher: source?.publisher ?? '',
-        published: source?.published ?? '',
-        kind: source?.kind === 'primary' ? 'the organisation’s own statement or an official record' : 'a news report',
-        title: source?.title ?? '',
-      },
-    },
-    statementQuestions,
-  );
-  if (!result.ok) return { where, text, cite, reason: `check could not run: ${result.message}` };
-  const supported = result.answers.supported as Extract<JevAnswer, { type: 'noul' }> | undefined;
-  const motive = result.answers.motive as Extract<JevAnswer, { type: 'noul' }> | undefined;
-  if (supported === undefined || supported.noul < supportedThreshold) return { where, text, cite, reason: `not supported by its sentence (p=${(supported?.noul ?? 0).toFixed(2)})` };
-  if (motive !== undefined && motive.noul >= 0.5) return { where, text, cite, reason: `suggests a motive (p=${motive.noul.toFixed(2)})` };
-  return null;
-}
-
-/** A point of the doorman reading must report the work going missing, not only that it exists. */
-async function checkReading(where: string, kindId: string, text: string, cite: string): Promise<Failure | null> {
-  const kind = hiddenFunctions[kindId as HiddenFunctionId] as (typeof hiddenFunctions)[HiddenFunctionId] | undefined;
-  if (kind === undefined) return { where, text, cite, reason: `unknown hidden function ${kindId}` };
-  const result = await door.ask({ kind: kind.label, meaning: kind.meaning, evidence: text }, readingQuestion);
-  if (!result.ok) return { where, text, cite, reason: `check could not run: ${result.message}` };
-  const missing = result.answers.missing as Extract<JevAnswer, { type: 'noul' }> | undefined;
-  if (missing === undefined || missing.noul < readingThreshold) {
-    return { where, text, cite, reason: `does not report this work going missing, only that it exists (p=${(missing?.noul ?? 0).toFixed(2)})` };
-  }
-  return null;
-}
-
-function statementsOf(draft: Draft): { where: string; text: string; cite: string }[] {
-  const body = (name: string, section: readonly (readonly Statement[])[]): { where: string; text: string; cite: string }[] =>
-    section.flatMap((paragraph, p) => paragraph.map((statement, s) => ({ where: `${name}[${String(p)}][${String(s)}]`, ...statement })));
-  return [
-    ...draft.claims.map((claim, index) => ({ where: `claims[${String(index)}]`, text: claim.said, cite: claim.cite })),
-    ...draft.missed.map((point, index) => ({ where: `missed[${String(index)}]`, text: point.evidence, cite: point.cite })),
-    ...draft.updates.map((update, index) => ({ where: `updates[${String(index)}]`, text: update.summary, cite: update.cite })),
-    ...body('role', draft.body.role),
-    ...body('change', draft.body.change),
-    ...body('next', draft.body.next),
-  ];
-}
-
-async function checkDraft(draft: Draft): Promise<Failure[]> {
-  const checks = await Promise.all([
-    ...statementsOf(draft).map((item) => checkStatement(item.where, item.text, item.cite)),
-    ...draft.missed.map((point, index) => checkReading(`missed[${String(index)}]`, point.function, point.evidence, point.cite)),
-  ]);
-  return checks.filter((failure): failure is Failure => failure !== null);
-}
-
-/** 5: removes statements that still fail. A section left empty keeps nothing rather than something unsupported. */
-function withoutFailures(draft: Draft, failures: readonly Failure[]): Draft {
-  const failed = new Set(failures.map((failure) => failure.where));
-  const keepBody = (name: string, section: readonly (readonly Statement[])[]): Statement[][] =>
-    section
-      .map((paragraph, p) => paragraph.filter((_, s) => !failed.has(`${name}[${String(p)}][${String(s)}]`)))
-      .filter((paragraph) => paragraph.length > 0);
-  return {
-    ...draft,
-    claims: draft.claims.filter((_, index) => !failed.has(`claims[${String(index)}]`)),
-    missed: draft.missed.filter((_, index) => !failed.has(`missed[${String(index)}]`)),
-    updates: draft.updates.filter((_, index) => !failed.has(`updates[${String(index)}]`)),
-    body: { role: keepBody('role', draft.body.role), change: keepBody('change', draft.body.change), next: keepBody('next', draft.body.next), open: draft.body.open },
-  };
-}
+const checkDraft = (candidate: Draft): Promise<Failure[]> => checkStatements(candidate, sources, door);
+const tooLong = (candidate: Draft): string | null =>
+  bodyLength(candidate) > maxBodyStatements ? `the body holds ${String(bodyLength(candidate))} statements; at most ${String(maxBodyStatements)}` : null;
 
 const firstText = `${prompt}\n\n${JSON.stringify(material, null, 2)}\n`;
 let draft = await askAgent(firstText);
@@ -234,14 +159,16 @@ if (draft === null) {
   process.exit(1);
 }
 let failures = await checkDraft(draft);
-note(`first draft: ${String(statementsOf(draft).length)} statements, ${String(failures.length)} failed`);
+const firstLength = tooLong(draft);
+note(`first draft: ${String(statementsOf(draft).length)} statements, ${String(failures.length)} failed${firstLength === null ? '' : `; ${firstLength}`}`);
 for (const failure of failures) note(`  ${failure.where}: ${failure.reason} | ${failure.text}`);
 
-if (failures.length > 0) {
+if (failures.length > 0 || firstLength !== null) {
+  const failed = failures.map((failure) => `- ${failure.where} (${failure.cite}): ${failure.reason}. Statement: "${failure.text}"`).join('\n');
   const revision = await askAgent(
-    `${firstText}\n## Your first draft\n\n\`\`\`json\n${JSON.stringify(draft, null, 2)}\n\`\`\`\n\n## Statements that failed the checks\n\n${failures
-      .map((failure) => `- ${failure.where} (${failure.cite}): ${failure.reason}. Statement: "${failure.text}"`)
-      .join('\n')}\n\nRevise the draft. Fix each failed statement so its cited sentence supports all of it, cite a better sentence, or remove it. Return the whole draft in the same JSON format.\n`,
+    `${firstText}\n## Your first draft\n\n\`\`\`json\n${JSON.stringify(draft, null, 2)}\n\`\`\`\n\n${
+      failures.length === 0 ? '' : `## Statements that failed the checks\n\n${failed}\n\nFix each failed statement so its cited sentence supports all of it, cite a better sentence, or remove it.\n\n`
+    }${firstLength === null ? '' : `## Length\n\nThe body is too long: ${firstLength}. Keep the statements a reader needs and remove the rest.\n\n`}Revise the draft. Return the whole draft in the same JSON format.\n`,
   );
   if (revision !== null) {
     draft = revision;
@@ -251,39 +178,39 @@ if (failures.length > 0) {
   }
 }
 
-const final = withoutFailures(draft, failures);
+let final = withoutPlaces(draft, new Set(failures.map((failure) => failure.where)));
+// Still too long after the revision: the statements a reader needs least go, as Jev rates them.
+if (tooLong(final) !== null) {
+  const scores = await neededScores(final, door);
+  const trimmed = trimForLength(final, new Set(), 0, scores, maxBodyStatements);
+  if (trimmed.ok) {
+    note(`removed for length, least needed first: ${[...trimmed.places].map((place) => `${place} (${(scores.get(place) ?? 1).toFixed(2)})`).join(', ')}`);
+    final = withoutPlaces(final, trimmed.places);
+  }
+}
 const problems: string[] = [];
 if (final.updates.length === 0) problems.push('no supported update remains');
+const finalLength = tooLong(final);
+if (finalLength !== null) problems.push(finalLength);
 // Publishing check 5: one primary source, or two independent reports, among the sources the case cites.
-const citedSources = sources.filter((source) => allCites(final).some((cite) => cite.startsWith(`${source.id}#`)));
-const primaries = citedSources.filter((source) => source.kind === 'primary').length;
-const reports = new Set(citedSources.filter((source) => source.kind === 'reporting').map((source) => source.publisher)).size;
-if (primaries === 0 && reports < 2) problems.push(`sources: ${String(primaries)} primary and ${String(reports)} independent reports; one primary or two reports are needed`);
+const sourceProblem = sourceRuleProblem(allCites(final), sources);
+if (sourceProblem !== null) problems.push(sourceProblem);
 const missingArchives = sources.filter((source) => allCites(final).some((cite) => cite.startsWith(`${source.id}#`)) && source.archive === '');
 if (missingArchives.length > 0) problems.push(`no archived copy for: ${missingArchives.map((source) => source.id).join(', ')}`);
 
 // Publishing check 2: every quote must be on the archived copy, word for word.
-for (const source of sources.filter((candidate) => candidate.archive !== '')) {
-  const quotes = [...new Set(allCites(final).filter((cite) => cite.startsWith(`${source.id}#`)))].flatMap((cite) => {
-    const found = citedSentence(cite, sources);
-    return found.ok ? [found.sentence] : [];
-  });
-  if (quotes.length === 0) continue;
-  const raw = await fetch(source.archive.replace(/\/web\/(\d+)\//, '/web/$1id_/'), { signal: AbortSignal.timeout(60_000) })
-    .then(async (response) => (response.ok ? response.text() : null))
-    .catch(() => null);
-  if (raw === null) {
-    problems.push(`archived copy of ${source.id} could not be read`);
+for (const finding of await archiveFindings(allCites(final), sources, readWaybackRaw)) {
+  if (finding.unreadable) {
+    problems.push(`archived copy of ${finding.source} could not be read`);
     continue;
   }
-  const missing = quotes.filter((quote) => !quoteFound(quote, raw));
-  note(`quote check ${source.id}: ${String(quotes.length - missing.length)}/${String(quotes.length)} quotes found on the archived copy`);
-  for (const quote of missing) problems.push(`not on the archived copy of ${source.id}: "${quote}"`);
+  note(`quote check ${finding.source}: ${String(finding.found)}/${String(finding.found + finding.missing.length)} quotes found on the archived copy`);
+  for (const quote of finding.missing) problems.push(`not on the archived copy of ${finding.source}: "${quote}"`);
 }
 
-const rendered = renderCase(final, sources, today);
+const rendered = renderCase(final, sources, today, { ...firstRecord, suggestedBy: values['suggested-by'] ?? null });
 await mkdir(outDir, { recursive: true });
-const slug = `${final.short.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${final.announced.slice(0, 4)}`;
+const slug = `${slugOf(final.short)}-${final.announced.slice(0, 4)}`;
 if (rendered.ok) {
   await writeFile(path.join(outDir, `${slug}.md`), rendered.text);
   // The same checks the build and CI run, so a draft cannot publish a case that would break the site

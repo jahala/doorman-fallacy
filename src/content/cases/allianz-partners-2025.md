@@ -45,7 +45,7 @@ updates:
     quote: Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division will cut between 1,500 and 1,800 jobs across Europe – and said plainly that artificial intelligence is the reason.
 corrections: []
 suggestedBy: null
-lastChecked: 2026-10-21
+lastChecked: 2026-11-12
 watch:
   queries:
     - Allianz Partners AI call centre customer satisfaction 2027
@@ -99,23 +99,17 @@ related: []
 
 ## The role
 
-Allianz Partners is the travel insurance unit undertaking the restructuring.[^ib-nov25] It currently employs 22,600 people across its global operations.[^ib-nov25] Approximately 14,000 of them handle customer enquiries and claims processing by telephone.[^ib-nov25]
-
 The roles most exposed to generative AI were the call-centre roles handling customer enquiries and claims by phone.[^ib-jul26]
 
 ## The change
 
-Allianz planned to reduce its workforce by between 1,500 and 1,800 positions within its travel insurance operations over the next 12 to 18 months.[^ib-nov25-2] The reductions will predominantly affect call centre operations across the division.[^ib-nov25-3] The planned reductions represent approximately 6.6% to 8% of Allianz Partners' total workforce.[^ib-nov25-4]
-
-The company said it is actively examining how technological change will affect all employees.[^ib-nov25-5] The company said such changes could also affect roles that are currently heavily reliant on manual processes.[^ib-nov25-5] A company spokesperson said the firm is engaged in confidential talks with the works councils regarding the restructuring.[^ib-nov25-6]
+Allianz planned to reduce its workforce by between 1,500 and 1,800 positions within its travel insurance operations over the next 12 to 18 months.[^ib-nov25] The reductions will predominantly affect call centre operations across the division.[^ib-nov25-2] The planned reductions represent approximately 6.6% to 8% of Allianz Partners' total workforce.[^ib-nov25-3]
 
 ## What happened next
 
-CCOO Servicios rejected Allianz Partners' intention to dismiss 320 workers in Spain, 20% of the workforce.[^segurosnews-dec25] The company said there had been no talk of dismissals or a collective redundancy.[^segurosnews-dec25-2] The company said the issue was strategic and would first affect some of its business units in Europe.[^segurosnews-dec25-3] The company said its tools had allowed it to digitalise more than 35% of some activities, such as the opening of claims.[^segurosnews-dec25-4]
+CCOO Servicios rejected Allianz Partners' intention to dismiss 320 workers in Spain, 20% of the workforce.[^segurosnews-dec25] The company said there had been no talk of dismissals or a collective redundancy.[^segurosnews-dec25-2]
 
-Mondial Assistance belongs to the Allianz Partners group.[^lassurance-feb26] At its call centres in Le Mans and Saint-Ouen, an AI was being tested to handle part of the calls linked to car assistance.[^lassurance-feb26-2] A conversational robot could answer motorists who had had an accident.[^lassurance-feb26-3] Unions cited a 'hidden social plan' of 350 to 450 jobs at the two sites.[^lassurance-feb26-4] Lydie Hippon-Darde, the France director of Allianz Partners, rejected that interpretation.[^lassurance-feb26] She said the aim of the AI deployment was not to remove jobs at the Le Mans site.[^lassurance-feb26] The tool would be intended for simple assistance requests.[^lassurance-feb26-5] This would leave teams more room for complex situations that need analysis, discernment and empathy.[^lassurance-feb26-5] Management said a client could have direct access to a human if they wished.[^lassurance-feb26-6] She said the tests covered small volumes and AI was not yet deployed at a large scale.[^lassurance-feb26-7]
-
-Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division would cut between 1,500 and 1,800 jobs across Europe.[^ib-jul26-2] He said artificial intelligence was the reason.[^ib-jul26-2] The cuts will take the form of severance agreements, early retirements and voluntary leave.[^ib-jul26-3] They followed six months of negotiation with works councils in Spain, France, Germany, Italy and the Benelux countries.[^ib-jul26-3]
+Mondial Assistance belongs to the Allianz Partners group.[^lassurance-feb26] At its call centres in Le Mans and Saint-Ouen, an AI was being tested to handle part of the calls linked to car assistance.[^lassurance-feb26-2] A conversational robot could answer motorists who had had an accident.[^lassurance-feb26-3] Unions cited a 'hidden social plan' of 350 to 450 jobs at the two sites.[^lassurance-feb26-4] Lydie Hippon-Darde, the France director of Allianz Partners, rejected that interpretation.[^lassurance-feb26] She said the aim of the AI deployment was not to remove jobs at the Le Mans site.[^lassurance-feb26] The tool would be intended for simple assistance requests.[^lassurance-feb26-5] This would leave teams more room for complex situations that need analysis, discernment and empathy.[^lassurance-feb26-5] Management said a client could have direct access to a human if they wished.[^lassurance-feb26-6]
 
 ## Open questions
 
@@ -125,23 +119,15 @@ Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division woul
 - Does Allianz Partners report satisfaction for AI-handled calls separately from calls taken by people?
 - Are the staff who remain taking more complex cases, and is that reported?
 
-[^ib-nov25]: "Allianz Partners, the travel insurance unit undertaking the restructuring, currently employs 22,600 people across its global operations, with approximately 14,000 engaged in handling customer inquiries and claims processing via telephone."
 [^ib-jul26]: "Allianz Partners employs more than 22,000 people, with roughly 14,000 handling customer enquiries and claims by phone – the call-centre-heavy roles most exposed to generative AI's ability to triage, translate and resolve routine cases without a human on the line."
-[^ib-nov25-2]: "With AI continuing to reshape processes across businesses worldwide, insurance giant Allianz is planning to reduce its workforce by between 1,500 and 1,800 positions within its travel insurance operations over the next 12 to 18 months, according to sources familiar with the plans."
-[^ib-nov25-3]: "The reductions will predominantly affect call center operations across the division."
-[^ib-nov25-4]: "The planned reductions represent approximately 6.6% to 8% of Allianz Partners' total workforce."
-[^ib-nov25-5]: "The company said that it is ‘actively examining how technological change will affect all employees,’ noting that such changes could ‘also impact roles that are currently heavily reliant on manual processes.’"
-[^ib-nov25-6]: "A company spokesperson indicated that the firm is engaged in ‘confidential talks with the works councils’ regarding the restructuring."
+[^ib-nov25]: "With AI continuing to reshape processes across businesses worldwide, insurance giant Allianz is planning to reduce its workforce by between 1,500 and 1,800 positions within its travel insurance operations over the next 12 to 18 months, according to sources familiar with the plans."
+[^ib-nov25-2]: "The reductions will predominantly affect call center operations across the division."
+[^ib-nov25-3]: "The planned reductions represent approximately 6.6% to 8% of Allianz Partners' total workforce."
 [^segurosnews-dec25]: "CCOO Servicios ha manifestado su «más rotundo rechazo a la intención de Allianz Partners de despedir a 320 personas trabajadoras en España, por la gravedad y dimensión del ajuste -el 20% de la plantilla- y por no estar en absoluto justificada»."
 [^segurosnews-dec25-2]: "Consultada la entidad por esta redacción, afirman que «en ningún momento se ha hablado de despidos, ni de ERE."
-[^segurosnews-dec25-3]: "Se trata de una cuestión estratégica que no solo se plantea en España, sino que en un primer momento afectará a algunas unidades de negocio de la compañía en Europa, para consolidar nuestra posición de liderazgo en un mercado en un entorno que se transforma y donde la IA ha irrumpido rápidamente»."
-[^segurosnews-dec25-4]: "El desarrollo de estas herramientas nos ha permitido digitalizar ya en algunas actividades más de un 35%, como es el caso de las aperturas de siniestros."
 [^lassurance-feb26]: "Interrogée sur France bleu Maine le 12 février dernier, Lydie Hippon-Darde, directrice France d’Allianz Partners, groupe d’assurance auquel appartient Mondial Assistance, réfute cette interprétation. « L’objectif du déploiement de l’IA n’est pas de supprimer des emplois au site du Mans » mais « d’adapter progressivement nos compétences aux évolutions du marché et des attentes clients », explique la dirigeante."
 [^lassurance-feb26-2]: "Dans les centres d’appels de Mondial Assistance au Mans et à Saint-Ouen, une intelligence artificielle est testée pour prendre en charge une partie des appels liés à l’assistance automobile."
 [^lassurance-feb26-3]: "Désormais, un robot conversationnel peut décrocher auprès d’automobilistes sinistrés."
 [^lassurance-feb26-4]: "Une innovation qui inquiète les syndicats, évoquant « un plan social caché » de 350 à 450 emplois sur les deux sites."
 [^lassurance-feb26-5]: "L’outil serait destiné aux demandes d’assistance simples, afin de laisser plus de place aux équipes pour les situations complexes « qui nécessitent de l’analyse, du discernement et de l’empathie »."
 [^lassurance-feb26-6]: "La direction précise également que « le client peut avoir accès directement à un humain s’il le souhaite »."
-[^lassurance-feb26-7]: "Mais pour l’instant, ces tests portent sur de petits volumes : « on n’est pas encore dans un déploiement massif de l’intelligence artificielle. » résume Lydie Hippon-Darde."
-[^ib-jul26-2]: "Tomas Kunzmann, chief executive of Allianz Partners, confirmed the division will cut between 1,500 and 1,800 jobs across Europe – and said plainly that artificial intelligence is the reason."
-[^ib-jul26-3]: "The cuts will take the form of severance agreements, early retirements and voluntary leave, following six months of negotiation with works councils in Spain, France, Germany, Italy and the Benelux countries."

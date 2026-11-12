@@ -34,7 +34,7 @@ updates:
     quote: They denied laying off 4,000 employees and clarified that they redeployed these roles internally, primarily shifting headcount from support functions to sales to strengthen distribution capacity.
 corrections: []
 suggestedBy: null
-lastChecked: 2026-10-21
+lastChecked: 2026-11-12
 watch:
   queries:
     - Salesforce support headcount Agentforce

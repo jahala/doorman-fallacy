@@ -21,6 +21,13 @@ export const requiredHeadings = [
 /** The section where every paragraph must carry a footnote. */
 const factsHeading = '## What happened next';
 
+/**
+ * The most cited statements a body may hold across the role, the change and what happened next.
+ * The drafting prompt asks for about twelve; past this a case hides what happened. A review that
+ * adds news keeps within it by dropping what the news supersedes.
+ */
+export const maxBodyStatements = 15;
+
 export type CaseRule =
   | 'folder'
   | 'front-matter'
@@ -34,7 +41,8 @@ export type CaseRule =
   | 'footnote-no-quote'
   | 'paragraph-no-footnote'
   | 'source-uncited'
-  | 'archive-other-site';
+  | 'archive-other-site'
+  | 'body-length';
 
 export interface CaseFinding {
   readonly file: string;
@@ -260,6 +268,14 @@ function checkBody(
     if (!defined.has(label)) {
       findings.push({ file, line, rule: 'footnote-undefined', message: `Footnote [^${label}] is used but never defined` });
     }
+  }
+
+  const openAt = lines.find((line) => line.text.trim() === '## Open questions')?.number ?? Number.POSITIVE_INFINITY;
+  const statements = lines
+    .filter((line) => !covered.has(line.number) && line.number < openAt)
+    .reduce((sum, line) => sum + [...line.text.matchAll(referencePattern)].length, 0);
+  if (statements > maxBodyStatements) {
+    findings.push({ file, line: 0, rule: 'body-length', message: `The body holds ${String(statements)} cited statements; at most ${String(maxBodyStatements)}` });
   }
 
   for (const line of paragraphsWithoutFootnote(lines, covered)) {
