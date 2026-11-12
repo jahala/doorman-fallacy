@@ -7,6 +7,9 @@
 }
 
 html {
+  /* Every size is in rem, so this one value sets the scale of the whole site: 1rem is 90% of the
+     reader's default, usually 14.4 pixels (D-027). */
+  font-size: 90%;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
@@ -437,8 +440,9 @@ a {
 }
 
 @media (width >= 56rem) {
+  /* The text column ends one grid column before the side column, so text never runs up to a form. */
   .split__head {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 6;
   }
 
   .split__side {

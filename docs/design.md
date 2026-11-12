@@ -68,7 +68,9 @@ Names of things in a list, in an illustration or in a table (a kind of hidden wo
 
 Space: a 4-pixel base, with steps at 4, 8, 12, 16, 24, 32, 48, 64, 96 and 128. Sections are separated by a hairline and 96 to 128 pixels above and below.
 
-Layout: a 12-column grid with content up to 1400 pixels wide and side margins of clamp(1.25rem, 4.5vw, 4.5rem). Text columns stop at about 65 characters.
+Scale: every size is in rem, and the root is set to 90% of the reader's default, so 1rem is usually 14.4 pixels and `body` about 16 ([D-027](decisions.md)). The values in the type table are in rem.
+
+Layout: a 12-column grid with content up to 1200 pixels wide and side margins of clamp(1.25rem, 6vw, 6rem). Text columns stop at about 65 characters. In a two-column section (`split`, as on `/suggest`) the text column ends one grid column before the side column, so text never runs up to a form.
 
 ## Components
 
@@ -93,7 +95,7 @@ Layout: a 12-column grid with content up to 1400 pixels wide and side margins of
 
 ## Illustrations
 
-Two diagrams and six icons explain the idea without photographs. Each diagram sits in a respite: a band of `surface` that runs to both edges of the window, 96 pixels above and below, with the diagram's name as an h3 in the heading column and what it shows in the text column. A band that ends its section is the section's end, with no hairline after it. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
+Two diagrams and six icons explain the idea without photographs. Each diagram sits in a respite: a band of `surface` that runs to both edges of the window, `space-24` above and below, with the diagram's name as an h3 in the heading column and what it shows in the text column. A band that ends its section is the section's end, with no hairline after it. The diagrams are HTML and CSS with real text, so they reflow on phones, read aloud and follow the type scale. SVG is used only for the icons and for decorative arrows, always with `currentColor`, so every illustration takes the tokens in both schemes; a site test fails on any SVG that writes its own colour.
 
 - **Where the hidden work goes** (`/idea#questions`, under the third question): before the change one person holds the visible task and all six; after it the system takes the task and the six go to another team, the customer or nobody, the last in a dashed frame. Its text says it is one possible outcome.
 - **Saved now, lost later** (`/ledger#watch`): a two-row timeline. The saving is a solid `ink` chip at once; the costs are dashed `ink-3` chips months later. On phones each time step stacks under its row.

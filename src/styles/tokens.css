@@ -77,10 +77,10 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
-  /* Layout: 12 columns, content up to 1400px */
+  /* Layout: 12 columns, content up to 1200px, with side margins that grow with the window */
   --grid-columns: 12;
-  --grid-max: 1400px;
-  --grid-margin: clamp(1.25rem, 4.5vw, 4.5rem);
+  --grid-max: 1200px;
+  --grid-margin: clamp(1.25rem, 6vw, 6rem);
   --grid-gap: var(--space-6);
   --measure: 65ch;
   --hairline: 1px;
