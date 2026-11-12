@@ -112,6 +112,8 @@ Every rule this project states is listed here once, with what fails when it brea
 | A form with the honeypot filled is thanked, and nothing is stored, counted or sent | Worker tests for both forms |
 | At most 5 suggestions and 5 sign-ups per visitor per hour, also when requests arrive together | Worker tests: the 6th is refused, the hour boundary, separate visitors, 12 concurrent requests. The visitor's address is stored only as a hash |
 | A confirmed address is sent nothing; an unconfirmed one is sent a fresh link at most every 10 minutes; a link works 7 days | Worker tests at the exact boundaries, and with two requests together. A mail failure leaves the row as it was |
+| Every subscriber can unsubscribe: the confirmation email carries their own unsubscribe link | Unit test of `confirmationMessage` in `tests/unit/mail.test.ts`; Worker test of the email sent |
+| The site hears once when someone confirms, with the total and never the address, and a failed note never undoes a confirmation | Worker tests in `tests/worker/subscribe.test.ts`: confirming twice sends one note, the note holds no address, a refused send still confirms |
 | Opening the unsubscribe link changes nothing; only the POST deletes; a one-click POST gets a 200 | Worker tests. Site test: the page's form has no `action`, so it posts back to the address it was served at |
 | The other hostnames, and plain http, redirect to https://thedoormanfallacy.com with path and query | Unit test of `lib/hosts.ts`; Worker test through the real entry point |
 | The mail key is sent only in the Authorization header, and never logged | Worker test of the cfmail sender; `CFMAIL_KEY` is a required secret in `wrangler.jsonc`, so a deploy without it fails; git ignores `.dev.vars*` |

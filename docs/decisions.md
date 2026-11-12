@@ -218,3 +218,11 @@ Chosen: after a weekly run lands its commit, it runs the release from its own wo
 
 Why: it needs no new credential, and the same release gate that guards a manual deploy guards the weekly one.
 
+## D-029 · 2026-11-12 · A note to the site for each new subscriber, and an unsubscribe link from the start
+
+Context: Jan asked how he would know if anyone subscribes, and chose "email for every signup for now". He also asked how a person would unsubscribe, as the sign-up form promises. The privacy page said every email carries the unsubscribe link, but the only email the site sends, the confirmation, had none, so no subscriber could find it.
+
+Chosen: when someone confirms, the site emails hello@thedoormanfallacy.com once, with the total of confirmed subscribers and without the address, so a subscriber's address stays in D1 as the privacy page says. The note is sent on confirmation, not on sign-up, so unconfirmed and bot addresses send nothing. The confirmation email carries the person's own unsubscribe link, which keeps working after they confirm.
+
+Why: Jan hears of each real subscriber at once, and the unsubscribe promise on the form and the privacy page is true from the first email.
+

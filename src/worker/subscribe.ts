@@ -1,7 +1,7 @@
 import { parseEmail } from '../lib/email-address.ts';
 import { firstValue, isHoneypotFilled } from '../lib/form.ts';
 import { cutoffs } from '../lib/limits.ts';
-import { confirmationMessage } from '../lib/mail.ts';
+import { confirmationMessage, newSubscriberMessage } from '../lib/mail.ts';
 import { isOneClickBody, isToken, tokenBytes, tokenFromBytes } from '../lib/subscriber.ts';
 import type { Deps } from './deps.ts';
 import { clientAddress, readForm, see } from './http.ts';
@@ -59,17 +59,25 @@ export async function subscribe(request: Request, env: Env, deps: Deps): Promise
   return see(failed);
 }
 
-/** GET /confirm?token=: confirms an address whose link has not expired. Confirming twice is fine. */
+/**
+ * GET /confirm?token=: confirms an address whose link has not expired. Confirming twice is fine. The
+ * first confirmation, and only that one, sends the site a note with the total; the statement that
+ * confirms decides which request is first, so two at once cannot both send it.
+ */
 export async function confirm(request: Request, env: Env, deps: Deps): Promise<Response> {
   const token = new URL(request.url).searchParams.get('token') ?? '';
   if (!isToken(token)) return see(problem);
-  const result = await env.DB.prepare(
-    `UPDATE subscribers SET confirmed_at = COALESCE(confirmed_at, ?1)
-     WHERE token = ?2 AND (confirmed_at IS NOT NULL OR token_sent_at >= ?3)`,
-  )
+  const first = await env.DB.prepare('UPDATE subscribers SET confirmed_at = ?1 WHERE token = ?2 AND confirmed_at IS NULL AND token_sent_at >= ?3')
     .bind(deps.now.toISOString(), token, cutoffs(deps.now).unconfirmedBefore)
     .run();
-  return see(result.meta.changes === 1 ? '/subscribe/confirmed' : problem);
+  if (first.meta.changes === 1) {
+    const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM subscribers WHERE confirmed_at IS NOT NULL').first<{ n: number }>();
+    // The confirmation stands whether or not the note goes out.
+    await deps.sendMail(newSubscriberMessage(total?.n ?? 1));
+    return see('/subscribe/confirmed');
+  }
+  const already = await env.DB.prepare('SELECT 1 AS yes FROM subscribers WHERE token = ?1 AND confirmed_at IS NOT NULL').bind(token).first();
+  return see(already === null ? problem : '/subscribe/confirmed');
 }
 
 /**
