@@ -95,8 +95,10 @@ export function hangingProblems(draft: Draft, removed: ReadonlySet<string>): str
 /**
  * The statements to remove so the body fits within `max`, given how much a reader needs each one
  * (`needed`, from Jev: desk/checks.ts) and how many statements additions bring (`added`). The least
- * needed go first. A removal that would leave a name or a "this" hanging is skipped. Statements
- * already in `removed` stay removed and are not counted again.
+ * needed go first, but only from the end of a paragraph, since a later sentence leans on the ones
+ * before it; a paragraph can shrink to nothing. A removal that would leave a name or a "this"
+ * hanging elsewhere is skipped, and each section keeps one statement. Statements already in
+ * `removed` stay removed and are not counted again.
  */
 export function trimForLength(
   draft: Draft,
@@ -114,8 +116,18 @@ export function trimForLength(
   // be free to go once that one has gone, so every round starts again from the least needed.
   while (over > 0) {
     const left = (section: string): number => body.filter((other) => other.where.startsWith(`${section}[`) && !places.has(other.where)).length;
+    // Only the last sentence left in its paragraph may go: later sentences lean on earlier ones.
+    const paragraphOf = (where: string): string => where.replace(/\[\d+\]$/, '');
+    const isLast = (item: { where: string }): boolean => {
+      const index = body.indexOf(item as (typeof body)[number]);
+      return !body.slice(index + 1).some((other) => paragraphOf(other.where) === paragraphOf(item.where) && !places.has(other.where));
+    };
     const next = order.find(
-      (item) => !places.has(item.where) && left(item.where.split('[')[0] ?? '') > 1 && hangingProblems(draft, new Set([...removed, ...places, item.where])).length === 0,
+      (item) =>
+        !places.has(item.where) &&
+        isLast(item) &&
+        left(item.where.split('[')[0] ?? '') > 1 &&
+        hangingProblems(draft, new Set([...removed, ...places, item.where])).length === 0,
     );
     if (next === undefined) break;
     places.add(next.where);

@@ -24,6 +24,7 @@ Cite a sentence as `source-id#number`, for example `fsu-2026-11#4`. You may cite
 - Write what the sources report. Never state or suggest the organisation's motives unless a cited sentence states them.
 - Plain, neutral words, short sentences, British spelling. No "slashed", "axed", "gutted", "sweeping", "brutal", "greedy", "botched" or similar. No gloating about a reversal.
 - Cite only sentences about this organisation's change.
+- Prefer primary sources (the organisation's own statement, a filing, a union statement, a court or tribunal record, a regulator) and news outlets that report for themselves. A page that retells others' reporting (an aggregator, a content site, a blog summarising the news) is not a source for something new; cite the report it retells if it is among the pages. New material is published only when the new pages it cites include one primary source or two independent reports.
 - A statement names only the people, organisations, numbers and dates its own cited sentence names. Do not add a date the sentence or its source does not give.
 - A point of the doorman reading (`missed`) needs reported evidence that the hidden work went missing, got worse, moved to other people or to the customer, or landed on fewer people: complaints, waits, overtime, errors, rehiring, a reversal. That the work exists is not evidence.
 - Removing keeps the rest readable. A statement that leans on another ("this", "he", "the union") stays or goes with the statement it leans on, and the statement that introduces a person stays while any statement names them.

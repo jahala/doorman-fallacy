@@ -26,7 +26,7 @@ import { createBudget } from './budget.ts';
 import { readCase } from './case-file.ts';
 import { bodyLength, renderCase, statementsOf, withoutPlaces, type SourceMaterial } from './case-render.ts';
 import { maxBodyStatements } from '../scripts/check-cases.ts';
-import { archiveFindings, checkStatement, checkStatements, neededScores, notSupported, readWaybackRaw, type Failure } from './checks.ts';
+import { archiveFindings, checkStatement, checkStatements, neededScores, notSupported, readWaybackRaw, sourceRuleProblem, type Failure } from './checks.ts';
 import { askClaude, isDeepseekModel } from './claude.ts';
 import { createDeepseekDoor, deepseekKey } from './deepseek.ts';
 import { createJevDoor } from './jev.ts';
@@ -293,6 +293,16 @@ for (const finding of await archiveFindings(addedCites, archived, readWaybackRaw
   } else note(`quote check ${finding.source}: ${String(finding.found)}/${String(finding.found)} quotes found on the archived copy`);
 }
 review = { ...review, add: dropCiting(review.add, unusable) };
+// Publishing check 5 for what is new: the new sources the additions cite hold one primary source or
+// two independent reports, as a new case's must. Otherwise the new material waits for another week.
+const usableNew = archived.filter((source) => !unusable.has(source.id));
+const newCites = statementsOf(review.add).map((item) => item.cite).filter((cite) => usableNew.some((source) => cite.startsWith(`${source.id}#`)));
+const newSourceProblem = newCites.length === 0 ? null : sourceRuleProblem(newCites, usableNew);
+if (newSourceProblem !== null) {
+  note(`new material not published: ${newSourceProblem}`);
+  for (const source of usableNew) unusable.add(source.id);
+  review = { ...review, add: dropCiting(review.add, unusable) };
+}
 // A statement removed as superseded makes way for news; when no news from a new source is left, it stays.
 const newsLeft = statementsOf(review.add).some((item) => archived.some((source) => !unusable.has(source.id) && item.cite.startsWith(`${source.id}#`)));
 if (!newsLeft && review.remove.some((removal) => removal.reason === 'superseded')) {

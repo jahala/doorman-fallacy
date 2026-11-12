@@ -169,14 +169,22 @@ describe('trimForLength', () => {
   const body = statementsOf(draft).filter((item) => /^(role|change|next)\[/.test(item.where));
   const place = (start: string): string => body.find((item) => item.text.startsWith(start))?.where ?? '';
 
-  it('removes the statements a reader needs least until the body fits, and only as many as it must', () => {
+  it('removes the least needed paragraph ends until the body fits, and only as many as it must', () => {
     // 19 statements; two added would make 21, so six must go.
-    const needed = new Map(body.map((item, index) => [item.where, 0.5 + index / 100]));
-    for (const start of ['Kenneth Pettersen was', 'He said the union had worked', 'According to Telenor', 'The office had 78']) needed.set(place(start), 0.01);
+    const needed = new Map(body.map((item) => [item.where, 0.9]));
+    for (const start of ['He said the union had worked', 'Kenneth Pettersen was', 'Customer service employees who wished', 'The closure would make', 'According to Telenor', 'About one in twelve']) needed.set(place(start), 0.01);
     const trimmed = trimForLength(draft, new Set(), 2, needed, 15);
     if (!trimmed.ok) throw new Error(trimmed.problem);
-    expect(trimmed.places.size).toBe(6);
-    for (const start of ['Kenneth Pettersen was', 'He said the union had worked', 'According to Telenor', 'The office had 78']) expect(trimmed.places.has(place(start))).toBe(true);
+    expect([...trimmed.places].sort()).toEqual(['He said the union had worked', 'Kenneth Pettersen was', 'Customer service employees who wished', 'The closure would make', 'According to Telenor', 'About one in twelve'].map(place).sort());
+  });
+
+  it('takes a sentence only from the end of its paragraph, so no later sentence leans on a removed one', () => {
+    const needed = new Map(body.map((item) => [item.where, 0.9]));
+    // Rated least needed, but sentences after it in its paragraph lean on it.
+    needed.set(place('The office had 78'), 0.01);
+    const trimmed = trimForLength(draft, new Set(), 1, needed, 15);
+    if (!trimmed.ok) throw new Error(trimmed.problem);
+    expect(trimmed.places.has(place('The office had 78'))).toBe(false);
   });
 
   it('never leaves a name or a "this" hanging, even when the check rates it low', () => {
@@ -198,7 +206,7 @@ describe('trimForLength', () => {
     const trimmed = trimForLength(short, new Set(), 1, needed, 3);
     expect(trimmed.ok).toBe(false);
     const roomier = trimForLength(short, new Set(), 0, needed, 3);
-    expect(roomier).toEqual({ ok: true, places: new Set(['role[0][0]']) });
+    expect(roomier).toEqual({ ok: true, places: new Set(['role[0][1]']) });
   });
 
   it('removes nothing from a body within the limit', () => {
