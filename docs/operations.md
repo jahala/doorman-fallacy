@@ -68,7 +68,7 @@ Install the schedule with `scripts/install-desk-schedule.sh`. It runs the desk f
 To take a case down: delete its file in one commit that says why, and release.
 ## Site health
 
-Not built yet. [D-012](decisions.md) chose a scheduled GitHub Action that fetches the home page and both redirects each day, and makes GitHub email Jan when one fails. It runs separately from the desk, so a sleeping Mac cannot hide a broken site. It is added with the first release, since before it every check would fail and email Jan daily.
+`.github/workflows/site-health.yml` ([D-012](decisions.md)) fetches the home page and both redirects each day at 06:17 UTC, and GitHub emails Jan when one fails. It runs separately from the desk, so a sleeping Mac cannot hide a broken site. Run it by hand from the repository's Actions tab (Site health, Run workflow).
 
 ## Email
 

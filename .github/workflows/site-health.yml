@@ -1,0 +1,32 @@
+# Each day, check that the live site answers and that both other domains redirect to it, path kept.
+# It runs apart from the desk, so a sleeping Mac cannot hide a broken site; GitHub emails the owner
+# when it fails (docs/operations.md, "Site health").
+name: Site health
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: The home page answers
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors --max-time 30 https://thedoormanfallacy.com/)
+          echo "https://thedoormanfallacy.com/ answered $code"
+          test "$code" = 200
+      - name: doormanfallacy.com redirects, path kept
+        run: |
+          got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --retry 3 --retry-all-errors --max-time 30 https://www.doormanfallacy.com/idea)
+          echo "https://www.doormanfallacy.com/idea answered $got"
+          test "$got" = '301 https://thedoormanfallacy.com/idea'
+      - name: www.thedoormanfallacy.com redirects, path kept
+        run: |
+          got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --retry 3 --retry-all-errors --max-time 30 https://www.thedoormanfallacy.com/ledger)
+          echo "https://www.thedoormanfallacy.com/ledger answered $got"
+          test "$got" = '301 https://thedoormanfallacy.com/ledger'
